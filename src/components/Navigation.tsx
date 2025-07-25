@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Shield } from 'lucide-react';
-import aediLogo from '@/assets/favicon_logo/aedi.jpeg'
+import aediLogo from '@/assets/favicon_logo/aedi.png';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +34,7 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="ml-4 flex items-center space-x-2 whitespace-nowrap">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
@@ -43,6 +44,7 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
+              <LanguageSelector />
               <Link to="/contact">
                 <Button variant="default" className="ml-4">
                   Get Quote
@@ -83,7 +85,8 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <div className="px-3 py-2">
+            <div className="px-3 py-2 space-y-2">
+              <LanguageSelector />
               <Link to="/contact">
                 <Button variant="default" className="w-full">
                   Get Quote

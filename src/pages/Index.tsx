@@ -1,6 +1,7 @@
 import Navigation from '@/components/Navigation';
 import HeroSlider from '@/components/HeroSlider';
 import ServicesPreview from '@/components/ServicesPreview';
+import ClientsSection from '@/components/ClientsSection';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,7 @@ const Index = () => {
                 Protecting Your Digital Future
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                AEDI Security is Kenya's leading cybersecurity firm, dedicated to protecting 
+                AEDI Security Ltd is Kenya's proficient cybersecurity firm, dedicated to protecting 
                 businesses from evolving digital threats. With our expert team and cutting-edge 
                 solutions, we ensure your organization stays secure in an increasingly connected world.
               </p>
@@ -86,6 +87,8 @@ const Index = () => {
       </section>
 
       <ServicesPreview />
+
+      <ClientsSection />
 
       {/* CTA Section */}
       <section className="py-16 hero-gradient">

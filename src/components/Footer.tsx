@@ -1,11 +1,15 @@
-
 import aediLogo from '@/assets/favicon_logo/aedi.jpeg';
 import { Mail, Phone, MapPin, Twitter, Linkedin, Facebook, Youtube } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="hero-gradient text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div
+      className="text-white bg-cover bg-center relative"
+      style={{ backgroundImage: "url('/src/assets/banner/footer.jpg')" }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-85"></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
@@ -54,9 +58,9 @@ const Footer = () => {
               <li><a href="/services#training" className="text-gray-300 hover:text-primary transition-colors">Security Training</a></li>
               <li><a href="/services#incident" className="text-gray-300 hover:text-primary transition-colors">Incident Response</a></li>
               <li><a href="/services#cloud" className="text-gray-300 hover:text-primary transition-colors">Cloud Security</a></li>
-              <li><a href="/services#cloud" className="text-gray-300 hover:text-primary transition-colors">Mobile App Development</a></li>
-              <li><a href="/services#cloud" className="text-gray-300 hover:text-primary transition-colors">Custom Web Applications</a></li>
-              <li><a href="/services#cloud" className="text-gray-300 hover:text-primary transition-colors">AI & Machine Learning Solutions</a></li>
+              <li><a href="/services#mobile" className="text-gray-300 hover:text-primary transition-colors">Mobile App Development</a></li>
+              <li><a href="/services#web" className="text-gray-300 hover:text-primary transition-colors">Custom Web Applications</a></li>
+              <li><a href="/services#ai" className="text-gray-300 hover:text-primary transition-colors">AI & Machine Learning Solutions</a></li>
             </ul>
           </div>
         </div>
@@ -81,7 +85,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 

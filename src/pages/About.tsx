@@ -5,31 +5,33 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Target, Shield, Award, Globe, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Charlton from '@/assets/team/charlton.png';
+import deo from '@/assets/team/deo-gumba.jpg';
 
 const teamMembers = [
   {
-    name: "Sarah Kiprotich",
-    role: "Chief Executive Officer",
-    description: "15+ years in cybersecurity leadership, former CISO at major Kenyan banks.",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face"
+    name: "Charlton O. Omondi",
+    role: "Director",
+    description: "Certified Software Engineer and Cybersecurity Penetration Tester with hands-on expertise in Burp Suite, OWASP methodologies, and Linux-based ethical hacking tools.",
+    image: Charlton,
   },
   {
-    name: "David Mwangi",
+    name: "Duncan E. O. Gumba",
+    role: "Cybersecurity Researcher",
+    description: "Well-published researcher and writer, political and security analyst, journalist and policy researcher on Africa, especially human security and criminality..",
+    image: deo,
+  },
+  {
+    name: "xxxxxx",
     role: "Head of Penetration Testing",
     description: "Certified Ethical Hacker with expertise in advanced persistent threats.",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
   },
   {
-    name: "Grace Wanjiku",
-    role: "Compliance Director",
-    description: "Legal expert specializing in data protection and regulatory compliance.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face"
-  },
-  {
-    name: "Peter Ochieng",
+    name: "xxxxxx",
     role: "Technical Director",
     description: "Cloud security architect with extensive enterprise infrastructure experience.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
+    image: ""
   }
 ];
 
@@ -62,17 +64,24 @@ const About = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="hero-gradient py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section
+        className="py-20 bg-cover bg-center relative"
+        style={{
+          backgroundImage: `url('/src/assets/banner/about.jpg')`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             About AEDI Security
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Leading cybersecurity experts protecting Kenya's digital landscape since 2015. 
+            Proficient Software Engineers & cybersecurity experts protecting Kenya's digital landscape since 2024.
             We combine local expertise with global security standards.
           </p>
         </div>
       </section>
+
 
       {/* Mission & Vision */}
       <section className="py-16 bg-background">

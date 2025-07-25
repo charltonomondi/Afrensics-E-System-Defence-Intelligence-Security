@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, Search, Users, AlertTriangle, Cloud, GraduationCap, Database, Settings, FileText, Monitor, Lock, UserCheck } from 'lucide-react';
+import { Shield, Search, Users, AlertTriangle, Cloud, GraduationCap, Database, Settings, FileText, Monitor, Lock, UserCheck, Smartphone, Code, Brain } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const services = [
@@ -102,6 +102,30 @@ const services = [
     features: ["Readiness Testing", "Gap Analysis", "Playbook Review", "Team Assessment", "Improvement Plan"],
     startingPrice: "$2,500",
     popular: false
+  },
+  {
+    icon: <Smartphone className="h-12 w-12 text-primary" />,
+    title: "Mobile App Development",
+    description: "Secure mobile applications with built-in cybersecurity features and robust data protection.",
+    features: ["iOS & Android Development", "Security-First Architecture", "API Integration", "Real-time Monitoring", "Compliance Ready"],
+    startingPrice: "$10,000",
+    popular: true
+  },
+  {
+    icon: <Code className="h-12 w-12 text-primary" />,
+    title: "Custom Web Development",
+    description: "Secure web applications and platforms tailored to your business needs with modern frameworks.",
+    features: ["Secure Coding Practices", "Modern Frameworks", "Scalable Architecture", "Performance Optimization", "Security Integration"],
+    startingPrice: "$8,000",
+    popular: false
+  },
+  {
+    icon: <Brain className="h-12 w-12 text-primary" />,
+    title: "AI & Machine Learning Solutions",
+    description: "Intelligent security solutions powered by artificial intelligence and machine learning algorithms.",
+    features: ["Threat Detection AI", "Predictive Analytics", "Custom ML Models", "Automated Response", "Advanced Analytics"],
+    startingPrice: "$15,000",
+    popular: true
   }
 ];
 
@@ -111,17 +135,24 @@ const Services = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="hero-gradient py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section
+        className="py-20 bg-cover bg-center relative"
+        style={{
+          backgroundImage: `url('/src/assets/banner/services.jpg')`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Cybersecurity Services
+            CyberDev
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Comprehensive security solutions to protect your business from evolving cyber threats. 
-            Choose from our range of professional services tailored to your needs.
+            We deliver end-to-end software solutions and robust cybersecurity services tailored to meet your business needs.
+            From custom applications to advanced threat protection, AEDI Security ensures your digital presence is powerful, secure, and future-ready.
           </p>
         </div>
       </section>
+
 
       {/* Services Grid */}
       <section className="py-16 bg-background">

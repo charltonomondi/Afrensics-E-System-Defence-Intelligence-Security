@@ -43,6 +43,7 @@ function SubscribeSection() {
     );
 }
 
+// Only blog post objects inside the array!
 const blogPosts = [
 	{
 		id: "1",
@@ -395,44 +396,6 @@ const blogPosts = [
 			</>
 		),
 	},
-
-	// Add this component above your BlogPost component or in a shared components file:
-	function SubscribeSection() {
-		const [email, setEmail] = useState("");
-		const [subscribed, setSubscribed] = useState(false);
-
-		const handleSubscribe = (e: React.FormEvent) => {
-			e.preventDefault();
-			if (email.trim()) {
-				setSubscribed(true);
-				setEmail("");
-			}
-		};
-
-		return (
-			<form onSubmit={handleSubscribe} className="flex flex-col items-center gap-4 max-w-md mx-auto">
-				<input
-					type="email"
-					value={email}
-					onChange={e => setEmail(e.target.value)}
-					placeholder="Your email address"
-					required
-					className="w-full px-4 py-2 border border-input rounded focus:outline-none"
-				/>
-				<button
-					type="submit"
-					className="bg-primary text-white px-6 py-2 rounded hover:bg-primary/80 transition"
-				>
-					Subscribe
-				</button>
-				{subscribed && (
-					<div className="text-green-600 font-semibold mt-2">
-						Thank you for subscribing! You'll be notified when this post is published.
-					</div>
-				)}
-			</form>
-		);
-	}
 ];
 
 const BlogPost = () => {

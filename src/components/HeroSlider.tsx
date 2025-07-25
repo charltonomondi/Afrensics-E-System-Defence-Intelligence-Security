@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import heroCyberReady from '@/assets/hero-cyber-ready.jpg';
 import heroRansomware from '@/assets/hero-ransomware.jpg';
 import heroPentest from '@/assets/hero-pentest.jpg';
-import heroAppSecurity from '@/assets/hero-app-security.jpg';
+import heroAppSecurity from '@/assets/hero-app-security.webp';
 import heroTraining from '@/assets/hero-training.jpg';
 
 const slides = [
