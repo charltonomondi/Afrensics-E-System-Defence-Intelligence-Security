@@ -32,7 +32,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center">
                 <MapPin className="h-4 w-4 text-primary mr-2" />
-                <span className="text-gray-300">Nairobi, Kenya</span>
+                <span className="text-gray-300">1st floor, Park Place, 2nd Avenue Parklands off Limuru Road Nairobi, Kenya</span>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@ const Footer = () => {
             <a href="https://www.facebook.com/Afrensics/" className="text-gray-300 hover:text-primary transition-colors">
               <Facebook className="h-5 w-5" />
             </a>
-            <a href="#" className="text-gray-300 hover:text-primary transition-colors">
+            <a href="https://www.youtube.com/@afrensicsSecurity" className="text-gray-300 hover:text-primary transition-colors">
               <Youtube className="h-5 w-5" />
             </a>
           </div>

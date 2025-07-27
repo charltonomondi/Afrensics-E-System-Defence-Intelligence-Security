@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Users, Target, Shield, Award, Globe, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Charlton from '@/assets/team/charlton.png';
-import deo from '@/assets/team/deo-gumba.jpg';
+import deo from '@/assets/team/deo-gumba.png';
+import Tj from '@/assets/team/Tj.png';
 
 const teamMembers = [
   {
@@ -22,14 +23,14 @@ const teamMembers = [
     image: deo,
   },
   {
-    name: "xxxxxx",
-    role: "Head of Penetration Testing",
-    description: "Certified Ethical Hacker with expertise in advanced persistent threats.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
+    name: "Tijani Tatu",
+    role: "Director",
+    description: "Software engineering, cybersecurity and certified data science & ML expert.",
+    image: Tj,
   },
   {
-    name: "xxxxxx",
-    role: "Technical Director",
+    name: "Winstone Were",
+    role: "Director",
     description: "Cloud security architect with extensive enterprise infrastructure experience.",
     image: ""
   }
@@ -139,7 +140,7 @@ const About = () => {
               </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Founded in 2015 by a team of cybersecurity professionals, AEDI Security was born 
+                  Founded in 2024 by a team of cybersecurity professionals, AEDI Security Ltd was born 
                   from a recognition that Kenyan businesses needed access to world-class cybersecurity 
                   expertise to compete in the global digital economy.
                 </p>
