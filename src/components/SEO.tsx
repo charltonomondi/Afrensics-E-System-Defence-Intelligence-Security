@@ -47,6 +47,9 @@ const SEO: React.FC<SEOProps> = ({
     updateMetaTag('description', description);
     updateMetaTag('keywords', keywords);
 
+    // Google Search Console verification
+    updateMetaTag('google-site-verification', 'PszM3UWXOJpQKdf_XA8adbiTg5YbHANMuhlWacXgQ64');
+
     // Open Graph tags
     updateMetaTag('og:title', title, true);
     updateMetaTag('og:description', description, true);
