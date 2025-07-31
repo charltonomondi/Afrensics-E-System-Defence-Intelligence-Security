@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import hacker from '@/assets/hacker.jpeg';
 import WhatsApp from '@/assets/Whatsapp.png';
 import cyber from '@/assets/cyber.png';
+import blogBanner from '@/assets/banner/blog.webp';
 
 const blogPosts = [
   {
@@ -125,7 +126,7 @@ const Blog = () => {
       <section
         className="py-20 bg-cover bg-center relative"
         style={{
-          backgroundImage: `url('/src/assets/banner/blog.webp')`,
+          backgroundImage: `url(${blogBanner})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>

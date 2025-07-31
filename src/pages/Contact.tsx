@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import emailjs from 'emailjs-com';
 import { useTranslation } from 'react-i18next';
 import { emailjsConfig, validateFormData, EmailTemplateParams } from '@/config/emailjs';
+import contactBanner from '@/assets/banner/contact.jpeg';
 import {
   sanitizeHtml,
   validateEmail,
@@ -201,7 +202,7 @@ const Contact = () => {
       <section
         className="py-20 bg-cover bg-center relative"
         style={{
-          backgroundImage: `url('/src/assets/banner/contact.jpeg')`,
+          backgroundImage: `url(${contactBanner})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>

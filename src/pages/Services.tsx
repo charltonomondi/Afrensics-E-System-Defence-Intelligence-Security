@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Shield, Search, Users, AlertTriangle, Cloud, GraduationCap, Database, Settings, FileText, Monitor, Lock, UserCheck, Smartphone, Code, Brain } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import servicesBanner from '@/assets/banner/services.jpg';
 
 const services = [
   {
@@ -148,7 +149,7 @@ const Services = () => {
       <section
         className="py-20 bg-cover bg-center relative"
         style={{
-          backgroundImage: `url('/src/assets/banner/services.jpg')`,
+          backgroundImage: `url(${servicesBanner})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>

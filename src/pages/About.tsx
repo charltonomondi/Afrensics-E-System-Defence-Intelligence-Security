@@ -11,6 +11,7 @@ import Charlton from '@/assets/team/charlton.png';
 import deo from '@/assets/team/deo-gumba.png';
 import Tj from '@/assets/team/Tj.png';
 import winstone from '@/assets/team/winstone.png';
+import aboutBanner from '@/assets/banner/about.jpg';
 
 const teamMembers = [
   {
@@ -79,7 +80,7 @@ const About = () => {
       <section
         className="py-20 bg-cover bg-center relative"
         style={{
-          backgroundImage: `url('/src/assets/banner/about.jpg')`,
+          backgroundImage: `url(${aboutBanner})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
