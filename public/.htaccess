@@ -1,13 +1,13 @@
-# AEDI Security - Comprehensive Security Configuration
-# Strong security implementations to protect against various attacks
+# AEDI Security - Balanced Security Configuration
+# Provides strong security without breaking website functionality
 
 # =====================================================
-# SECURITY HEADERS
+# BASIC SECURITY HEADERS
 # =====================================================
 
 <IfModule mod_headers.c>
     # Prevent clickjacking attacks
-    Header always set X-Frame-Options "DENY"
+    Header always set X-Frame-Options "SAMEORIGIN"
     
     # Prevent MIME type sniffing
     Header always set X-Content-Type-Options "nosniff"
@@ -15,132 +15,13 @@
     # Enable XSS protection
     Header always set X-XSS-Protection "1; mode=block"
     
-    # Strict Transport Security (HTTPS only)
-    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    
-    # Content Security Policy - Very strict
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.emailjs.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.emailjs.com https://www.google-analytics.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
-    
     # Referrer Policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    
-    # Permissions Policy (formerly Feature Policy)
-    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=()"
     
     # Remove server information
     Header always unset Server
     Header always unset X-Powered-By
-    
-    # Prevent caching of sensitive pages
-    <FilesMatch "\.(html|htm|php)$">
-        Header always set Cache-Control "no-cache, no-store, must-revalidate"
-        Header always set Pragma "no-cache"
-        Header always set Expires "0"
-    </FilesMatch>
-    
-    # Cache static assets
-    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
-        Header always set Cache-Control "public, max-age=31536000"
-    </FilesMatch>
 </IfModule>
-
-# =====================================================
-# BLOCK MALICIOUS REQUESTS
-# =====================================================
-
-# Block common attack patterns
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    
-    # Block SQL injection attempts
-    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
-    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
-    RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>|ê|"|;|\?|\*|=$).* [NC,OR]
-    RewriteCond %{QUERY_STRING} ^.*("|'|<|>|\|{|\}).* [NC,OR]
-    RewriteCond %{QUERY_STRING} ^.*(%0|%A|%B|%C|%D|%E|%F|127\.0).* [NC,OR]
-    RewriteCond %{QUERY_STRING} ^.*(globals|encode|localhost|loopback).* [NC,OR]
-    RewriteCond %{QUERY_STRING} ^.*(request|select|insert|union|declare).* [NC]
-    RewriteRule ^(.*)$ - [F,L]
-    
-    # Block XSS attempts
-    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
-    RewriteCond %{QUERY_STRING} javascript\: [NC,OR]
-    RewriteCond %{QUERY_STRING} vbscript\: [NC,OR]
-    RewriteCond %{QUERY_STRING} onload\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onunload\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onchange\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onsubmit\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onreset\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onselect\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onblur\( [NC,OR]
-    RewriteCond %{QUERY_STRING} onfocus\( [NC]
-    RewriteRule ^(.*)$ - [F,L]
-    
-    # Block file injection attempts
-    RewriteCond %{QUERY_STRING} \.\.\/ [NC,OR]
-    RewriteCond %{QUERY_STRING} boot\.ini [NC,OR]
-    RewriteCond %{QUERY_STRING} tag\= [NC,OR]
-    RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
-    RewriteCond %{QUERY_STRING} http\: [NC,OR]
-    RewriteCond %{QUERY_STRING} https\: [NC]
-    RewriteRule ^(.*)$ - [F,L]
-</IfModule>
-
-# =====================================================
-# BLOCK SUSPICIOUS USER AGENTS
-# =====================================================
-
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    
-    # Block malicious bots and scrapers
-    RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
-    RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget) [NC,OR]
-    RewriteCond %{HTTP_USER_AGENT} (libwww-perl|python|nikto|scan|java|winhttp|clshttp|loader) [NC,OR]
-    RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
-    RewriteCond %{HTTP_USER_AGENT} (Atomic_Email_Hunter|atSpider|autoemailspider|bwh3_user_agent|China_Local_Browse|ContactBot|ContentSmartz|DataCha0s|DBrowse|Demo_Bot|Digincore_bot|DIIbot|DISCo_Pump|DittoSpyder|Download_Demon|DownloadWonder|Drip|EasouSpider|eCatch|ecxi|EirGrabber|EmailCollector|EmailSiphon|EmailWolf|Express_WebPictures|ExtractorPro|EyeNetIE|FlashGet|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|Grafula|GT::WWW|heritrix|HMView|HTTP::Lite|HTTrack|ia_archiver|IDBot|id-search|id-search\.org|InterGET|InternetSeer\.com|IRLbot|JetCar|JOC_Web_Spider|larbin|LeechFTP|Mass_Downloader|MIDown_tool|Mister_PiX|NEWT|MSFrontPage|Navroad|NearSite|NetAnts|NetSpider|Net_Vampire|NetZIP|Octopus|Offline_Explorer|PageGrabber|Papa_Foto|pavuk|pcBrowser|PeoplePal|planetwork|psbot|purebot|pycurl|RealDownload|ReGet|Rippers_0|SeaMonkey$|sitecheck\.internetseer\.com|SiteSnagger|skygrid|SmartDownload|sucker|SuperBot|SuperHTTP|Surfbot|tAkeOut|Teleport_Pro|Toata_dragostea_mea_pentru_diavola|turnit|vikspider|VoidEYE|Web_Image_Collector|Web_Sucker|WebAuto|WebCopier|WebFetch|WebGo_IS|WebLeacher|WebReaper|WebSauger|Website_eXtractor|Website_Quester|WebStripper|WebWhacker|WebZIP|Widow|WWW-Mechanize|WWWOFFLE|Xaldon_WebSpider|Zeus) [NC]
-    RewriteRule ^(.*)$ - [F,L]
-</IfModule>
-
-# =====================================================
-# RATE LIMITING & DDOS PROTECTION
-# =====================================================
-
-<IfModule mod_evasive24.c>
-    DOSHashTableSize    2048
-    DOSPageCount        10
-    DOSSiteCount        50
-    DOSPageInterval     1
-    DOSSiteInterval     1
-    DOSBlockingPeriod   600
-</IfModule>
-
-# =====================================================
-# FILE ACCESS RESTRICTIONS
-# =====================================================
-
-# Deny access to sensitive files
-<FilesMatch "^\.">
-    Require all denied
-</FilesMatch>
-
-# Protect configuration files
-<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|config|sql)$">
-    Require all denied
-</FilesMatch>
-
-# Protect source code files
-<FilesMatch "\.(ts|tsx|jsx|json|md|yml|yaml)$">
-    Require all denied
-</FilesMatch>
-
-# =====================================================
-# DIRECTORY BROWSING
-# =====================================================
-
-# Disable directory browsing
-Options -Indexes
 
 # =====================================================
 # HTTPS REDIRECT
@@ -149,17 +30,44 @@ Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
-    # Force HTTPS
-    RewriteCond %{HTTPS} off
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    # Force HTTPS (only if you have SSL certificate)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     
-    # Remove www (optional - adjust based on your preference)
-    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+    # Handle React Router (SPA routing)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
 </IfModule>
 
 # =====================================================
-# COMPRESSION & PERFORMANCE
+# FILE ACCESS RESTRICTIONS
+# =====================================================
+
+# Protect sensitive files only
+<FilesMatch "^\.ht">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(log|sql|bak)$">
+    Require all denied
+</FilesMatch>
+
+# =====================================================
+# MIME TYPES
+# =====================================================
+
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType image/svg+xml .svg
+    AddType application/json .json
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+</IfModule>
+
+# =====================================================
+# COMPRESSION
 # =====================================================
 
 <IfModule mod_deflate.c>
@@ -172,14 +80,60 @@ Options -Indexes
     AddOutputFilterByType DEFLATE application/rss+xml
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
 </IfModule>
+
+# =====================================================
+# CACHING
+# =====================================================
+
+<IfModule mod_expires.c>
+    ExpiresActive on
+    
+    # Cache static assets for 1 year
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # Cache HTML for 1 hour
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# =====================================================
+# BASIC ATTACK PREVENTION
+# =====================================================
+
+<IfModule mod_rewrite.c>
+    # Block obvious SQL injection attempts
+    RewriteCond %{QUERY_STRING} (union.*select|insert.*into|delete.*from) [NC]
+    RewriteRule .* - [F,L]
+    
+    # Block obvious XSS attempts
+    RewriteCond %{QUERY_STRING} (<script|javascript:|vbscript:) [NC]
+    RewriteRule .* - [F,L]
+    
+    # Block file inclusion attempts
+    RewriteCond %{QUERY_STRING} (\.\.\/|boot\.ini|etc\/passwd) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# =====================================================
+# DIRECTORY BROWSING
+# =====================================================
+
+# Disable directory browsing
+Options -Indexes
 
 # =====================================================
 # ERROR PAGES
 # =====================================================
 
-ErrorDocument 400 /error.html
-ErrorDocument 401 /error.html
-ErrorDocument 403 /error.html
 ErrorDocument 404 /error.html
 ErrorDocument 500 /error.html

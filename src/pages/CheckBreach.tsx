@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { AlertTriangle, CheckCircle, Search, Shield, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import pwnedBanner from '@/assets/banner/pwned.jpg';
 
 const CheckBreach = () => {
   const { t } = useTranslation();
@@ -56,7 +57,7 @@ const CheckBreach = () => {
       <section
         className="py-20 bg-cover bg-center relative"
         style={{
-          backgroundImage: `url('/src/assets/banner/pwned.jpg')`,
+          backgroundImage: `url(${pwnedBanner})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
