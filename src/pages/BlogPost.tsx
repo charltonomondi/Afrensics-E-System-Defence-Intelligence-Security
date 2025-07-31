@@ -2,6 +2,13 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AppointmentBooking from "@/components/AppointmentBooking";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import { slugify } from "@/utils/slugify";
+import emailjs from 'emailjs-com';
+import { useToast } from '@/components/ui/use-toast';
+import { emailjsConfig } from '@/config/emailjs';
 import aediLogo from "@/assets/favicon_logo/aedi.jpeg";
 import WhatsApp from "@/assets/Whatsapp.png";
 import vblog1 from "@/assets/blogs/vblog1.jpeg";
@@ -17,12 +24,75 @@ import wblog2 from "@/assets/blogs/wblog2.png";
 function SubscribeSection() {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { toast } = useToast();
 
-    const handleSubscribe = (e: React.FormEvent) => {
+    const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (email.trim()) {
+
+        if (!email.trim()) {
+            toast({
+                title: "Email Required",
+                description: "Please enter your email address.",
+                variant: "destructive",
+                duration: 3000,
+            });
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            toast({
+                title: "Invalid Email",
+                description: "Please enter a valid email address.",
+                variant: "destructive",
+                duration: 3000,
+            });
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            // Initialize EmailJS
+            emailjs.init(emailjsConfig.publicKey);
+
+            // Send newsletter subscription email
+            await emailjs.send(
+                emailjsConfig.serviceId,
+                emailjsConfig.templateId,
+                {
+                    from_name: 'Newsletter Subscriber',
+                    from_email: email,
+                    phone: 'Not provided',
+                    company: 'Not provided',
+                    message: `Newsletter subscription request from: ${email}`,
+                    to_email: emailjsConfig.recipientEmail,
+                },
+                emailjsConfig.publicKey
+            );
+
+            toast({
+                title: "Successfully Subscribed! ✅",
+                description: "Thank you for subscribing to our newsletter. You'll receive updates about cybersecurity trends and insights.",
+                variant: "default",
+                duration: 5000,
+            });
+
             setSubscribed(true);
             setEmail("");
+        } catch (error) {
+            console.error('Newsletter subscription error:', error);
+
+            toast({
+                title: "Subscription Failed ❌",
+                description: "Something went wrong. Please try again or contact us directly at info@aedisecurity.com",
+                variant: "destructive",
+                duration: 5000,
+            });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -38,9 +108,10 @@ function SubscribeSection() {
             />
             <button
                 type="submit"
-                className="bg-primary text-white px-6 py-2 rounded hover:bg-primary/80 transition"
+                disabled={isSubmitting}
+                className="bg-primary text-white px-6 py-2 rounded hover:bg-primary/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                Subscribe
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </button>
             {subscribed && (
                 <div className="text-green-600 font-semibold mt-2">
@@ -313,10 +384,7 @@ const blogPosts = [
 					</ul>
 					<p className="mb-4">Afrensics Security offers all these remedies.</p>
 				
-				<div className="flex items-center mt-8">
-					<img src={aediLogo} alt="AEDI Logo" className="h-10 w-10 rounded mr-3" />
-					<span className="font-bold text-lg">Book an appointment with our professionals today.</span>
-				</div>
+				<AppointmentBooking />
 			</section>
 			</>
 		),
@@ -428,7 +496,7 @@ const blogPosts = [
 						height="400"
 						src="https://www.youtube.com/embed/PqGFhP9KiJs"
 						title="YouTube video player"
-						frameBorder="0"
+						style={{ border: 0 }}
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 						allowFullScreen
 						className="w-full max-w-xl mx-auto rounded-md shadow-md my-4"
@@ -546,10 +614,7 @@ const blogPosts = [
 					</div>
 				</section>
 
-				<div className="flex items-center mt-8">
-					<img src={aediLogo} alt="AEDI Logo" className="h-10 w-10 rounded mr-3" />
-					<span className="font-bold text-lg">Book an appointment with our professionals today.</span>
-				</div>
+				<AppointmentBooking />
 
 			</>
 		),
@@ -646,6 +711,7 @@ const blogPosts = [
 						</li>
 					</ul>
 				</section>
+				<AppointmentBooking />
 			</>
 		),
 	},
@@ -706,24 +772,24 @@ const blogPosts = [
 ];
 
 const BlogPost = () => {
-	const { id } = useParams();
-	const post = blogPosts.find((p) => p.id === id);
+	const { slug } = useParams();
+	const post = blogPosts.find((p) => slugify(p.title) === slug);
 
 	// Like button state, initialized from localStorage
 	const [likes, setLikes] = useState(0);
 
 	useEffect(() => {
 		// Load likes from localStorage for this blog post
-		const storedLikes = localStorage.getItem(`blogLikes_${id}`);
+		const storedLikes = localStorage.getItem(`blogLikes_${slug}`);
 		if (storedLikes) {
 			setLikes(parseInt(storedLikes, 10));
 		}
-	}, [id]);
+	}, [slug]);
 
 	const handleLike = () => {
 		const newLikes = likes + 1;
 		setLikes(newLikes);
-		localStorage.setItem(`blogLikes_${id}`, newLikes.toString());
+		localStorage.setItem(`blogLikes_${slug}`, newLikes.toString());
 	};
 
 	// Comment section state, persisted in localStorage
@@ -736,16 +802,16 @@ const BlogPost = () => {
 
 	// Load comments from localStorage on mount
 	useEffect(() => {
-		const storedComments = localStorage.getItem(`blogComments_${id}`);
+		const storedComments = localStorage.getItem(`blogComments_${slug}`);
 		if (storedComments) {
 			setComments(JSON.parse(storedComments));
 		}
-	}, [id]);
+	}, [slug]);
 
 	// Save comments to localStorage whenever they change
 	useEffect(() => {
-		localStorage.setItem(`blogComments_${id}`, JSON.stringify(comments));
-	}, [comments, id]);
+		localStorage.setItem(`blogComments_${slug}`, JSON.stringify(comments));
+	}, [comments, slug]);
 
 	const handleCommentSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -761,7 +827,7 @@ const BlogPost = () => {
 	};
 
 	// Related posts (excluding current)
-	const relatedPosts = blogPosts.filter((p) => p.id !== id);
+	const relatedPosts = blogPosts.filter((p) => slugify(p.title) !== slug);
 
 	if (!post) {
 		return (
@@ -867,7 +933,7 @@ const BlogPost = () => {
 										className="h-8 w-8 rounded mr-2 object-cover"
 									/>
 									<a
-										href={`/blog/${rp.id}`}
+										href={`/blog/${slugify(rp.title)}`}
 										className="text-primary hover:underline"
 									>
 										{rp.title}

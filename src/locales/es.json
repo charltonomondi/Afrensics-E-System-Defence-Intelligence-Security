@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "about": "Acerca de",
+    "blog": "Blog",
+    "checkBreach": "Verificar Brecha",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Protegiendo Tu Futuro Digital",
+    "subtitle": "La empresa líder en ciberseguridad de Kenia que brinda servicios de seguridad digital de clase mundial",
+    "cta": "Obtén Evaluación Gratuita de Seguridad",
+    "contact": "Contacta a Nuestros Expertos"
+  },
+  "about": {
+    "title": "Protegiendo Tu Futuro Digital",
+    "description": "AEDI Security Ltd es una empresa competente de ciberseguridad de Kenia, dedicada a proteger empresas de las amenazas digitales en evolución. Con nuestro equipo experto y soluciones de vanguardia, aseguramos que tu organización se mantenga segura en un mundo cada vez más conectado.",
+    "features": {
+      "monitoring": "Monitoreo de Seguridad 24/7",
+      "testing": "Pruebas de Penetración Expertas",
+      "auditing": "Auditoría de Cumplimiento",
+      "response": "Respuesta a Incidentes"
+    },
+    "stats": {
+      "clients": "Clientes Protegidos",
+      "success": "Tasa de Éxito",
+      "support": "Soporte Disponible",
+      "certified": "Certificado"
+    },
+    "cta": "Aprende Más Sobre Nosotros"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Soluciones integrales de ciberseguridad para empresas de todos los tamaños"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "¿Listo para hablar? Ponte en contacto hoy y descubre cómo podemos proteger tu negocio.",
+    "form": {
+      "name": "Nombre Completo",
+      "email": "Dirección de Email",
+      "phone": "Número de Teléfono",
+      "company": "Empresa",
+      "message": "Mensaje",
+      "send": "Enviar Mensaje"
+    },
+    "info": {
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Email",
+      "hours": "Horario Comercial"
+    }
+  },
+  "footer": {
+    "description": "La empresa premier de ciberseguridad de Kenia que brinda servicios de clase mundial para proteger empresas de amenazas digitales.",
+    "quickLinks": "Enlaces Rápidos",
+    "services": "Servicios",
+    "contact": "Información de Contacto",
+    "followUs": "Síguenos",
+    "rights": "Todos los derechos reservados."
+  },
+  "cta": {
+    "title": "¿Listo para Asegurar Tu Negocio?",
+    "subtitle": "Obtén una evaluación gratuita de ciberseguridad y descubre cómo podemos proteger tu organización",
+    "freeAssessment": "Evaluación Gratuita de Seguridad",
+    "contactExperts": "Contacta a Nuestros Expertos"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Soluciones integrales de ciberseguridad para empresas de todos los tamaños",
+    "penetrationTesting": {
+      "title": "Pruebas de Penetración",
+      "description": "Evaluaciones completas de seguridad para identificar vulnerabilidades en tus sistemas"
+    },
+    "vulnerabilityAssessment": {
+      "title": "Evaluación de Vulnerabilidades",
+      "description": "Evaluación sistemática de debilidades de seguridad en tu infraestructura"
+    },
+    "securityAuditing": {
+      "title": "Auditoría de Seguridad",
+      "description": "Examen exhaustivo de tus políticas y procedimientos de seguridad"
+    },
+    "incidentResponse": {
+      "title": "Respuesta a Incidentes",
+      "description": "Servicios de respuesta rápida y recuperación para violaciones de seguridad"
+    },
+    "securityTraining": {
+      "title": "Capacitación en Seguridad",
+      "description": "Programas educativos para empleados para crear conciencia de seguridad"
+    },
+    "complianceAuditing": {
+      "title": "Auditoría de Cumplimiento",
+      "description": "Asegura que tu organización cumpla con los estándares de seguridad de la industria"
+    },
+    "cloudSecurity": {
+      "title": "Seguridad en la Nube",
+      "description": "Protege tu infraestructura en la nube y datos"
+    },
+    "networkSecurity": {
+      "title": "Seguridad de Red",
+      "description": "Asegura tu infraestructura de red contra amenazas"
+    },
+    "dataProtection": {
+      "title": "Protección de Datos",
+      "description": "Protege tus datos sensibles y asegura la privacidad"
+    },
+    "securityConsulting": {
+      "title": "Consultoría de Seguridad",
+      "description": "Asesoramiento experto sobre estrategia e implementación de ciberseguridad"
+    },
+    "mobileSecurity": {
+      "title": "Seguridad Móvil",
+      "description": "Protege dispositivos móviles y aplicaciones"
+    },
+    "webApplicationSecurity": {
+      "title": "Seguridad de Aplicaciones Web",
+      "description": "Asegura tus aplicaciones web contra ciberamenazas"
+    },
+    "aiSecurity": {
+      "title": "Seguridad de IA",
+      "description": "Protege sistemas de IA y modelos de aprendizaje automático"
+    },
+    "learnMore": "Aprende Más",
+    "getStarted": "Comenzar"
+  },
+  "blog": {
+    "title": "Últimas Publicaciones del Blog",
+    "subtitle": "Mantente actualizado con las últimas tendencias e insights de ciberseguridad",
+    "readMore": "Leer Más",
+    "latestPosts": "Últimas Publicaciones",
+    "categories": "Categorías",
+    "searchPlaceholder": "Buscar artículos...",
+    "noResults": "No se encontraron artículos",
+    "backToBlog": "Volver al Blog"
+  },
+  "aboutPage": {
+    "title": "Acerca de AEDI Security",
+    "subtitle": "Tu socio de confianza en ciberseguridad en Kenia",
+    "ourMission": "Nuestra Misión",
+    "missionText": "Proporcionar soluciones de ciberseguridad de clase mundial que protejan a las empresas de las amenazas digitales en evolución mientras permiten una transformación digital segura.",
+    "ourVision": "Nuestra Visión",
+    "visionText": "Ser la empresa líder en ciberseguridad en África Oriental, estableciendo el estándar de excelencia en servicios de seguridad digital.",
+    "ourValues": "Nuestros Valores",
+    "excellence": "Excelencia",
+    "excellenceText": "Nos esforzamos por los más altos estándares en todo lo que hacemos",
+    "integrity": "Integridad",
+    "integrityText": "Conducimos negocios con honestidad y transparencia",
+    "innovation": "Innovación",
+    "innovationText": "Adoptamos tecnologías y metodologías de vanguardia",
+    "teamTitle": "Conoce a Nuestro Equipo",
+    "teamSubtitle": "Profesionales experimentados dedicados a tu seguridad"
+  },
+  "checkBreach": {
+    "title": "Verificar Violación de Datos",
+    "subtitle": "Descubre si tu email ha sido comprometido en una violación de datos",
+    "emailPlaceholder": "Ingresa tu dirección de email",
+    "checkButton": "Verificar Violaciones",
+    "checking": "Verificando...",
+    "safeMessage": "¡Buenas noticias! Tu email no fue encontrado en ninguna violación de datos conocida.",
+    "breachFound": "Tu email fue encontrado en las siguientes violaciones de datos:",
+    "recommendations": "Recomendaciones de Seguridad",
+    "changePassword": "Cambia tus contraseñas inmediatamente",
+    "enableTwoFactor": "Habilita la autenticación de dos factores",
+    "monitorAccounts": "Monitorea tus cuentas regularmente",
+    "contactUs": "Contáctanos para una evaluación completa de seguridad"
+  }
+}

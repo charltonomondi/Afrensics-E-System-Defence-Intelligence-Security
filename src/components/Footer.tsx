@@ -1,7 +1,10 @@
 import aediLogo from '@/assets/favicon_logo/aedi.jpeg';
 import { Mail, Phone, MapPin, Twitter, Linkedin, Facebook, Youtube } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <div
       className="text-white bg-cover bg-center relative"
@@ -18,8 +21,7 @@ const Footer = () => {
               <span className="font-bold text-xl">AEDI Security Ltd</span>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
-              Professional cybersecurity firm in Kenya, providing comprehensive security solutions 
-              to protect businesses from evolving digital threats.
+              {t('footer.description')}
             </p>
             <div className="space-y-2">
               <div className="flex items-center">
@@ -39,7 +41,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               <li><a href="/services" className="text-gray-300 hover:text-primary transition-colors">Services</a></li>
               <li><a href="/about" className="text-gray-300 hover:text-primary transition-colors">About Us</a></li>
@@ -51,7 +53,7 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Services</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('footer.services')}</h3>
             <ul className="space-y-2">
               <li><a href="/services#pentest" className="text-gray-300 hover:text-primary transition-colors">Penetration Testing</a></li>
               <li><a href="/services#assessment" className="text-gray-300 hover:text-primary transition-colors">Vulnerability Assessment</a></li>
@@ -67,12 +69,20 @@ const Footer = () => {
 
         <div className="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-300 text-sm">
-            © 2024 AEDI Security Ltd. All rights reserved.
+            © 2024 AEDI Security Ltd. {t('footer.rights')}
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="https://x.com/afrensics" className="text-gray-300 hover:text-primary transition-colors">
               <Twitter className="h-5 w-5" />
             </a>
+            <WhatsAppButton
+              size="md"
+              variant="icon"
+              className="text-gray-300 hover:text-green-400"
+              phoneNumber="254743141928"
+              message="Hi! I'm interested in AEDI Security's cybersecurity services. Can you help me?"
+            />
+            
             <a href="https://www.linkedin.com/company/aedisecurity/" className="text-gray-300 hover:text-primary transition-colors">
               <Linkedin className="h-5 w-5" />
             </a>

@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Nyumbani",
+    "services": "Huduma",
+    "about": "Kuhusu Sisi",
+    "blog": "Blogu",
+    "checkBreach": "Angalia Uvunjaji",
+    "contact": "Wasiliana"
+  },
+  "hero": {
+    "title": "Kulinda Maisha Yako ya Kidijitali",
+    "subtitle": "Shirika la usalama wa mtandao nchini Kenya linalojulikana kwa huduma za hali ya juu za usalama wa kidijitali",
+    "cta": "Pata Tathmini ya Bure ya Usalama",
+    "contact": "Wasiliana na Wataalamu Wetu"
+  },
+  "about": {
+    "title": "Kulinda Mustakabali Wako wa Kidijitali",
+    "description": "AEDI Security Ltd ni shirika la usalama wa mtandao lenye ujuzi nchini Kenya, linalojitoa kulinda biashara kutokana na vitisho vya kidijitali vinavyobadilika. Kwa timu yetu ya wataalamu na suluhisho za kisasa, tunahakikisha shirika lako linabaki salama katika ulimwengu unaozidi kuunganishwa.",
+    "features": {
+      "monitoring": "Ufuatiliaji wa Usalama wa Saa 24/7",
+      "testing": "Upimaji wa Uingiliaji wa Kitaalamu",
+      "auditing": "Ukaguzi wa Kufuata Sheria",
+      "response": "Mwitikio wa Tukio"
+    },
+    "stats": {
+      "clients": "Wateja Waliolindwa",
+      "success": "Kiwango cha Mafanikio",
+      "support": "Msaada Unapatikana",
+      "certified": "Hati ya Uthibitisho"
+    },
+    "cta": "Jifunze Zaidi Kuhusu Sisi"
+  },
+  "services": {
+    "title": "Huduma Zetu",
+    "subtitle": "Suluhisho kamili za usalama wa kidijitali kwa biashara za kila ukubwa"
+  },
+  "contact": {
+    "title": "Wasiliana Nasi",
+    "subtitle": "Tayari kuongea? Wasiliana nasi leo na ujue jinsi tunavyoweza kulinda biashara yako.",
+    "form": {
+      "name": "Jina Kamili",
+      "email": "Barua Pepe",
+      "phone": "Nambari ya Simu",
+      "company": "Kampuni",
+      "message": "Ujumbe",
+      "send": "Tuma Ujumbe"
+    },
+    "info": {
+      "address": "Anuani",
+      "phone": "Simu",
+      "email": "Barua Pepe",
+      "hours": "Masaa ya Kazi"
+    }
+  },
+  "footer": {
+    "description": "Shirika la kwanza la usalama wa mtandao nchini Kenya linalotoa huduma za hali ya juu za kulinda biashara kutokana na vitisho vya kidijitali.",
+    "quickLinks": "Viungo vya Haraka",
+    "services": "Huduma",
+    "contact": "Maelezo ya Mawasiliano",
+    "followUs": "Tufuate",
+    "rights": "Haki zote zimehifadhiwa."
+  },
+  "cta": {
+    "title": "Tayari Kulinda Biashara Yako?",
+    "subtitle": "Pata tathmini ya bure ya usalama wa mtandao na ujue jinsi tunavyoweza kulinda shirika lako",
+    "freeAssessment": "Tathmini ya Bure ya Usalama",
+    "contactExperts": "Wasiliana na Wataalamu Wetu"
+  },
+  "services": {
+    "title": "Huduma Zetu",
+    "subtitle": "Suluhisho kamili za usalama wa kidijitali kwa biashara za kila ukubwa",
+    "penetrationTesting": {
+      "title": "Upimaji wa Uingiliaji",
+      "description": "Tathmini kamili za usalama kutambua udhaifu katika mifumo yako"
+    },
+    "vulnerabilityAssessment": {
+      "title": "Tathmini ya Udhaifu",
+      "description": "Tathmini ya kimfumo ya udhaifu wa usalama katika miundombinu yako"
+    },
+    "securityAuditing": {
+      "title": "Ukaguzi wa Usalama",
+      "description": "Uchunguzi wa kina wa sera na taratibu zako za usalama"
+    },
+    "incidentResponse": {
+      "title": "Mwitikio wa Tukio",
+      "description": "Huduma za mwitikio wa haraka na urejeshaji kwa uvunjaji wa usalama"
+    },
+    "securityTraining": {
+      "title": "Mafunzo ya Usalama",
+      "description": "Programu za elimu kwa wafanyakazi kujenga uelewa wa usalama"
+    },
+    "complianceAuditing": {
+      "title": "Ukaguzi wa Kufuata Sheria",
+      "description": "Hakikisha shirika lako linakidhi viwango vya usalama vya sekta"
+    },
+    "cloudSecurity": {
+      "title": "Usalama wa Wingu",
+      "description": "Linda miundombinu yako ya wingu na data"
+    },
+    "networkSecurity": {
+      "title": "Usalama wa Mtandao",
+      "description": "Linda miundombinu yako ya mtandao dhidi ya vitisho"
+    },
+    "dataProtection": {
+      "title": "Ulinzi wa Data",
+      "description": "Linda data yako nyeti na uhakikishe faragha"
+    },
+    "securityConsulting": {
+      "title": "Ushauri wa Usalama",
+      "description": "Ushauri wa kitaalamu kuhusu mkakati na utekelezaji wa usalama wa mtandao"
+    },
+    "mobileSecurity": {
+      "title": "Usalama wa Simu za Mkononi",
+      "description": "Linda vifaa vya simu za mkononi na programu"
+    },
+    "webApplicationSecurity": {
+      "title": "Usalama wa Programu za Wavuti",
+      "description": "Linda programu zako za wavuti dhidi ya vitisho vya mtandao"
+    },
+    "aiSecurity": {
+      "title": "Usalama wa AI",
+      "description": "Linda mifumo ya AI na miundo ya kujifunza kwa mashine"
+    },
+    "learnMore": "Jifunze Zaidi",
+    "getStarted": "Anza"
+  },
+  "blog": {
+    "title": "Machapisho ya Hivi Karibuni ya Blogu",
+    "subtitle": "Baki umejulishwa na mienendo ya hivi karibuni na maarifa ya usalama wa mtandao",
+    "readMore": "Soma Zaidi",
+    "latestPosts": "Machapisho ya Hivi Karibuni",
+    "categories": "Makundi",
+    "searchPlaceholder": "Tafuta makala...",
+    "noResults": "Hakuna makala zilizopatikana",
+    "backToBlog": "Rudi kwenye Blogu"
+  },
+  "aboutPage": {
+    "title": "Kuhusu AEDI Security",
+    "subtitle": "Mshirika wako wa kuaminika wa usalama wa mtandao nchini Kenya",
+    "ourMission": "Dhamira Yetu",
+    "missionText": "Kutoa suluhisho za usalama wa mtandao za kiwango cha kimataifa zinazolinda biashara kutokana na vitisho vya kidijitali vinavyobadilika huku zikiwezesha mabadiliko salama ya kidijitali.",
+    "ourVision": "Maono Yetu",
+    "visionText": "Kuwa shirika la kwanza la usalama wa mtandao Afrika Mashariki, kuweka kiwango cha ubora katika huduma za usalama wa kidijitali.",
+    "ourValues": "Maadili Yetu",
+    "excellence": "Ubora",
+    "excellenceText": "Tunajitahidi kupata viwango vya juu zaidi katika kila kitu tunachofanya",
+    "integrity": "Uongozi",
+    "integrityText": "Tunafanya biashara kwa uaminifu na uwazi",
+    "innovation": "Uvumbuzi",
+    "innovationText": "Tunakubali teknolojia na mbinu za kisasa",
+    "teamTitle": "Kutana na Timu Yetu",
+    "teamSubtitle": "Wataalamu wenye uzoefu waliojitolea kwa usalama wako"
+  },
+  "checkBreach": {
+    "title": "Angalia Uvunjaji wa Data",
+    "subtitle": "Jua kama barua pepe yako imeathiriwa katika uvunjaji wa data",
+    "emailPlaceholder": "Ingiza anwani yako ya barua pepe",
+    "checkButton": "Angalia Uvunjaji",
+    "checking": "Inaangalia...",
+    "safeMessage": "Habari njema! Barua pepe yako haikupatikana katika uvunjaji wowote wa data unaojulikana.",
+    "breachFound": "Barua pepe yako imepatikana katika uvunjaji ufuatao wa data:",
+    "recommendations": "Mapendekezo ya Usalama",
+    "changePassword": "Badilisha manenosiri yako mara moja",
+    "enableTwoFactor": "Washa uthibitishaji wa hatua mbili",
+    "monitorAccounts": "Fuatilia akaunti zako mara kwa mara",
+    "contactUs": "Wasiliana nasi kwa tathmini kamili ya usalama"
+  }
+}

@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import WhatsAppFloat from '@/components/WhatsAppFloat';
+// import WhatsAppFloat from '@/components/WhatsAppFloat';
+import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AlertTriangle, CheckCircle, Search, Shield, Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const CheckBreach = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -41,6 +44,12 @@ const CheckBreach = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Check Data Breach | Have I Been Pwned | AEDI Security Kenya"
+        description="Check if your email has been compromised in a data breach. Free breach checking tool by AEDI Security. Protect yourself from cyber threats and data breaches."
+        keywords="Data Breach Check, Have I Been Pwned, Email Breach Check, Cybersecurity Tool, Data Breach Detection, Email Security, AEDI Security Tools, Breach Monitoring, Cyber Threats"
+        url="https://aedisecurity.com/check-breach"
+      />
       <Navigation />
       
       {/* Hero Section */}
@@ -53,11 +62,10 @@ const CheckBreach = () => {
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Have I Been Pwned?
+            {t('checkBreach.title')}
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Check if your email address has been compromised in a data breach.
-            Knowledge is the first step to protecting yourself online.
+            {t('checkBreach.subtitle')}
           </p>
         </div>
       </section>
@@ -242,7 +250,7 @@ const CheckBreach = () => {
       </section>
 
       <Footer />
-      <WhatsAppFloat />
+      {/* <WhatsAppFloat /> */}
     </div>
   );
 };

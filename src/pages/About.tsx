@@ -1,18 +1,21 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import WhatsAppFloat from '@/components/WhatsAppFloat';
+// import WhatsAppFloat from '@/components/WhatsAppFloat';
+import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Target, Shield, Award, Globe, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Charlton from '@/assets/team/charlton.png';
 import deo from '@/assets/team/deo-gumba.png';
 import Tj from '@/assets/team/Tj.png';
+import winstone from '@/assets/team/winstone.png';
 
 const teamMembers = [
   {
     name: "Charlton O. Omondi",
-    role: "Director",
+    role: "Director - Penetration Tester",
     description: "Certified Software Engineer and Cybersecurity Penetration Tester with hands-on expertise in Burp Suite, OWASP methodologies, and Linux-based ethical hacking tools.",
     image: Charlton,
   },
@@ -24,15 +27,15 @@ const teamMembers = [
   },
   {
     name: "Tijani Tatu",
-    role: "Director",
+    role: "Director - ML Expert",
     description: "Software engineering, cybersecurity and certified data science & ML expert.",
     image: Tj,
   },
   {
     name: "Winstone Were",
-    role: "Director",
-    description: "Cloud security architect with extensive enterprise infrastructure experience.",
-    image: ""
+    role: "Director - Software Engineer",
+    description: "Software developer specializing in cross-platform app development using React Native.",
+    image: winstone,
   }
 ];
 
@@ -60,8 +63,16 @@ const values = [
 ];
 
 const About = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="About AEDI Security | Afrensics E-System Defence & Intelligence Security Ltd"
+        description="Learn about AEDI Security Ltd, Kenya's premier cybersecurity firm. Our expert team provides penetration testing, vulnerability assessment, incident response, and cybersecurity research services across East Africa."
+        keywords="About AEDI Security, Afrensics E-System Defence and Intelligence Security, Cybersecurity Company Kenya, Security Team, Penetration Testing Experts, Cybersecurity Professionals, Kenya Security Firm, East Africa Cybersecurity"
+        url="https://aedisecurity.com/about"
+      />
       <Navigation />
       
       {/* Hero Section */}
@@ -266,7 +277,7 @@ const About = () => {
       </section>
 
       <Footer />
-      <WhatsAppFloat />
+      {/* <WhatsAppFloat /> */}
     </div>
   );
 };

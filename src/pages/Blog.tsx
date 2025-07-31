@@ -1,11 +1,15 @@
+import { useState, useMemo } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import WhatsAppFloat from '@/components/WhatsAppFloat';
+// import WhatsAppFloat from '@/components/WhatsAppFloat';
+import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
+import { slugify } from "@/utils/slugify";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, User, ArrowRight, Search, Filter } from 'lucide-react';
+import { Calendar, User, ArrowRight, Search, Filter, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import hacker from '@/assets/hacker.jpeg';
 import WhatsApp from '@/assets/Whatsapp.png';
 import cyber from '@/assets/cyber.png';
@@ -71,8 +75,50 @@ const blogPosts = [
 const categories = ["All", "Threats", "Tips", "Trends", "Breaches", "Updates"];
 
 const Blog = () => {
+  const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Filter and search blog posts
+  const filteredPosts = useMemo(() => {
+    let filtered = blogPosts;
+
+    // Filter by category
+    if (selectedCategory !== 'All') {
+      filtered = filtered.filter(post => post.category === selectedCategory);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(post =>
+        post.title.toLowerCase().includes(query) ||
+        post.excerpt.toLowerCase().includes(query) ||
+        post.author.toLowerCase().includes(query) ||
+        post.category.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  }, [searchQuery, selectedCategory]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Search is handled by the useMemo hook above
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Cybersecurity Blog | Latest Security News & Insights | AEDI Security"
+        description="Stay updated with the latest cybersecurity trends, threats, and insights from AEDI Security's expert team. Read about penetration testing, vulnerability research, and security best practices."
+        keywords="Cybersecurity Blog, Security News, Cyber Threats, Penetration Testing Blog, Vulnerability Research, Security Insights, AEDI Blog, Cybersecurity Trends, Security Best Practices, Incident Response News"
+        url="https://aedisecurity.com/blog"
+      />
       <Navigation />
       
       {/* Hero Section */}
@@ -103,7 +149,7 @@ const Blog = () => {
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Featured Post */}
-              {blogPosts.filter(post => post.featured).map(post => (
+              {filteredPosts.filter(post => post.featured).map(post => (
                 <Card key={post.id} className="mb-12 card-gradient shadow-hero overflow-hidden">
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative">
@@ -131,7 +177,7 @@ const Blog = () => {
                           <User className="h-4 w-4 mr-1" />
                           <span className="text-sm text-muted-foreground">{post.author}</span>
                         </div>
-                        <Link to={`/blog/${post.id}`}>
+                        <Link to={`/blog/${slugify(post.title)}`}>
                           <Button variant="outline" size="sm">
                             Read More <ArrowRight className="h-4 w-4 ml-1" />
                           </Button>
@@ -144,7 +190,20 @@ const Blog = () => {
 
               {/* Regular Posts */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {blogPosts.filter(post => !post.featured).map(post => (
+                {filteredPosts.filter(post => !post.featured).length === 0 && searchQuery ? (
+                  <div className="col-span-2 text-center py-12">
+                    <Search className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-600 mb-2">No articles found</h3>
+                    <p className="text-gray-500 mb-4">
+                      No articles match your search for "{searchQuery}". Try different keywords or browse all articles.
+                    </p>
+                    <Button onClick={clearSearch} variant="outline">
+                      <X className="h-4 w-4 mr-2" />
+                      Clear Search
+                    </Button>
+                  </div>
+                ) : (
+                  filteredPosts.filter(post => !post.featured).map(post => (
                   <Card key={post.id} className="card-gradient shadow-card hover:shadow-hero transition-all duration-300 overflow-hidden">
                     <div className="relative">
                       <img 
@@ -174,7 +233,7 @@ const Blog = () => {
                           <User className="h-4 w-4 mr-1" />
                           <span className="text-sm text-muted-foreground">{post.author}</span>
                         </div>
-                        <Link to={`/blog/${post.id}`}>
+                        <Link to={`/blog/${slugify(post.title)}`}>
                           <Button variant="outline" size="sm">
                             Read More
                           </Button>
@@ -182,7 +241,8 @@ const Blog = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  ))
+                )}
               </div>
 
               {/* Pagination */}
@@ -208,16 +268,35 @@ const Blog = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex">
-                    <input 
-                      type="text" 
-                      placeholder="Search..." 
-                      className="flex-1 px-3 py-2 border border-input rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                    <Button size="sm" className="rounded-l-none">
-                      <Search className="h-4 w-4" />
+                  <form onSubmit={handleSearch} className="space-y-3">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by title, keywords, author..."
+                        className="w-full px-3 py-2 pr-10 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      {searchQuery && (
+                        <button
+                          type="button"
+                          onClick={clearSearch}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                    <Button type="submit" size="sm" className="w-full">
+                      <Search className="h-4 w-4 mr-2" />
+                      Search Articles
                     </Button>
-                  </div>
+                    {searchQuery && (
+                      <div className="text-sm text-muted-foreground">
+                        {filteredPosts.length} result{filteredPosts.length !== 1 ? 's' : ''} found for "{searchQuery}"
+                      </div>
+                    )}
+                  </form>
                 </CardContent>
               </Card>
 
@@ -232,11 +311,21 @@ const Blog = () => {
                 <CardContent>
                   <div className="space-y-2">
                     {categories.map(category => (
-                      <button 
+                      <button
                         key={category}
-                        className="block w-full text-left px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+                        onClick={() => setSelectedCategory(category)}
+                        className={`block w-full text-left px-3 py-2 rounded-md transition-colors ${
+                          selectedCategory === category
+                            ? 'bg-primary text-primary-foreground'
+                            : 'hover:bg-accent hover:text-accent-foreground'
+                        }`}
                       >
                         {category}
+                        {category !== 'All' && (
+                          <span className="float-right text-sm opacity-70">
+                            {blogPosts.filter(post => post.category === category).length}
+                          </span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -250,7 +339,7 @@ const Blog = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {blogPosts.slice(0, 3).map(post => (
+                    {filteredPosts.slice(0, 3).map(post => (
                       <div key={post.id} className="flex space-x-3">
                         <img 
                           src={post.image} 
@@ -272,7 +361,7 @@ const Blog = () => {
       </section>
 
       <Footer />
-      <WhatsAppFloat />
+      {/* <WhatsAppFloat /> */}
     </div>
   );
 };

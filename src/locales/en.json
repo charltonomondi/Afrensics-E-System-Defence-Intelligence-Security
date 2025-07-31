@@ -1,0 +1,164 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "blog": "Blog",
+    "checkBreach": "Check Breach",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Protecting Your Digital Future",
+    "subtitle": "Kenya's leading cybersecurity firm providing world-class digital security services",
+    "cta": "Get Free Security Assessment",
+    "contact": "Contact Our Experts"
+  },
+  "about": {
+    "title": "Protecting Your Digital Future",
+    "description": "AEDI Security Ltd is Kenya's proficient cybersecurity firm, dedicated to protecting businesses from evolving digital threats. With our expert team and cutting-edge solutions, we ensure your organization stays secure in an increasingly connected world.",
+    "features": {
+      "monitoring": "24/7 Security Monitoring",
+      "testing": "Expert Penetration Testing",
+      "auditing": "Compliance Auditing",
+      "response": "Incident Response"
+    },
+    "stats": {
+      "clients": "Clients Protected",
+      "success": "Success Rate",
+      "support": "Support Available",
+      "certified": "Certified"
+    },
+    "cta": "Learn More About Us"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Ready to talk? Get in touch today and discover how we can protect your business.",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "company": "Company",
+      "message": "Message",
+      "send": "Send Message"
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Business Hours"
+    }
+  },
+  "footer": {
+    "description": "Kenya's premier cybersecurity firm providing world-class services to protect businesses from digital threats.",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "contact": "Contact Info",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved."
+  },
+  "cta": {
+    "title": "Ready to Secure Your Business?",
+    "subtitle": "Get a free cybersecurity assessment and discover how we can protect your organization",
+    "freeAssessment": "Free Security Assessment",
+    "contactExperts": "Contact Our Experts"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Comprehensive cybersecurity solutions for businesses of all sizes",
+    "penetrationTesting": {
+      "title": "Penetration Testing",
+      "description": "Comprehensive security assessments to identify vulnerabilities in your systems"
+    },
+    "vulnerabilityAssessment": {
+      "title": "Vulnerability Assessment",
+      "description": "Systematic evaluation of security weaknesses in your infrastructure"
+    },
+    "securityAuditing": {
+      "title": "Security Auditing",
+      "description": "Thorough examination of your security policies and procedures"
+    },
+    "incidentResponse": {
+      "title": "Incident Response",
+      "description": "Rapid response and recovery services for security breaches"
+    },
+    "securityTraining": {
+      "title": "Security Training",
+      "description": "Employee education programs to build security awareness"
+    },
+    "complianceAuditing": {
+      "title": "Compliance Auditing",
+      "description": "Ensure your organization meets industry security standards"
+    },
+    "cloudSecurity": {
+      "title": "Cloud Security",
+      "description": "Protect your cloud infrastructure and data"
+    },
+    "networkSecurity": {
+      "title": "Network Security",
+      "description": "Secure your network infrastructure against threats"
+    },
+    "dataProtection": {
+      "title": "Data Protection",
+      "description": "Safeguard your sensitive data and ensure privacy"
+    },
+    "securityConsulting": {
+      "title": "Security Consulting",
+      "description": "Expert advice on cybersecurity strategy and implementation"
+    },
+    "mobileSecurity": {
+      "title": "Mobile Security",
+      "description": "Protect mobile devices and applications"
+    },
+    "webApplicationSecurity": {
+      "title": "Web Application Security",
+      "description": "Secure your web applications against cyber threats"
+    },
+    "aiSecurity": {
+      "title": "AI Security",
+      "description": "Protect AI systems and machine learning models"
+    },
+    "learnMore": "Learn More",
+    "getStarted": "Get Started"
+  },
+  "blog": {
+    "title": "Latest Blog Posts",
+    "subtitle": "Stay updated with the latest cybersecurity trends and insights",
+    "readMore": "Read More",
+    "latestPosts": "Latest Posts",
+    "categories": "Categories",
+    "searchPlaceholder": "Search articles...",
+    "noResults": "No articles found",
+    "backToBlog": "Back to Blog"
+  },
+  "aboutPage": {
+    "title": "About AEDI Security",
+    "subtitle": "Your trusted cybersecurity partner in Kenya",
+    "ourMission": "Our Mission",
+    "missionText": "To provide world-class cybersecurity solutions that protect businesses from evolving digital threats while enabling secure digital transformation.",
+    "ourVision": "Our Vision",
+    "visionText": "To be the leading cybersecurity firm in East Africa, setting the standard for excellence in digital security services.",
+    "ourValues": "Our Values",
+    "excellence": "Excellence",
+    "excellenceText": "We strive for the highest standards in everything we do",
+    "integrity": "Integrity",
+    "integrityText": "We conduct business with honesty and transparency",
+    "innovation": "Innovation",
+    "innovationText": "We embrace cutting-edge technologies and methodologies",
+    "teamTitle": "Meet Our Team",
+    "teamSubtitle": "Experienced professionals dedicated to your security"
+  },
+  "checkBreach": {
+    "title": "Check Data Breach",
+    "subtitle": "Find out if your email has been compromised in a data breach",
+    "emailPlaceholder": "Enter your email address",
+    "checkButton": "Check for Breaches",
+    "checking": "Checking...",
+    "safeMessage": "Good news! Your email was not found in any known data breaches.",
+    "breachFound": "Your email was found in the following data breaches:",
+    "recommendations": "Security Recommendations",
+    "changePassword": "Change your passwords immediately",
+    "enableTwoFactor": "Enable two-factor authentication",
+    "monitorAccounts": "Monitor your accounts regularly",
+    "contactUs": "Contact us for a comprehensive security assessment"
+  }
+}

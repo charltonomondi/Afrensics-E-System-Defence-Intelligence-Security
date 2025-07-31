@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "services": "Dienstleistungen",
+    "about": "Über uns",
+    "blog": "Blog",
+    "checkBreach": "Datenleck prüfen",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "title": "Schutz Ihrer digitalen Zukunft",
+    "subtitle": "Kenias führendes Cybersicherheitsunternehmen mit erstklassigen digitalen Sicherheitsdiensten",
+    "cta": "Kostenlose Sicherheitsbewertung erhalten",
+    "contact": "Kontaktieren Sie unsere Experten"
+  },
+  "about": {
+    "title": "Schutz Ihrer digitalen Zukunft",
+    "description": "AEDI Security Ltd ist Kenias kompetentes Cybersicherheitsunternehmen, das sich dem Schutz von Unternehmen vor sich entwickelnden digitalen Bedrohungen widmet. Mit unserem Expertenteam und modernsten Lösungen stellen wir sicher, dass Ihre Organisation in einer zunehmend vernetzten Welt sicher bleibt.",
+    "features": {
+      "monitoring": "24/7 Sicherheitsüberwachung",
+      "testing": "Experten-Penetrationstests",
+      "auditing": "Compliance-Auditing",
+      "response": "Incident Response"
+    },
+    "stats": {
+      "clients": "Geschützte Kunden",
+      "success": "Erfolgsrate",
+      "support": "Support verfügbar",
+      "certified": "Zertifiziert"
+    },
+    "cta": "Mehr über uns erfahren"
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Bereit zu sprechen? Kontaktieren Sie uns heute und erfahren Sie, wie wir Ihr Unternehmen schützen können.",
+    "form": {
+      "name": "Vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "company": "Unternehmen",
+      "message": "Nachricht",
+      "send": "Nachricht senden"
+    },
+    "info": {
+      "address": "Adresse",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "hours": "Geschäftszeiten"
+    }
+  },
+  "footer": {
+    "description": "Kenias führendes Cybersicherheitsunternehmen mit erstklassigen Dienstleistungen zum Schutz von Unternehmen vor digitalen Bedrohungen.",
+    "quickLinks": "Schnelllinks",
+    "services": "Dienstleistungen",
+    "contact": "Kontaktinformationen",
+    "followUs": "Folgen Sie uns",
+    "rights": "Alle Rechte vorbehalten."
+  },
+  "cta": {
+    "title": "Bereit, Ihr Unternehmen zu sichern?",
+    "subtitle": "Erhalten Sie eine kostenlose Cybersicherheitsbewertung und erfahren Sie, wie wir Ihre Organisation schützen können",
+    "freeAssessment": "Kostenlose Sicherheitsbewertung",
+    "contactExperts": "Kontaktieren Sie unsere Experten"
+  }
+}

@@ -1,10 +1,12 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import WhatsAppFloat from '@/components/WhatsAppFloat';
+// import WhatsAppFloat from '@/components/WhatsAppFloat';
+import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, Search, Users, AlertTriangle, Cloud, GraduationCap, Database, Settings, FileText, Monitor, Lock, UserCheck, Smartphone, Code, Brain } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const services = [
   {
@@ -130,8 +132,16 @@ const services = [
 ];
 
 const Services = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Cybersecurity Services | Penetration Testing | AEDI Security Kenya"
+        description="Professional cybersecurity services in Kenya. Penetration testing, vulnerability assessment, incident response, security auditing, and cybersecurity research. Expert security consulting from AEDI Security Ltd."
+        keywords="Cybersecurity Services Kenya, Penetration Testing, Vulnerability Assessment, Incident Response, Security Auditing, Cybersecurity Research, Software Development, Machine Learning Security, Ethical Hacking, Security Consulting, AEDI Security, Afrensics, Network Security, Web Application Security, Mobile Security, Cloud Security"
+        url="https://aedisecurity.com/services"
+      />
       <Navigation />
       
       {/* Hero Section */}
@@ -144,11 +154,10 @@ const Services = () => {
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            CyberDev
+            {t('services.title')}
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            We deliver end-to-end software solutions and robust cybersecurity services tailored to meet your business needs.
-            From custom applications to advanced threat protection, AEDI Security ensures your digital presence is powerful, secure, and future-ready.
+            {t('services.subtitle')}
           </p>
         </div>
       </section>
@@ -221,7 +230,7 @@ const Services = () => {
       </section>
 
       <Footer />
-      <WhatsAppFloat />
+      {/* <WhatsAppFloat /> */}
     </div>
   );
 };

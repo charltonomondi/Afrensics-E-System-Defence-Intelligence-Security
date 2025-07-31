@@ -1,3 +1,5 @@
+
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -16,17 +18,19 @@ import {
 
 import aediLogo from '@/assets/favicon_logo/aedi.png';
 import LanguageSelector from '@/components/LanguageSelector';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Services', href: '/services' },
-    { name: 'About Us', href: '/about' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Check Breach', href: '/check-breach' },
-    { name: 'Contact', href: '/contact' },
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.services'), href: '/services' },
+    { name: t('nav.about'), href: '/about' },
+    { name: t('nav.blog'), href: '/blog' },
+    { name: t('nav.checkBreach'), href: '/check-breach' },
+    { name: t('nav.contact'), href: '/contact' },
   ];
 
   return (
@@ -57,6 +61,13 @@ const Navigation = () => {
       <a href="https://x.com/afrensics" target="_blank" rel="noopener noreferrer">
         <Twitter className="w-4 h-4 text-white hover:text-gray-300" />
       </a>
+      <WhatsAppButton
+        size="sm"
+        variant="icon"
+        className="text-white hover:text-green-400"
+        phoneNumber="254743141928"
+        message="Hi! I'm interested in AEDI Security's cybersecurity services. Can you help me?"
+      />
       <a href="https://www.linkedin.com/company/aedisecurity/" target="_blank" rel="noopener noreferrer">
         <Linkedin className="w-4 h-4 text-white hover:text-gray-300" />
       </a>
