@@ -41,7 +41,7 @@ const Index = () => {
   // Splash Screen Component
   if (showSplash) {
     return (
-      <div className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 transition-opacity duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'}`} style={{ background: 'linear-gradient(135deg, hsl(215 25% 8%), hsl(215 30% 12%), hsl(174 72% 56% / 0.1))' }}>
         <div className="text-center">
           {/* Logo with animation */}
           <div className="mb-8 animate-pulse">
@@ -58,10 +58,10 @@ const Index = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-white animate-fade-in-up">
               Welcome to
             </h1>
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent animate-fade-in-up-delay">
+            <h2 className="text-3xl md:text-4xl font-bold animate-fade-in-up-delay" style={{ background: 'linear-gradient(135deg, hsl(174 72% 56%), hsl(174 82% 70%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               AEDI Security Ltd
             </h2>
-            <p className="text-lg md:text-xl text-blue-100 animate-fade-in-up-delay-2">
+            <p className="text-lg md:text-xl animate-fade-in-up-delay-2" style={{ color: 'hsl(174 72% 80%)' }}>
               Kenya's Premier Cybersecurity Firm
             </p>
           </div>
@@ -69,16 +69,29 @@ const Index = () => {
           {/* Loading indicator */}
           <div className="mt-12">
             <div className="flex justify-center space-x-2">
-              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'hsl(174 72% 56%)', animationDelay: '0ms' }}></div>
+              <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'hsl(174 82% 70%)', animationDelay: '150ms' }}></div>
+              <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'hsl(174 72% 56%)', animationDelay: '300ms' }}></div>
             </div>
-            <p className="text-blue-200 mt-4 text-sm">Loading your security experience...</p>
+            <p className="mt-4 text-sm" style={{ color: 'hsl(174 72% 80%)' }}>Loading your security experience...</p>
 
             {/* Skip button */}
             <button
               onClick={skipSplash}
-              className="mt-6 px-6 py-2 text-sm text-blue-200 border border-blue-200/30 rounded-full hover:bg-blue-200/10 hover:border-blue-200/50 transition-all duration-300 backdrop-blur-sm"
+              className="mt-6 px-6 py-2 text-sm rounded-full transition-all duration-300 backdrop-blur-sm"
+              style={{
+                color: 'hsl(174 72% 80%)',
+                border: '1px solid hsl(174 72% 56% / 0.3)',
+                background: 'hsl(174 72% 56% / 0.1)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'hsl(174 72% 56% / 0.2)';
+                e.currentTarget.style.borderColor = 'hsl(174 72% 56% / 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'hsl(174 72% 56% / 0.1)';
+                e.currentTarget.style.borderColor = 'hsl(174 72% 56% / 0.3)';
+              }}
             >
               Skip Intro
             </button>
@@ -86,11 +99,11 @@ const Index = () => {
         </div>
 
         {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-20 h-20 border border-white rounded-full animate-ping"></div>
-          <div className="absolute top-20 right-20 w-16 h-16 border border-white rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-20 left-20 w-12 h-12 border border-white rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 border border-white rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-10 w-20 h-20 rounded-full animate-ping" style={{ border: '1px solid hsl(174 72% 56%)' }}></div>
+          <div className="absolute top-20 right-20 w-16 h-16 rounded-full animate-ping" style={{ border: '1px solid hsl(174 82% 70%)', animationDelay: '1s' }}></div>
+          <div className="absolute bottom-20 left-20 w-12 h-12 rounded-full animate-ping" style={{ border: '1px solid hsl(174 72% 56%)', animationDelay: '2s' }}></div>
+          <div className="absolute bottom-10 right-10 w-24 h-24 rounded-full animate-ping" style={{ border: '1px solid hsl(174 82% 70%)', animationDelay: '0.5s' }}></div>
         </div>
       </div>
     );
