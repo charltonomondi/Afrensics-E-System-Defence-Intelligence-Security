@@ -1,50 +1,37 @@
-# Afrensics Security Ltd Cybersecurity Hub
+# AEDI Security - Production Branch
 
-## Project Info
+This is the **production branch** containing the built website files ready for deployment.
 
-Welcome to the Afrensics Security Ltd Cybersecurity Hub.  
-This project provides expert insights, news, and best practices for cybersecurity in Africa.
+## 🚀 Deployment
 
-## How to Edit This Code
+This branch is automatically deployed to https://aedisecurity.com via cPanel Git integration.
 
-You can work locally using your preferred IDE.  
-The only requirement is having Node.js & npm installed.  
-[Install Node.js with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 📦 Contents
 
-**Setup Steps:**
+- **Built website files** (HTML, CSS, JS, images)
+- **Optimized assets** for fast loading
+- **Security configurations** (.htaccess)
+- **SEO files** (sitemap.xml, robots.txt)
+- **Google verification** files
 
-```sh
-# Step 1: Clone the repository using your project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🔄 Updates
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+To update this production branch:
+1. Make changes in the `main` branch
+2. Build the project (`npm run build`)
+3. Update this `production` branch with new built files
+4. Push to trigger automatic deployment
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🛡️ Security Features
 
-# Step 4: Start the development server.
-npm run dev
-```
-
-You can also edit files directly in GitHub or use GitHub Codespaces.
-
-## Technologies Used
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## Deployment
-
-To deploy, use your preferred hosting provider or static site platform.
-
-## Custom Domain
-
-You can connect a custom domain using your hosting provider's domain management tools.
+- Balanced .htaccess configuration
+- Secure Tawk.to chat widget
+- Google Analytics integration
+- Mobile-responsive design
+- All banner images optimized
 
 ---
 
-© Afrensics Security Ltd
+**Live Website:** https://aedisecurity.com  
+**Repository:** https://github.com/charltonomondi/Afrensics-E-System-Defence-Intelligence-Security  
+**Branch:** production
