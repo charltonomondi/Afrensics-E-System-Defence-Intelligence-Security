@@ -404,7 +404,7 @@ const blogPosts = [
 				<section className="mb-8">
 					<h2 className="text-xl font-bold mb-2">WhatsApp Account Hijacking via SIM Swapping</h2>
 					<p className="mb-4">
-						WhatsApp group users in Kenya, Nigeria, and South Africa, have reported incidents where an attacker gains control of a victim member’s phone number, they can take over the WhatsApp account and access all messages, media, contacts, and group information associated with that account. Many are familiar with messages that seek to get members to click on a link and those who fall prey to this have their personal information stolen.
+						<a href="https://www.whatsapp.com/" target="_blank" className="text-blue-600 hover:underline">WhatsApp</a> group users in <a href="https://www.kenya.go.ke/" target="_blank" className="text-blue-600 hover:underline">Kenya</a>, <a href="https://www.nigeria.gov.ng/" target="_blank" className="text-blue-600 hover:underline">Nigeria</a>, and <a href="https://www.southafrica.net/" target="_blank" className="text-blue-600 hover:underline">South Africa</a>, have reported incidents where an attacker gains control of a victim member’s phone number, they can take over the WhatsApp account and access all messages, media, contacts, and group information associated with that account. Many are familiar with <a href="https://www.consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank" className="text-blue-600 hover:underline">phishing messages</a> that seek to get members to click on a link and those who fall prey to this have their personal information stolen.
 					</p>
 					<img
 						src={wblog1}
@@ -421,7 +421,7 @@ const blogPosts = [
 				<section className="mb-8">
 					<h2 className="text-xl font-bold mb-2">What is SIM Swapping?</h2>
 					<p className="mb-4">
-						SIM swapping (or SIM card swapping) is a type of identity theft in which an attacker tricks a mobile carrier into switching a phone number from its legitimate owner’s SIM card to one under the attacker’s control. Once the hacker has control of the victim’s phone number, they can gain access to various online services, especially those that use SMS-based two-factor authentication (2FA).
+						<a href="https://www.fbi.gov/news/stories/sim-swapping" target="_blank" className="text-blue-600 hover:underline">SIM swapping</a> (or SIM card swapping) is a type of <a href="https://www.identitytheft.gov/" target="_blank" className="text-blue-600 hover:underline">identity theft</a> in which an attacker tricks a <a href="https://www.gsma.com/mobile-for-development/mobile-money/" target="_blank" className="text-blue-600 hover:underline">mobile carrier</a> into switching a phone number from its legitimate owner’s SIM card to one under the attacker’s control. Once the hacker has control of the victim’s phone number, they can gain access to various online services, especially those that use <a href="https://www.cisa.gov/secure-our-world/turn-mfa" target="_blank" className="text-blue-600 hover:underline">SMS-based two-factor authentication (2FA)</a>.
 					</p>
 					<p className="mb-4">
 						SIM swapping and account hijacking are increasingly prevalent types of cybercrimes, affecting users globally, and have become particularly problematic in many African countries where mobile-first internet usage is common. Both attacks exploit vulnerabilities in mobile network security systems, targeting individuals' phone numbers to gain unauthorized access to online accounts, including WhatsApp, banking apps, email, and social media platforms. 
@@ -439,7 +439,7 @@ const blogPosts = [
 						Reports have emerged in Kenya where people have fallen victim to SIM swap scams. In some cases, victims reported that their WhatsApp accounts were hijacked after receiving unusual SMS alerts that seemed legitimate. Once the attacker gained control of the victim’s phone number, they used WhatsApp to impersonate the victim and request money from their contacts.
 					</p>
 					<p className="mb-4">
-						These scams were especially targeted at people involved in mobile money transactions (like M-Pesa or Airtel money in Kenya). These mobile money platforms are used by almost every member of WhatsApp groups, which are popular for fundraising to help family and friends with hospital or school fee bills or seeking to raise money for weddings or funerals.
+						These scams were especially targeted at people involved in <a href="https://www.gsma.com/mobilefordevelopment/mobile-money/" target="_blank" className="text-blue-600 hover:underline">mobile money transactions</a> (like <a href="https://www.safaricom.co.ke/personal/m-pesa" target="_blank" className="text-blue-600 hover:underline">M-Pesa</a> or <a href="https://africa.airtel.com/about/airtel-money" target="_blank" className="text-blue-600 hover:underline">Airtel money</a> in Kenya). These mobile money platforms are used by almost every member of WhatsApp groups, which are popular for fundraising to help family and friends with hospital or school fee bills or seeking to raise money for weddings or funerals.
 					</p>
 					<p className="mb-4">
 						In Nigeria, users of WhatsApp have also been victims of SIM swapping. Attackers impersonated customers of Nigerian telecommunications carriers to request SIM card replacements and gain control of their victims' WhatsApp accounts. Once in control, they could use the account to send fraudulent messages to contacts or initiate mobile money transfers.
@@ -797,28 +797,28 @@ const blogPosts = [
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Researchers say hackers using open-source tools in Africa</h3>
 						<p className="mb-4">
-							Cybersecurity researchers have drawn attention to a series of cyberattacks targeting financial organisations across Africa since at least July 2023 using a mix of open-source and publicly available tools to maintain access. According to the US Hacker news website, the suspected end goal of the attacks is to obtain initial access and then sell it to other criminal actors on underground forums, making the threat actor an initial access broker (IAB).
+							Cybersecurity researchers have drawn attention to a series of cyberattacks targeting <a href="https://www.africanbanking.com/" target="_blank" className="text-blue-600 hover:underline">financial organisations across Africa</a> since at least July 2023 using a mix of <a href="https://github.com/topics/penetration-testing" target="_blank" className="text-blue-600 hover:underline">open-source</a> and publicly available tools to maintain access. According to the <a href="https://thehackernews.com/" target="_blank" className="text-blue-600 hover:underline">US Hacker news website</a>, the suspected end goal of the attacks is to obtain initial access and then sell it to other criminal actors on <a href="https://www.darkowl.com/blog-content/what-are-underground-forums/" target="_blank" className="text-blue-600 hover:underline">underground forums</a>, making the threat actor an <a href="https://www.crowdstrike.com/cybersecurity-101/cyberattacks/initial-access-brokers/" target="_blank" className="text-blue-600 hover:underline">initial access broker (IAB)</a>.
 						</p>
 					</div>
 
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Cyberattacks in Kenya spike by 200% between January-March 2025</h3>
 						<p className="mb-4">
-							Cyberattacks in Kenya increased by 202% to 2.5 billion threats between January and March 2025, up from 840.9 million recorded during the previous quarter (October-December 2024). According to the Communication Authority of Kenya attributing the surge to "system vulnerability threats" among Kenyan firms.
+							Cyberattacks in <a href="https://www.kenya.go.ke/" target="_blank" className="text-blue-600 hover:underline">Kenya</a> increased by 202% to 2.5 billion threats between January and March 2025, up from 840.9 million recorded during the previous quarter (October-December 2024). According to the <a href="https://ca.go.ke/" target="_blank" className="text-blue-600 hover:underline">Communication Authority of Kenya</a> attributing the surge to "system vulnerability threats" among <a href="https://www.kenyachamber.or.ke/" target="_blank" className="text-blue-600 hover:underline">Kenyan firms</a>.
 						</p>
 					</div>
 
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Hackers target South African platinum mining giant</h3>
 						<p className="mb-4">
-							A leading South African mining firm, Eastern Platinum (Eastplats), announced a data breach related to specific files on its internal affairs. ICT news website mybroadband.co.za reported on 21 June that Eastplats is a platinum group metals (PGM) and chrome producer with assets located along South Africa's Bushveld Complex, the world's largest known PGM resource. The incident occurred on 27 May, but the company only announced it on 17 June.
+							A leading <a href="https://www.southafrica.net/" target="_blank" className="text-blue-600 hover:underline">South African</a> mining firm, <a href="https://www.eastplats.co.za/" target="_blank" className="text-blue-600 hover:underline">Eastern Platinum (Eastplats)</a>, announced a data breach related to specific files on its internal affairs. ICT news website <a href="https://mybroadband.co.za/" target="_blank" className="text-blue-600 hover:underline">mybroadband.co.za</a> reported on 21 June that Eastplats is a <a href="https://www.platinum.matthey.com/about-pgm/what-are-pgms" target="_blank" className="text-blue-600 hover:underline">platinum group metals (PGM)</a> and chrome producer with assets located along South Africa's <a href="https://en.wikipedia.org/wiki/Bushveld_Igneous_Complex" target="_blank" className="text-blue-600 hover:underline">Bushveld Complex</a>, the world's largest known PGM resource. The incident occurred on 27 May, but the company only announced it on 17 June.
 						</p>
 					</div>
 
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Mozambican cybercrime increased by 16% in 2024</h3>
 						<p className="mb-4">
-							Cybercrime in Mozambique increased by 16% last year, compared to 2023. "The crimes most often perpetrated are related to frauds involving electronic payment instruments and channels, but also to computer and communications fraud," the Portuguese news agency (Lusa) on 5 June quoted deputy attorney general, Amabelia Chuquela, as saying, blaming the trend on lack of resources and of public awareness.
+							Cybercrime in <a href="https://www.mozambique.mz/" target="_blank" className="text-blue-600 hover:underline">Mozambique</a> increased by 16% last year, compared to 2023. "The crimes most often perpetrated are related to frauds involving <a href="https://www.bis.org/cpmi/publ/d193.htm" target="_blank" className="text-blue-600 hover:underline">electronic payment instruments</a> and channels, but also to computer and communications fraud," the <a href="https://www.lusa.pt/" target="_blank" className="text-blue-600 hover:underline">Portuguese news agency (Lusa)</a> on 5 June quoted deputy attorney general, <a href="https://www.pgr.gov.mz/" target="_blank" className="text-blue-600 hover:underline">Amabelia Chuquela</a>, as saying, blaming the trend on lack of resources and of public awareness.
 						</p>
 					</div>
 				</section>
@@ -829,14 +829,14 @@ const blogPosts = [
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Gates Foundation launches AI scaling hub in Nigeria</h3>
 						<p className="mb-4">
-							The Nigerian Ministry of Communications, Innovation & Digital Economy, in partnership with the Gates Foundation, have announced the launch of the Nigeria Artificial Intelligence (AI) Scaling Hub. The initiative seeks "to accelerate the development of AI-driven solutions that improve lives and expand opportunity across key sectors such as health, agriculture, and education" in the country. The Gates Foundation pledged to support the hub with up to $7.5 million spread over three years.
+							The <a href="https://www.nigeria.gov.ng/" target="_blank" className="text-blue-600 hover:underline">Nigerian</a> <a href="https://nitda.gov.ng/" target="_blank" className="text-blue-600 hover:underline">Ministry of Communications, Innovation & Digital Economy</a>, in partnership with the <a href="https://www.gatesfoundation.org/" target="_blank" className="text-blue-600 hover:underline">Gates Foundation</a>, have announced the launch of the <a href="https://nitda.gov.ng/ai-hub/" target="_blank" className="text-blue-600 hover:underline">Nigeria Artificial Intelligence (AI) Scaling Hub</a>. The initiative seeks "to accelerate the development of AI-driven solutions that improve lives and expand opportunity across key sectors such as <a href="https://www.who.int/health-topics/digital-health" target="_blank" className="text-blue-600 hover:underline">health</a>, <a href="https://www.fao.org/digital-agriculture/en/" target="_blank" className="text-blue-600 hover:underline">agriculture</a>, and <a href="https://www.unesco.org/en/artificial-intelligence-education" target="_blank" className="text-blue-600 hover:underline">education</a>" in the country. The Gates Foundation pledged to support the hub with up to <a href="https://www.gatesfoundation.org/about/committed-grants" target="_blank" className="text-blue-600 hover:underline">$7.5 million</a> spread over three years.
 						</p>
 					</div>
 
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Ghana's response to cyberbullying surge</h3>
 						<p className="mb-4">
-							Ghana's Cyber Security Authority (CSA) has warned against a surge in cyberbullying, harassment, and blackmail linked to unlicensed mobile loan applications operating in the country. Joy FM news website report on 1 June quoted the CSA saying it received 377 complaints from January to May 2025 alone, compared to 228 for the whole of 2024.
+							<a href="https://www.ghana.gov.gh/" target="_blank" className="text-blue-600 hover:underline">Ghana's</a> <a href="https://csa.gov.gh/" target="_blank" className="text-blue-600 hover:underline">Cyber Security Authority (CSA)</a> has warned against a surge in <a href="https://www.stopbullying.gov/cyberbullying" target="_blank" className="text-blue-600 hover:underline">cyberbullying</a>, harassment, and blackmail linked to unlicensed <a href="https://www.bankofghana.gov.gh/regulation/mobile-money/" target="_blank" className="text-blue-600 hover:underline">mobile loan applications</a> operating in the country. <a href="https://www.myjoyonline.com/" target="_blank" className="text-blue-600 hover:underline">Joy FM</a> news website report on 1 June quoted the CSA saying it received 377 complaints from January to May 2025 alone, compared to 228 for the whole of 2024.
 						</p>
 					</div>
 				</section>
@@ -847,21 +847,21 @@ const blogPosts = [
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Kenya's parliament blocks tax body's access to banking details</h3>
 						<p className="mb-4">
-							Kenyan members of the National Assembly have blocked the Kenya Revenue Authority (KRA) from accessing companies' trade secrets and customer data to assess the businesses for tax. The parliamentary committee on finance quashed a second attempt by the revenue authority to have unfettered access to detailed transactional data.
+							Kenyan members of the <a href="https://www.parliament.go.ke/" target="_blank" className="text-blue-600 hover:underline">National Assembly</a> have blocked the <a href="https://www.kra.go.ke/" target="_blank" className="text-blue-600 hover:underline">Kenya Revenue Authority (KRA)</a> from accessing companies' <a href="https://www.wipo.int/tradesecrets/en/" target="_blank" className="text-blue-600 hover:underline">trade secrets</a> and customer data to assess the businesses for tax. The <a href="https://www.parliament.go.ke/the-national-assembly/house-business/committees" target="_blank" className="text-blue-600 hover:underline">parliamentary committee on finance</a> quashed a second attempt by the revenue authority to have unfettered access to detailed transactional data.
 						</p>
 					</div>
 
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Ethiopia 'reinforcing' national cyber-defence architecture</h3>
 						<p className="mb-4">
-							Ethiopia is reinforcing its national cyber-defence architecture as a core component of its ambitious Digital Ethiopia transformation agenda, with intensified awareness campaigns targeting public institutions and individual users.
+							<a href="https://www.ethiopia.gov.et/" target="_blank" className="text-blue-600 hover:underline">Ethiopia</a> is reinforcing its national <a href="https://www.cisa.gov/topics/cybersecurity" target="_blank" className="text-blue-600 hover:underline">cyber-defence architecture</a> as a core component of its ambitious <a href="https://www.ethiotelecom.et/digital-ethiopia/" target="_blank" className="text-blue-600 hover:underline">Digital Ethiopia</a> transformation agenda, with intensified <a href="https://www.cisa.gov/cybersecurity-awareness-month" target="_blank" className="text-blue-600 hover:underline">awareness campaigns</a> targeting public institutions and individual users.
 						</p>
 					</div>
 
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Uganda launches first-ever AI policy</h3>
 						<p className="mb-4">
-							Uganda announced the development of the country's first-ever AI policy as part of its Fourth National Development Plan (NDP4), positioning Uganda as a digitally empowered economy.
+							<a href="https://www.uganda.go.ug/" target="_blank" className="text-blue-600 hover:underline">Uganda</a> announced the development of the country's first-ever <a href="https://www.oecd.org/going-digital/ai/principles/" target="_blank" className="text-blue-600 hover:underline">AI policy</a> as part of its <a href="https://www.npa.go.ug/development-plans/ndp-iii/" target="_blank" className="text-blue-600 hover:underline">Fourth National Development Plan (NDP4)</a>, positioning Uganda as a <a href="https://www.worldbank.org/en/topic/digitaldevelopment" target="_blank" className="text-blue-600 hover:underline">digitally empowered economy</a>.
 						</p>
 					</div>
 				</section>
@@ -869,7 +869,7 @@ const blogPosts = [
 				<section className="mb-8">
 					<h2 className="text-xl font-bold mb-4">International Prosecutions</h2>
 					<p className="mb-4">
-						Multiple international prosecutions have resulted in significant sentences for cybercriminals, including Nigerian nationals receiving combined sentences of 159 years for a $17m fraud scheme, and Chinese, Filipino nationals being jailed in Nigeria for cyber-terrorism offences.
+						Multiple international prosecutions have resulted in significant sentences for cybercriminals, including <a href="https://www.justice.gov/opa/pr/five-nigerian-nationals-sentenced-combined-159-years-prison-17-million-fraud-scheme" target="_blank" className="text-blue-600 hover:underline">Nigerian nationals receiving combined sentences of 159 years</a> for a <a href="https://www.fbi.gov/investigate/white-collar-crime/fraud" target="_blank" className="text-blue-600 hover:underline">$17m fraud scheme</a>, and <a href="https://punchng.com/chinese-filipino-nationals-jailed-in-nigeria-over-cyberterrorism/" target="_blank" className="text-blue-600 hover:underline">Chinese, Filipino nationals being jailed in Nigeria</a> for <a href="https://www.interpol.int/en/Crimes/Cybercrime" target="_blank" className="text-blue-600 hover:underline">cyber-terrorism offences</a>.
 					</p>
 				</section>
 
@@ -879,7 +879,7 @@ const blogPosts = [
 					<div className="mb-6">
 						<h3 className="text-lg font-semibold mb-2">Nigeria, Meta launch AI 'accelerator' programme</h3>
 						<p className="mb-4">
-							The Nigerian government, in partnership with Meta, has launched the Nigeria AI Accelerator Programme to support startups developing AI solutions for agriculture, health, education, and financial services. The first cohort runs from August to December 2025.
+							The <a href="https://www.nigeria.gov.ng/" target="_blank" className="text-blue-600 hover:underline">Nigerian government</a>, in partnership with <a href="https://about.meta.com/" target="_blank" className="text-blue-600 hover:underline">Meta</a>, has launched the <a href="https://nitda.gov.ng/nigeria-ai-accelerator/" target="_blank" className="text-blue-600 hover:underline">Nigeria AI Accelerator Programme</a> to support startups developing AI solutions for <a href="https://www.fao.org/digital-agriculture/en/" target="_blank" className="text-blue-600 hover:underline">agriculture</a>, <a href="https://www.who.int/health-topics/digital-health" target="_blank" className="text-blue-600 hover:underline">health</a>, <a href="https://www.unesco.org/en/artificial-intelligence-education" target="_blank" className="text-blue-600 hover:underline">education</a>, and <a href="https://www.bis.org/fsi/publ/insights42.htm" target="_blank" className="text-blue-600 hover:underline">financial services</a>. The first cohort runs from August to December 2025.
 						</p>
 					</div>
 				</section>
