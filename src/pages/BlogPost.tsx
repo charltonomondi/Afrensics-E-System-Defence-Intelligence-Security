@@ -17,6 +17,7 @@ import vblog3 from 	"@/assets/blogs/vblog3.jpeg";
 import vblog4 from "@/assets/blogs/vblog4.png";
 import wblog1 from "@/assets/blogs/wblog1.png";
 import wblog2 from "@/assets/blogs/wblog2.png";
+import cyberincident from '@/assets/blogs/cyberincident.jpg';
 
 
 
@@ -765,6 +766,128 @@ const blogPosts = [
 						Want to be the first to receive the latest updates? Subscribe below!
 					</p>
 					<SubscribeSection />
+				</div>
+			</>
+		),
+	},
+	{
+		id: "4",
+		title: "African Cyber Incidents and Responses - June 2025 Highlights",
+		author: "Afrensics Security Team",
+		date: "June 30, 2025",
+		image: cyberincident,
+		content: (
+			<>
+				<div className="mb-6 text-lg font-semibold text-primary">
+					Comprehensive analysis of cybersecurity incidents across Africa
+				</div>
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-2">Key Findings</h2>
+					<ul className="list-disc list-inside mb-4 space-y-2">
+						<li><strong>Kenya:</strong> Cyberattacks increased by 202% to 2.5 billion threats (Jan-Mar 2025)</li>
+						<li><strong>Mozambique:</strong> Cybercrime rose by 16% in 2024 with 1,051 processed cases</li>
+						<li><strong>Ghana:</strong> 377 cyberbullying complaints linked to unlicensed loan apps (Jan-May 2025)</li>
+						<li><strong>Nigeria:</strong> Major international partnerships launched for AI development</li>
+					</ul>
+				</section>
+
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-4">Major Incidents</h2>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Researchers say hackers using open-source tools in Africa</h3>
+						<p className="mb-4">
+							Cybersecurity researchers have drawn attention to a series of cyberattacks targeting financial organisations across Africa since at least July 2023 using a mix of open-source and publicly available tools to maintain access. According to the US Hacker news website, the suspected end goal of the attacks is to obtain initial access and then sell it to other criminal actors on underground forums, making the threat actor an initial access broker (IAB).
+						</p>
+					</div>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Cyberattacks in Kenya spike by 200% between January-March 2025</h3>
+						<p className="mb-4">
+							Cyberattacks in Kenya increased by 202% to 2.5 billion threats between January and March 2025, up from 840.9 million recorded during the previous quarter (October-December 2024). According to the Communication Authority of Kenya attributing the surge to "system vulnerability threats" among Kenyan firms.
+						</p>
+					</div>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Hackers target South African platinum mining giant</h3>
+						<p className="mb-4">
+							A leading South African mining firm, Eastern Platinum (Eastplats), announced a data breach related to specific files on its internal affairs. ICT news website mybroadband.co.za reported on 21 June that Eastplats is a platinum group metals (PGM) and chrome producer with assets located along South Africa's Bushveld Complex, the world's largest known PGM resource. The incident occurred on 27 May, but the company only announced it on 17 June.
+						</p>
+					</div>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Mozambican cybercrime increased by 16% in 2024</h3>
+						<p className="mb-4">
+							Cybercrime in Mozambique increased by 16% last year, compared to 2023. "The crimes most often perpetrated are related to frauds involving electronic payment instruments and channels, but also to computer and communications fraud," the Portuguese news agency (Lusa) on 5 June quoted deputy attorney general, Amabelia Chuquela, as saying, blaming the trend on lack of resources and of public awareness.
+						</p>
+					</div>
+				</section>
+
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-4">Positive Developments</h2>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Gates Foundation launches AI scaling hub in Nigeria</h3>
+						<p className="mb-4">
+							The Nigerian Ministry of Communications, Innovation & Digital Economy, in partnership with the Gates Foundation, have announced the launch of the Nigeria Artificial Intelligence (AI) Scaling Hub. The initiative seeks "to accelerate the development of AI-driven solutions that improve lives and expand opportunity across key sectors such as health, agriculture, and education" in the country. The Gates Foundation pledged to support the hub with up to $7.5 million spread over three years.
+						</p>
+					</div>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Ghana's response to cyberbullying surge</h3>
+						<p className="mb-4">
+							Ghana's Cyber Security Authority (CSA) has warned against a surge in cyberbullying, harassment, and blackmail linked to unlicensed mobile loan applications operating in the country. Joy FM news website report on 1 June quoted the CSA saying it received 377 complaints from January to May 2025 alone, compared to 228 for the whole of 2024.
+						</p>
+					</div>
+				</section>
+
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-4">Government Responses</h2>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Kenya's parliament blocks tax body's access to banking details</h3>
+						<p className="mb-4">
+							Kenyan members of the National Assembly have blocked the Kenya Revenue Authority (KRA) from accessing companies' trade secrets and customer data to assess the businesses for tax. The parliamentary committee on finance quashed a second attempt by the revenue authority to have unfettered access to detailed transactional data.
+						</p>
+					</div>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Ethiopia 'reinforcing' national cyber-defence architecture</h3>
+						<p className="mb-4">
+							Ethiopia is reinforcing its national cyber-defence architecture as a core component of its ambitious Digital Ethiopia transformation agenda, with intensified awareness campaigns targeting public institutions and individual users.
+						</p>
+					</div>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Uganda launches first-ever AI policy</h3>
+						<p className="mb-4">
+							Uganda announced the development of the country's first-ever AI policy as part of its Fourth National Development Plan (NDP4), positioning Uganda as a digitally empowered economy.
+						</p>
+					</div>
+				</section>
+
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-4">International Prosecutions</h2>
+					<p className="mb-4">
+						Multiple international prosecutions have resulted in significant sentences for cybercriminals, including Nigerian nationals receiving combined sentences of 159 years for a $17m fraud scheme, and Chinese, Filipino nationals being jailed in Nigeria for cyber-terrorism offences.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-4">Innovation & Partnerships</h2>
+
+					<div className="mb-6">
+						<h3 className="text-lg font-semibold mb-2">Nigeria, Meta launch AI 'accelerator' programme</h3>
+						<p className="mb-4">
+							The Nigerian government, in partnership with Meta, has launched the Nigeria AI Accelerator Programme to support startups developing AI solutions for agriculture, health, education, and financial services. The first cohort runs from August to December 2025.
+						</p>
+					</div>
+				</section>
+
+				<div className="bg-gray-50 p-6 rounded-lg">
+					<p className="text-sm text-gray-600 italic">
+						This comprehensive report demonstrates the evolving cybersecurity landscape across Africa, highlighting both challenges and innovative responses from governments, organizations, and international partners.
+					</p>
 				</div>
 			</>
 		),

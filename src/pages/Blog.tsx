@@ -14,6 +14,7 @@ import hacker from '@/assets/hacker.jpeg';
 import WhatsApp from '@/assets/Whatsapp.png';
 import cyber from '@/assets/cyber.png';
 import blogBanner from '@/assets/banner/blog.webp';
+import cyberincident from '@/assets/blogs/cyberincident.jpg';
 
 const blogPosts = [
   {
@@ -46,12 +47,74 @@ const blogPosts = [
   },
   {
     id: 4,
-    title: "Cloud Security Best Practices for Kenyan SMEs",
-    excerpt: "Small and medium enterprises are increasingly moving to the cloud. Here's how to ensure your cloud infrastructure remains secure and compliant.",
-    author: "",
-    date: "Coming Soon",
-    category: "Tips",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop"
+    title: "African Cyber Incidents and Responses - June 2025 Highlights",
+    excerpt: "Comprehensive analysis of cybersecurity incidents across Africa including Kenya's 202% spike in cyberattacks, South African mining breaches, Mozambican cybercrime trends, and innovative responses from governments and organizations across the continent.",
+    author: "Afrensics Security Team",
+    date: "June 30, 2025",
+    category: "Threat Intelligence",
+    image: cyberincident,
+    content: `
+# AFRICAN CYBER INCIDENTS AND RESPONSES
+## JUNE 2025 HIGHLIGHTS
+
+### Key Findings:
+- **Kenya**: Cyberattacks increased by 202% to 2.5 billion threats (Jan-Mar 2025)
+- **Mozambique**: Cybercrime rose by 16% in 2024 with 1,051 processed cases
+- **Ghana**: 377 cyberbullying complaints linked to unlicensed loan apps (Jan-May 2025)
+- **Nigeria**: Major international partnerships launched for AI development
+
+### Researchers say hackers using open-source tools in Africa
+
+Cybersecurity researchers have drawn attention to a series of cyberattacks targeting financial organisations across Africa since at least July 2023 using a mix of open-source and publicly available tools to maintain access. According to the US Hacker news website, the suspected end goal of the attacks is to obtain initial access and then sell it to other criminal actors on underground forums, making the threat actor an initial access broker (IAB).
+
+### Cyberattacks in Kenya spike by 200% between January-March 2025
+
+Cyberattacks in Kenya increased by 202% to 2.5 billion threats between January and March 2025, up from 840.9 million recorded during the previous quarter (October- December 2024). According to the Communication Authority of Kenya attributing the surge to "system vulnerability threats" among Kenyan firms.
+
+### Hackers target South African platinum mining giant
+
+A leading South African mining firm, Eastern Platinum (Eastplats), announced a data breach related to specific files on its internal affairs. ICT news website mybroadband.co.za reported on 21 June that Eastplats is a platinum group metals (PGM) and chrome producer with assets located along South Africa's Bushveld Complex, the world's largest known PGM resource. The incident occurred on 27 May, but the company only announced it on 17 June.
+
+### Mozambican cybercrime increased by 16% in 2024
+
+Cybercrime in Mozambique increased by 16% last year, compared to 2023. "The crimes most often perpetrated are related to frauds involving electronic payment instruments and channels, but also to computer and communications fraud," the Portuguese news agency (Lusa) on 5 June quoted deputy attorney general, Amabelia Chuquela, as saying, blaming the trend on lack of resources and of public awareness.
+
+### Gates Foundation launches AI scaling hub in Nigeria
+
+The Nigerian Ministry of Communications, Innovation & Digital Economy, in partnership with the Gates Foundation, have announced the launch of the Nigeria Artificial Intelligence (AI) Scaling Hub. The initiative seeks "to accelerate the development of AI-driven solutions that improve lives and expand opportunity across key sectors such as health, agriculture, and education" in the country. The Gates Foundation pledged to support the hub with up to $7.5 million spread over three years.
+
+### Ghana's surge in cyberbullying linked to unlicensed mobile loan apps
+
+Ghana's Cyber Security Authority (CSA) has warned against a surge in cyberbullying, harassment, and blackmail linked to unlicensed mobile loan applications operating in the country. Joy FM news website report on 1 June quoted the CSA saying it received 377 complaints from January to May 2025 alone, compared to 228 for the whole of 2024.
+
+## RESPONSE INITIATIVES
+
+### Kenya's parliament blocks tax body's access to banking details
+
+Kenyan members of the National Assembly have blocked the Kenya Revenue Authority (KRA) from accessing companies' trade secrets and customer data to assess the businesses for tax. The parliamentary committee on finance quashed a second attempt by the revenue authority to have unfettered access to detailed transactional data.
+
+### Ethiopia 'reinforcing' national cyber-defence architecture
+
+Ethiopia is reinforcing its national cyber-defence architecture as a core component of its ambitious Digital Ethiopia transformation agenda, with intensified awareness campaigns targeting public institutions and individual users.
+
+### International Prosecutions
+
+Multiple international prosecutions have resulted in significant sentences for cybercriminals, including Nigerian nationals receiving combined sentences of 159 years for a $17m fraud scheme, and Chinese, Filipino nationals being jailed in Nigeria for cyber-terrorism offences.
+
+## INNOVATION & PARTNERSHIPS
+
+### Nigeria, Meta launch AI 'accelerator' programme
+
+The Nigerian government, in partnership with Meta, has launched the Nigeria AI Accelerator Programme to support startups developing AI solutions for agriculture, health, education, and financial services. The first cohort runs from August to December 2025.
+
+### Uganda launches first-ever AI policy
+
+Uganda announced the development of the country's first-ever AI policy as part of its Fourth National Development Plan (NDP4), positioning Uganda as a digitally empowered economy.
+
+---
+
+*This comprehensive report demonstrates the evolving cybersecurity landscape across Africa, highlighting both challenges and innovative responses from governments, organizations, and international partners.*
+    `,
   },
   {
     id: 5,
