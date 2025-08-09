@@ -499,17 +499,25 @@ const Contact = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/check-breach">
-              <Button size="lg" variant="secondary" className="px-8 py-3">
+              <Button size="lg" variant="secondary" className="px-8 py-3 bg-white text-gray-900 hover:bg-gray-100 font-semibold shadow-lg">
                 Free Security Assessment
               </Button>
             </Link>
-            <a href="tel:+254714796254">
+            <a href="tel:+254743141928">
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-cyber-dark px-8 py-3"
+                className="px-8 py-3 bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 text-white border-2 border-white/30 hover:from-green-600 hover:via-green-700 hover:to-emerald-700 hover:border-white/50 hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold shadow-xl backdrop-blur-sm relative overflow-hidden group"
               >
-                Call Now: +254 714 796 254
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                <span className="relative flex items-center space-x-3">
+                  <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 3 6V5z" />
+                  </svg>
+                  <span className="text-lg">Call Now: +254743141928</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
               </Button>
             </a>
           </div>

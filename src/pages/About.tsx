@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Target, Shield, Award, Globe, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import Charlton from '@/assets/team/charlton.png';
 import deo from '@/assets/team/deo-gumba.png';
 import Tj from '@/assets/team/Tj.png';
@@ -16,7 +16,7 @@ import aboutBanner from '@/assets/banner/about.jpg';
 const teamMembers = [
   {
     name: "Charlton O. Omondi",
-    role: "Director - Penetration Tester",
+    role: "Chief Executive Officer",
     description: "Certified Software Engineer and Cybersecurity Penetration Tester with hands-on expertise in Burp Suite, OWASP methodologies, and Linux-based ethical hacking tools.",
     image: Charlton,
   },
@@ -64,7 +64,7 @@ const values = [
 ];
 
 const About = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   return (
     <div className="min-h-screen">
@@ -269,8 +269,20 @@ const About = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-cyber-dark px-8 py-3">
-                Contact Our Team
+              <Button
+                size="lg"
+                className="px-8 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white border-2 border-white/30 hover:from-cyan-600 hover:via-blue-700 hover:to-indigo-700 hover:border-white/50 hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold shadow-xl backdrop-blur-sm relative overflow-hidden group"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                <span className="relative flex items-center space-x-3">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <span className="text-lg">Contact Our Team</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
               </Button>
             </Link>
           </div>

@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 // import WhatsAppFloat from '@/components/WhatsAppFloat';
 import SEO from '@/components/SEO';
+import CybersecurityBreaches from '@/components/CybersecurityBreaches';
 import { Button } from '@/components/ui/button';
 import { slugify } from "@/utils/slugify";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +16,7 @@ import WhatsApp from '@/assets/Whatsapp.png';
 import cyber from '@/assets/cyber.png';
 import blogBanner from '@/assets/banner/blog.webp';
 import cyberincident from '@/assets/blogs/cyberincident.jpg';
+import SA from '@/assets/blogs/SA.png'; 
 
 const blogPosts = [
   {
@@ -118,12 +120,114 @@ Uganda announced the development of the country's first-ever AI policy as part o
   },
   {
     id: 5,
-    title: "Phishing Attacks Target Mobile Banking Users in Kenya",
-    excerpt: "Mobile money and banking users are facing sophisticated phishing attacks. Learn how to identify and avoid these dangerous scams.",
-    author: "",
-    date: "Coming Soon",
+    title: "African Cyber Incidents and Responses - July 2025 Highlights",
+    excerpt: "Comprehensive analysis of major cybersecurity incidents across Africa in July 2025, including attacks on South African media houses, Namibian municipalities, and innovative AI responses across the continent.",
+    author: "Afrensics Security",
+    date: "August 9, 2025",
     category: "Threats",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop"
+    image: SA,
+    featured: false,
+    content: `
+# AFRICAN CYBER INCIDENTS AND RESPONSES
+## JULY 2025 HIGHLIGHTS
+
+### Hackers unleash phishing attacks on South African media houses
+
+Hackers unleashed phishing attacks between 28 and 31 July on two leading South African media outlets: the state South African Broadcasting Corporation (SABC) and the private eMedia. The attack "affected a small number of employee accounts", an SABC spokesman, Mmoni Ngubane told [MyBroadband](https://mybroadband.co.za/news/broadcasting/604864-sabc-hacked.html) technology news website on 31 July, adding "our IT Security team responded immediately, securing the affected mailboxes and containing the incident".
+
+The SABC "continues strengthening its cybersecurity measures and educating staff on cybersecurity". At the eMedia house, including eNCA website, a spokesman told [MyBroadband](https://mybroadband.co.za/news/broadcasting/605080-two-south-african-broadcasters-hit-by-cyberattack.html) that a similar attack to the SABC incident hit a "single individual's email account" and "the situation was contained quickly". "The email that led to the compromise originated from a compromised SABC account".
+
+### Hackers target Namibia's northern Otjiwarongo Municipality
+
+The Namibian Cyber Security Incident Response Team (Nam-CSIRT) on 19 July reported a cybersecurity breach targeting the IT systems of the Otjiwarongo Municipality in the country's central-northern region. [The Namibian](https://www.namibian.com.na/otjiwarongo-municipality-hit-by-suspected-ransomware-attack/) newspaper reported that the incident detected on 16 July and confirmed by [Red Packet Security](https://www.redpacketsecurity.com/incransom-ransomware-victim-otjiwarongo-municipality/), a public sector entity located in Namibia "possibly involved stolen data and a ransom demand".
+
+"Preliminary findings indicate that a cybercriminal group known as 'INC Ransom' may be behind the attack," said a statement issued by the Communications Regulatory Authority of Namibia, under which the Nam-CSIRT falls. The team "alerted the municipality and advised immediate containment steps," the statement added.
+
+### Hackers list Seychelles bank's client data in the dark web
+
+A hacker claims to have stolen and sold the personal data of clients of a prominent bank in the Indian Ocean archipelago of Seychelles. According to [Bank Info Security](https://www.bankinfosecurity.com/seychelles-commercial-bank-confirms-customer-data-breach-a-28972) website report on 15 July, the Seychelles Commercial Bank "recently identified and contained a cybersecurity incident, which has resulted in its internet banking services being temporarily suspended".
+
+The breach became public on 4 July "via cybercrime marketplace DarkForums, when the user 'ByteToBreach' posted for sale a 'Seychelles main bank clients leak'". The listing read in part: 'I currently have the data of the clients of this bank, with DOB, phones, names, addresses, emails etc. The first attack occurred on 5 February, before the hackers returned on 3 July, "ultimately stealing 2.2 gigabytes of customer data," according to the Bank Info Security report.
+
+### Zambia lost $4.8m to cybercrimes in the first half of 2025
+
+Zambia's Minister of Home Affairs and Internal Security Jack Mwiimbu and his Technology and Science counterpart Felix Mutati on 10 July announced that the southern Africa country lost over $4.8m in cyber-related crimes between 1 January and 30 June 2025. According to [ICT Association of Zambia](https://www.facebook.com/ICTAssociationZM/posts/zambians-lost-over-k100-million-through-online-scammers-in-the-last-six-months-o/1128621975966548/), the ministers cited data from the Zambia Information and Communication Technology Authority (ZICTA), which reported 621 hacking cases all of which were recovered, and 224 impersonation cases, with 34 fake accounts successfully taken down.
+
+"WhatsApp recorded 462 hacking cases all of which were recovered and 224 impersonation cases involving Very Important Persons (VIPs), with all hacked accounts recovered. Telegram saw 123 hacking cases (122 recovered) and 52 impersonation incidents.
+
+### Malware attack on SA Treasury systems follows Microsoft server hack
+
+South Africa's National Treasury (NT) on 22 July confirmed asking Microsoft for assistance identifying and addressing any potential vulnerabilities in its systems. The request followed a major cyberattack on [Microsoft's SharePoint](https://www.cnbc.com/2025/07/21/microsoft-sharepoint-attack-vulnerability.html?msockid=1e73022beb5668cb3091124dea9669b1) document management system which affected some 400 organisations globally.
+
+South Africa's influential [Eyewitness News](https://www.ewn.co.za/2025/07/24/national-treasury-affected-by-malware-attack-after-hack-of-microsoft-server-software) cited a statement issued by the National Treasury saying that it "identified malware on its Infrastructure Reporting Model (IRM) website, its online infrastructure reporting and monitoring system, on 22 July". The institution "isolated the IRM servers to assess the magnitude of the compromise and to ensure the security of its systems". The Treasury reassured that "Despite these events, NT's systems and websites continue to operate normally without any disruption".
+
+### SA website links Chinese APT41 group to "cyber espionage" in Southern Africa
+
+A South African website has linked a Chinese-speaking advanced persistent threat (APT) group APT41 to "a cyber espionage attack" targeting an organisation in Southern Africa. "While APT41 has shown limited activity in southern Africa, this incident suggests the group is now targeting government IT services in the region", [ITWeb](https://www.itweb.co.za/article/kaspersky-links-cyber-espionage-attack-in-southern-africa-to-chinese-speaking-apt41/6GxRKMYQyJeMb3Wj) reported on 22 July, citing a statement issued by Kaspersky saying "the primary motive behind the intrusion was to extract sensitive data from compromised systems within the organisation's network, including credentials, internal documents, source code and communication records".
+
+Kaspersky said it linked the attack to APT41 with "high confidence based on the tactics, techniques and procedures observed." They employed a credential-harvesting technique known as registry dumping to obtain two key domain accounts – one with local administrator rights across all workstations and another tied to a backup solution with domain administrator privileges. These credentials enabled lateral movement within the network." Kaspersky said it had "has not observed additional attacks in southern Africa by the group". APT41 focuses on a wide range of sectors, including telecommunications, education, healthcare, IT and energy and has been linked to operations in at least 42 countries.
+
+## RESPONSE
+
+### Rwanda reveals cybercrimes targeting foreigners
+
+Rwandan authorities have revealed an elaborate cyberfraud scheme targeting foreign tourists booking permits online to see the country's iconic mountain gorillas. The [KT Press](https://www.ktpress.rw/2025/07/how-rwf-93-billion-in-criminal-proceeds-flowed-through-rwandas-economy/#google_vignette) news website reported on 21 July that fees paid by the tourists went "straight into a private bank account" operated by an employee of the tourism ministry. According to the website, some $478,000 was rerouted to this account and "By the time authorities uncovered the scheme, he had used the money to acquire properties and assets under his own name".
+
+KT Press said the case is "one of many that now form the basis of Rwanda's 2024 National Money Laundering and Terrorist Financing Risk Assessment Report", which estimates that over $64m "in criminal proceeds—mostly from embezzlement, fraud, tax crimes, and cyber scams—circulated through the economy between 2019 and 2024". According to the report, "four crimes—embezzlement, fraud, tax crime and cybercrime—[were] responsible for 96% of the total proceeds". It added that the report warned of "a worrying shift toward technology-driven fraud, including pyramid schemes, mobile money scams, and cryptocurrency swindles".
+
+### South Africa repositions cybersecurity in strategic defence realignment
+
+South African Minister for National Security Khumbudzo Ntshavheni announced on 16 July that the government was "repositioning cyber security as a core component of its national security strategy, with a renewed focus on counter-intelligence and protective security, following a series of high-profile cyberattacks on state institutions."
+
+According to IT Web, the minister revealed the plans when she unveiled the country's National Security Strategy (NSS) 2024–2029, the National Intelligence Estimate (NIE) 2019–2024 and the National Intelligence Priorities (NIPs). Ntshavheni added that "faced with the increased threat of cybercrime, the country will bolster cyber forensic capability to effectively address and regulate online technologies and crypto-currencies that are exploited to facilitate illicit financial flows". South Africa will "adjust its cyber security posture to accommodate counter-intelligence and protective security at its core".
+
+## INNOVATION
+
+### Google commits $37 million to AI advancement in Africa
+
+Google has announced contributions totaling $37 million in support of research, talent development, and infrastructure to advance AI across Africa, [Philanthropy News Digest](https://philanthropynewsdigest.org/news/google-commits-37-million-for-ai-advancement-in-africa#:~:text=Home%20Philanthropy%20news%20Google%20commits,higher%20education%20institutions%20in%20Ghana) reported on 29 July. Funding from Google and Google.org will support the AI Community Centre in Accra, Ghana, a hub that aims to explore how AI can respond to the needs of Africans.
+
+The commitments include $25 million in support of the AI Collaborative: Food Security initiative, which will provide AI tools designed to improve hunger forecasting, strengthen crop resilience, and bolster smallholder farmers; $7 million in support of AI education and safety programs in Ghana, Kenya, Nigeria, and South Africa; $3 million to boost the Masakhane African Languages AI Hub; and $1 million each to the African Institute for Data Science and Artificial Intelligence at the University of Pretoria and the Wits MIND Institute in Johannesburg for AI research.
+
+### Nigeria deploying AI to help improve agricultural productivity
+
+Nigeria's Vice President Kashim Shettima said on 27 July that the government was deploying AI and other modern technologies to monitor food production, enhance transparency, connect producers to markets, and reduce waste across the agricultural value chain. "The Fourth Industrial Revolution has not only disrupted the old order but gifted us instruments that were once confined to imagination. Artificial intelligence, geospatial analytics and satellite-driven climate intelligence are now part of our agricultural vocabulary," he said in remarks published by [Cable news](https://www.thecable.ng/shettima-fg-deploying-ai-to-boost-food-production-reduce-agricultural-waste/) website.
+
+Nigeria is actively utilizing AI in various sectors, driven by a combination of government initiatives and private sector innovation. Key areas include:
+
+**Economic Impact:** AI is expected to add up to $15.7 trillion to the global economy by 2030, positively impacting industries and governance.
+
+**Sectors:** The fintech sector is at the forefront, with companies like PayStack leveraging AI for fraud reduction and financial inclusion.
+
+**Skills Development:** Initiatives like the Three Million Technical Talent (3MTT) program are training the next generation in AI and digital skills.
+
+**Policy Framework:** Nigeria is developing a homegrown AI policy to harness the innovation, with a recent survey showing high usage of AI across various sectors.
+
+These efforts reflect Nigeria's commitment to integrating AI into its socio-economic fabric and driving national development.
+
+### AI boosts South Africa Revenue Service in tax assessments, refunds
+
+The South African Revenue Service (SARS) has assessed more than three-quarters of taxpayers and refunded over R10.6 billion, following its adoption of AI in its operations. ITweb reported on 21 July that "The auto assessments and refunds were processed ahead of the official start of manual filing" and "most refunds were paid within 72 hours, enabled by data integration, AI and data science". The SARS commissioner Edward Kieswetter told parliament earlier this year that future innovations include a "unique digital identity system" being developed in collaboration with the Department of Home Affairs and the South African Reserve Bank.
+
+**AI upgrades bear fruit for South Africa's SARS:**
+
+- R10.6 billion in refunds paid out within 72 hours, showcasing the efficiency of AI-driven processes
+- 5.8 million taxpayers auto-assessed, an increase from 5 million in 2024, with minimal user interaction required
+- 99.6% of auto-assessments remained unchanged by taxpayers, indicating the accuracy and reliability of the AI system
+- Over 2.1 million taxpayers engaged with SARS through digital channels, including eFiling and the SARS MobiApp
+- Fraud risk detection processes have stopped fraudulent refunds worth R61 billion, demonstrating AI's role in preventing impermissible or fraudulent refunds
+- R210 billion reclaimed in the current tax year, part of SARS' broader efforts to tackle tax debt
+
+These advancements reflect SARS's commitment to modernizing its tax administration and ensuring compliance with tax laws.
+
+### Kenya tops global usage of ChatGPT by over 16-year olds - report
+
+A new report by global internet researchers, [Datareportal and Meltwater](https://datareportal.com/reports/digital-2025-july-global-statshot), has placed Kenya first in the usage of ChatGPT ahead of the United Arab Emirates (UAE) and Israel. In Africa, Kenya was followed by South Africa, which was placed eighth globally, ahead of Egypt and Nigeria, ranked 18th and 19th globally respectively.
+
+---
+
+*This comprehensive report highlights the evolving cybersecurity landscape across Africa, showcasing both the challenges and innovative responses emerging across the continent.*
+    `
   },
   {
     id: 6,
@@ -204,6 +308,8 @@ const Blog = () => {
         </div>
       </section>
 
+      {/* Cybersecurity Breaches Section */}
+      <CybersecurityBreaches />
 
       {/* Blog Content */}
       <section className="py-16 bg-background">
