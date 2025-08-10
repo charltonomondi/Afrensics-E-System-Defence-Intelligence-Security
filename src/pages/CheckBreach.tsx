@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { AlertTriangle, CheckCircle, Search, Shield, Info, Calendar, Users } from 'lucide-react';
 // import { useTranslation } from 'react-i18next';
 // import { breachCheckService, type BreachCheckResult } from '@/services/breachCheckService';
+import { freeBreachAPI } from '@/services/freeBreachAPI';
+import PaymentModal from '@/components/PaymentModal';
+import { mpesaService } from '@/services/mpesaService';
 
 // Temporary interface for testing
 interface BreachCheckResult {
@@ -36,6 +39,9 @@ const CheckBreach = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BreachCheckResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [transactionId, setTransactionId] = useState('');
   const [totalChecks, setTotalChecks] = useState(0);
   const [placeholder, setPlaceholder] = useState('Enter your email address');
 
@@ -99,56 +105,58 @@ const CheckBreach = () => {
       return;
     }
 
-    setLoading(true);
+    // Show payment modal instead of directly checking
     setError(null);
     setResult(null);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = async (txnId: string, sendToEmail: boolean) => {
+    setTransactionId(txnId);
+    setPaymentCompleted(true);
+    setShowPaymentModal(false);
+
+    // Send payment notification to business number
+    try {
+      await mpesaService.sendPaymentNotification(
+        {
+          status: 'completed',
+          transactionId: txnId,
+          amount: 10,
+          phoneNumber: 'customer-phone', // This would come from payment modal
+          timestamp: new Date().toISOString()
+        },
+        email
+      );
+    } catch (error) {
+      console.error('Failed to send payment notification:', error);
+    }
+
+    // Now perform the actual breach check
+    setLoading(true);
 
     try {
       // Increment anonymous counter (no email data stored)
       incrementAnonymousCounter();
 
-      // Check if we've made a request recently (rate limiting)
-      const lastRequest = localStorage.getItem('lastBreachCheck');
-      const now = Date.now();
+      // Use the new FREE API service that handles CORS and multiple APIs
+      console.log('🔍 Checking email with free breach APIs...');
+      const apiResult = await freeBreachAPI.checkEmail(email);
 
-      if (lastRequest && (now - parseInt(lastRequest)) < 2000) {
-        throw new Error('Please wait 2 seconds between checks to respect API limits');
-      }
+      // Convert API result to our interface format
+      const breaches = apiResult.breaches.map((breach: any) => ({
+        name: breach.Name || breach.name || 'Unknown',
+        title: breach.Title || breach.title || breach.Name || breach.name || 'Unknown Breach',
+        breachDate: breach.BreachDate || breach.date || breach.breachDate || '2020-01-01',
+        pwnCount: breach.PwnCount || breach.pwnCount || breach.affected || 1000000,
+        description: breach.Description || breach.description || 'Data breach details not available.',
+        dataClasses: breach.DataClasses || breach.dataClasses || ['Email addresses'],
+        isVerified: breach.IsVerified || breach.verified || false,
+        isSensitive: breach.IsSensitive || breach.sensitive || false
+      }));
 
-      // Store current request time
-      localStorage.setItem('lastBreachCheck', now.toString());
-
-      // Make the FREE API call to HaveIBeenPwned
-      const response = await fetch(
-        `https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(email)}?truncateResponse=false`,
-        {
-          headers: {
-            'User-Agent': 'AEDI-Security-Breach-Checker',
-          }
-        }
-      );
-
-      let breaches = [];
-      let isBreached = false;
-
-      if (response.status === 200) {
-        breaches = await response.json();
-        isBreached = true;
-      } else if (response.status === 404) {
-        // No breaches found - this is good!
-        isBreached = false;
-      } else if (response.status === 429) {
-        throw new Error('Rate limit exceeded. Please wait a moment and try again.');
-      } else {
-        throw new Error(`Service temporarily unavailable (${response.status})`);
-      }
-
-      // Calculate risk score
-      const riskScore = isBreached ? Math.min(breaches.length * 20 +
-        (breaches.some((b: any) => b.IsSensitive) ? 30 : 0), 100) : 0;
-
-      // Generate recommendations
-      const recommendations = isBreached ? [
+      // Generate recommendations based on results
+      const recommendations = apiResult.isBreached ? [
         '🚨 Change passwords immediately for all affected accounts',
         '🔐 Enable two-factor authentication on all important accounts',
         '👀 Monitor your accounts closely for suspicious activity',
@@ -162,54 +170,148 @@ const CheckBreach = () => {
         '⚠️ Stay vigilant against phishing attempts'
       ];
 
+      // Create the result object
       const result: BreachCheckResult = {
         email,
-        isBreached,
+        isBreached: apiResult.isBreached,
         breachCount: breaches.length,
-        breaches: breaches.map((breach: any) => ({
-          name: breach.Name,
-          title: breach.Title || breach.Name,
-          breachDate: breach.BreachDate,
-          pwnCount: breach.PwnCount,
-          description: breach.Description,
-          dataClasses: breach.DataClasses || [],
-          isVerified: breach.IsVerified,
-          isSensitive: breach.IsSensitive
-        })),
-        riskScore,
+        breaches,
+        riskScore: apiResult.riskScore,
         lastChecked: new Date().toISOString(),
         recommendations
       };
 
       setResult(result);
 
+      // Clear any previous errors
+      setError(null);
+
+      // Show success message in console
+      console.log(`✅ Breach check completed using ${apiResult.source}`);
+      console.log(`📊 Result: ${apiResult.message}`);
+
+      // If user requested email results, send them
+      if (sendToEmail) {
+        await sendResultsToEmail(result, txnId);
+      }
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to check email breach status';
-      setError(errorMessage);
+      console.error('🚨 All free APIs failed:', errorMessage);
 
-      // Fallback to demo data for testing when API fails
-      console.log('API failed, using demo data:', errorMessage);
+      // Set a user-friendly error message
+      setError('🔍 Breach checking APIs are temporarily unavailable. Please contact support with your transaction ID: ' + txnId);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const sendResultsToEmail = async (result: BreachCheckResult, txnId: string) => {
+    try {
+      // In production, this would send actual email
+      console.log('📧 Sending results to email:', {
+        email: result.email,
+        isBreached: result.isBreached,
+        breachCount: result.breachCount,
+        transactionId: txnId
+      });
+
+      // Simulate email sending
+      const emailData = {
+        to: result.email,
+        subject: 'AEDI Security - Your Email Breach Check Results',
+        body: `
+          Your breach check results:
+
+          Email: ${result.email}
+          Status: ${result.isBreached ? 'Found in breaches' : 'Not found in breaches'}
+          Risk Score: ${result.riskScore}/100
+          Breaches Found: ${result.breachCount}
+          Transaction ID: ${txnId}
+
+          Thank you for using AEDI Security services.
+        `,
+        timestamp: new Date().toISOString()
+      };
+
+      // Store email for tracking
+      localStorage.setItem(`email_${txnId}`, JSON.stringify(emailData));
+
+    } catch (error) {
+      console.error('Failed to send email results:', error);
+    }
+  };
+
+  // Component logic continues...
+
+      // Convert API result to our interface format
+      const breaches = apiResult.breaches.map((breach: any) => ({
+        name: breach.Name || breach.name || 'Unknown',
+        title: breach.Title || breach.title || breach.Name || breach.name || 'Unknown Breach',
+        breachDate: breach.BreachDate || breach.date || breach.breachDate || '2020-01-01',
+        pwnCount: breach.PwnCount || breach.pwnCount || breach.affected || 1000000,
+        description: breach.Description || breach.description || 'Data breach details not available.',
+        dataClasses: breach.DataClasses || breach.dataClasses || ['Email addresses'],
+        isVerified: breach.IsVerified || breach.verified || false,
+        isSensitive: breach.IsSensitive || breach.sensitive || false
+      }));
+
+      // Generate recommendations based on results
+      const recommendations = apiResult.isBreached ? [
+        '🚨 Change passwords immediately for all affected accounts',
+        '🔐 Enable two-factor authentication on all important accounts',
+        '👀 Monitor your accounts closely for suspicious activity',
+        '🔑 Consider using a password manager for unique passwords',
+        '📧 Be extra cautious of phishing emails targeting you'
+      ] : [
+        '✅ Your email was not found in any known breaches - excellent!',
+        '🔐 Continue using strong, unique passwords for all accounts',
+        '🛡️ Enable two-factor authentication where possible',
+        '🔄 Keep your software and apps updated regularly',
+        '⚠️ Stay vigilant against phishing attempts'
+      ];
+
+      // Create the result object
+      const result: BreachCheckResult = {
+        email,
+        isBreached: apiResult.isBreached,
+        breachCount: breaches.length,
+        breaches,
+        riskScore: apiResult.riskScore,
+        lastChecked: new Date().toISOString(),
+        recommendations
+      };
+
+      setResult(result);
+
+      // Clear any previous errors
+      setError(null);
+
+      // Show success message in console
+      console.log(`✅ Breach check completed using ${apiResult.source}`);
+      console.log(`📊 Result: ${apiResult.message}`);
+
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to check email breach status';
+      console.error('🚨 All free APIs failed:', errorMessage);
+
+      // Set a user-friendly error message
+      setError('🔍 Free breach checking APIs are temporarily unavailable. Showing demo data below.');
+
+      // The free API service should have already provided a fallback result
+      // But if it completely fails, we'll show demo data
       const demoResult: BreachCheckResult = {
         email,
-        isBreached: true,
-        breachCount: 1,
-        breaches: [{
-          name: "Adobe",
-          title: "Adobe",
-          breachDate: "2013-10-04",
-          pwnCount: 152445165,
-          description: "Demo: In October 2013, 153 million Adobe accounts were breached. This is demo data shown when the API is unavailable.",
-          dataClasses: ["Email addresses", "Password hints", "Passwords", "Usernames"],
-          isVerified: true,
-          isSensitive: false
-        }],
-        riskScore: 45,
+        isBreached: false,
+        breachCount: 0,
+        breaches: [],
+        riskScore: 0,
         lastChecked: new Date().toISOString(),
         recommendations: [
-          '⚠️ This is demo data - API temporarily unavailable',
-          '🔐 Always use strong, unique passwords',
-          '🛡️ Enable two-factor authentication',
+          '⚠️ Free APIs temporarily unavailable - this is demo data',
+          '🔐 For real breach checking, visit haveibeenpwned.com directly',
+          '📞 Contact AEDI Security for professional breach monitoring',
+          '🛡️ Always use strong, unique passwords',
           '📧 Be cautious of phishing emails'
         ]
       };
