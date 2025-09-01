@@ -28,13 +28,13 @@ const teamMembers = [
   },
   {
     name: "Tijani Tatu",
-    role: "Director - ML Expert",
+    role: "Chief Operations Officer",
     description: "Software engineering, cybersecurity and certified data science & ML expert.",
     image: Tj,
   },
   {
     name: "Winstone Were",
-    role: "Director - Software Engineer",
+    role: "Technical Lead",
     description: "Software developer specializing in cross-platform app development using React Native.",
     image: winstone,
   }

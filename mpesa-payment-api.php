@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // M-Pesa Configuration (Sandbox/Test)
-define('MPESA_CONSUMER_KEY', 'your_consumer_key_here');
-define('MPESA_CONSUMER_SECRET', 'your_consumer_secret_here');
+define('MPESA_CONSUMER_KEY', getenv('MPESA_CONSUMER_KEY') ?: 'your_consumer_key_here');
+define('MPESA_CONSUMER_SECRET', getenv('MPESA_CONSUMER_SECRET') ?: 'your_consumer_secret_here');
 define('MPESA_SHORTCODE', '174379'); // Test shortcode
 define('MPESA_PASSKEY', 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'); // Test passkey
 define('MPESA_CALLBACK_URL', 'https://yourdomain.com/mpesa-payment-api.php?action=callback');
@@ -68,11 +68,22 @@ function initiateMpesaPayment() {
             return;
         }
 
-        // Generate unique checkout request ID
-        $checkoutRequestId = 'ws_CO_' . time() . '_' . uniqid();
-        
-        // For demo purposes, we'll simulate the M-Pesa API call
-        // In production, you would make actual API calls to Safaricom
+        // Obtain access token and initiate real STK Push via Daraja (Sandbox)
+        $accessToken = getMpesaAccessToken();
+        if (!$accessToken) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to obtain M-Pesa access token']);
+            return;
+        }
+        $accountRef = 'AEDI';
+        $stkResponse = makeSTKPushRequest($accessToken, $phoneNumber, $amount, $accountRef, $description);
+        if (!isset($stkResponse['ResponseCode']) || $stkResponse['ResponseCode'] !== '0') {
+            http_response_code(400);
+            echo json_encode(['error' => 'STK Push initiation failed', 'details' => $stkResponse]);
+            return;
+        }
+        // Use CheckoutRequestID from Safaricom as our transaction ID
+        $checkoutRequestId = $stkResponse['CheckoutRequestID'];
         
         // Store payment request
         $paymentData = [

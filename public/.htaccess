@@ -34,6 +34,11 @@
     # RewriteCond %{HTTPS} off
     # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     
+    # API routing for backend
+    RewriteRule ^api/initiate-mpesa-payment$ /mpesa-payment-api.php [L,QSA]
+    RewriteRule ^api/check-payment-status/(.*)$ /mpesa-payment-api.php [L,QSA]
+    RewriteRule ^api/mpesa/callback$ /mpesa-payment-api.php?action=callback [L,QSA]
+
     # Handle React Router (SPA routing)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

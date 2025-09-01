@@ -1,28 +1,42 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export const usePenetrationTestingPopup = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [lastShown, setLastShown] = useState<number>(0);
   const [userDismissed, setUserDismissed] = useState(false);
 
-  // Show popup every 2 minutes
-  const POPUP_INTERVAL = 120000; // 2 minutes (120 seconds)
+  // Track last time we detected user activity
+  const lastActivityRef = useRef<number>(Date.now());
+
+  // Config
+  const IDLE_TIMEOUT = 180000; // 3 minutes
+  const INITIAL_SHOW_DELAY = 2000; // 2 seconds after initial load
   const DISMISS_COOLDOWN = 300000; // 5 minutes cooldown after user dismisses
+
+  const isTyping = () => {
+    const el = document.activeElement as HTMLElement | null;
+    if (!el) return false;
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') return true;
+    return el.isContentEditable === true;
+  };
 
   const showPopup = useCallback(() => {
     const now = Date.now();
-    
-    // Don't show if user recently dismissed it
+
+    // Respect cooldown after a manual dismiss
     if (userDismissed && now - lastShown < DISMISS_COOLDOWN) {
       return;
     }
 
-    // Don't show if popup is already open
+    // Do not show while user is typing/focused in an input
+    if (isTyping()) {
+      return;
+    }
+
     if (isPopupOpen) {
       return;
     }
 
-    // Show popup and update timestamp
     setIsPopupOpen(true);
     setLastShown(now);
     setUserDismissed(false);
@@ -34,59 +48,46 @@ export const usePenetrationTestingPopup = () => {
     setLastShown(Date.now());
   }, []);
 
-  // Auto-close popup after 15 seconds if user doesn't interact
+  // Track user activity and close popup immediately on activity to avoid interruption
   useEffect(() => {
-    if (isPopupOpen) {
-      const autoCloseTimer = setTimeout(() => {
-        setIsPopupOpen(false);
-      }, 15000); // Auto-close after 15 seconds
+    const markActivity = () => {
+      lastActivityRef.current = Date.now();
+    };
 
-      return () => clearTimeout(autoCloseTimer);
-    }
-  }, [isPopupOpen]);
+    const events: Array<keyof DocumentEventMap> = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'wheel'];
+    events.forEach((evt) => document.addEventListener(evt, markActivity, { passive: true }));
 
-  // Set up interval to show popup every 2 minutes
+    return () => {
+      events.forEach((evt) => document.removeEventListener(evt, markActivity));
+    };
+  }, []);
+
+  // Show once shortly after first entering the website
   useEffect(() => {
-    // Initial delay before first popup (10 seconds after page load)
     const initialTimer = setTimeout(() => {
       showPopup();
-    }, 10000);
+    }, INITIAL_SHOW_DELAY);
 
-    // Regular interval for subsequent popups
-    const interval = setInterval(() => {
-      showPopup();
-    }, POPUP_INTERVAL);
-
-    return () => {
-      clearTimeout(initialTimer);
-      clearInterval(interval);
-    };
+    return () => clearTimeout(initialTimer);
   }, [showPopup]);
 
-  // Listen for user activity to reset cooldown
+  // Idle detection: show when the screen is idle (no cursor/typing) for 3 minutes
   useEffect(() => {
-    const handleUserActivity = () => {
-      // Reset user dismissed flag after some activity
-      if (userDismissed && Date.now() - lastShown > DISMISS_COOLDOWN) {
-        setUserDismissed(false);
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const idleFor = now - lastActivityRef.current;
+      if (!isPopupOpen && idleFor >= IDLE_TIMEOUT) {
+        showPopup();
       }
-    };
+    }, 10000); // Check every 10 seconds
 
-    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-    events.forEach(event => {
-      document.addEventListener(event, handleUserActivity, { passive: true });
-    });
+    return () => clearInterval(interval);
+  }, [isPopupOpen, showPopup]);
 
-    return () => {
-      events.forEach(event => {
-        document.removeEventListener(event, handleUserActivity);
-      });
-    };
-  }, [userDismissed, lastShown]);
-
+  
   return {
     isPopupOpen,
     closePopup,
-    showPopup
+    showPopup,
   };
 };
