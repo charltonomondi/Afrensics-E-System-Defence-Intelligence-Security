@@ -199,15 +199,30 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, email, onP
   const checkPaymentStatus = async (txnId: string) => {
     setTimeout(async () => {
       try {
-        // Check payment status via backend
-        const res = await fetch(`/api/check-payment-status/${encodeURIComponent(txnId)}`, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json' }
-        });
-        if (!res.ok) {
-          throw new Error('Status check failed');
+        // Check payment status via Supabase Edge Function
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+        const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+
+        if (!supabaseUrl || !supabaseAnon) {
+          throw new Error('Missing Supabase configuration');
         }
+
+        const res = await fetch(`${supabaseUrl}/functions/v1/check-payment-status/${encodeURIComponent(txnId)}`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${supabaseAnon}`
+          }
+        });
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Status check failed:', res.status, errorText);
+          throw new Error(`Status check failed: ${res.status}`);
+        }
+
         const status = await res.json();
+        console.log('Payment status response:', status);
 
         if (status.status === 'completed') {
           setPaymentStatus('success');
