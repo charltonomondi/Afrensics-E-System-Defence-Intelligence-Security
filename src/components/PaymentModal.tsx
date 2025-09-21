@@ -116,44 +116,104 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, email, onP
         }
         const formattedPhone = formatPhoneNumber(phoneNumber);
         
-        // Initiate STK Push via Supabase Edge Function
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-        const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-        if (!supabaseUrl || !supabaseAnon) {
-          throw new Error('Missing Supabase configuration. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
-        }
-        const res = await fetch(`${supabaseUrl}/functions/v1/initiate-mpesa-payment`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${supabaseAnon}`,
-          },
-          body: JSON.stringify({
-            phone: formattedPhone,
+        // Check environment variables
+        const functionsUrl = import.meta.env.VITE_FUNCTIONS_URL || 'https://ctyoktgzxqmeqzhmwpro.functions.supabase.co';
+        const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        
+        console.log('Environment check:', {
+          functionsUrl,
+          hasAnonKey: !!supabaseAnonKey,
+          anonKeyLength: supabaseAnonKey?.length || 0
+        });
+
+        if (!supabaseAnonKey) {
+          console.error('Missing VITE_SUPABASE_ANON_KEY environment variable');
+          // Fallback to local mpesaService
+          const result = await mpesaService.initiateSTKPush({
+            phoneNumber: formattedPhone,
             amount: 10,
             email,
-            description: 'AEDI Security - Detailed Breach Analysis',
-          }),
-        });
-        if (!res.ok) {
-          const raw = await res.text();
-          let err: any = {};
-          try { err = JSON.parse(raw); } catch { err = { error: raw }; }
-          const serverMsg = err.error || err.message || err.details?.errorMessage || err.details?.CustomerMessage;
-          throw new Error(serverMsg || 'Failed to initiate M-Pesa STK Push');
+            description: 'AEDI Security - Detailed Breach Analysis'
+          });
+          
+          if (!result.success) {
+            throw new Error(result.message);
+          }
+          
+          const txn = result.checkoutRequestId!;
+          setTransactionId(txn);
+          setPaymentStatus('pending');
+          setCountdown(120);
+          checkPaymentStatusLocal(txn);
+          return;
         }
-        const data = await res.json();
-        if (!data.success || !data.checkoutRequestId) {
-          const serverMsg = data.message || data.error || data.details?.errorMessage || data.details?.CustomerMessage;
-          throw new Error(serverMsg || 'Failed to initiate M-Pesa STK Push');
-        }
+        
+        try {
+          // Try Supabase Edge Function first
+          console.log('Attempting Supabase Edge Function call...');
+          const res = await fetch(`${functionsUrl}/initiate-mpesa-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseAnonKey}`,
+              'apikey': supabaseAnonKey,
+            },
+            body: JSON.stringify({
+              phone: formattedPhone,
+              amount: 10,
+              email,
+              description: 'AEDI Security - Detailed Breach Analysis',
+            }),
+          });
+          
+          console.log('Supabase response status:', res.status);
+          
+          if (!res.ok) {
+            const raw = await res.text();
+            console.error('Supabase error response:', raw);
+            let err: any = {};
+            try { err = JSON.parse(raw); } catch { err = { error: raw }; }
+            const serverMsg = err.error || err.message || err.details?.errorMessage || err.details?.CustomerMessage;
+            throw new Error(serverMsg || `HTTP ${res.status}: ${raw}`);
+          }
+          
+          const data = await res.json();
+          console.log('Supabase success response:', data);
+          
+          if (!data.success || !data.checkoutRequestId) {
+            const serverMsg = data.message || data.error || data.details?.errorMessage || data.details?.CustomerMessage;
+            throw new Error(serverMsg || 'Failed to initiate M-Pesa STK Push');
+          }
 
-        const txn = data.checkoutRequestId as string;
-        setTransactionId(txn);
-        setPaymentStatus('pending');
-        setCountdown(120);
-        checkPaymentStatus(txn);
-        return;
+          const txn = data.checkoutRequestId as string;
+          setTransactionId(txn);
+          setPaymentStatus('pending');
+          setCountdown(120);
+          checkPaymentStatus(txn);
+          return;
+          
+        } catch (supabaseError) {
+          console.error('Supabase Edge Function failed, falling back to local service:', supabaseError);
+          
+          // Fallback to local mpesaService
+          const result = await mpesaService.initiateSTKPush({
+            phoneNumber: formattedPhone,
+            amount: 10,
+            email,
+            description: 'AEDI Security - Detailed Breach Analysis'
+          });
+          
+          if (!result.success) {
+            throw new Error(result.message);
+          }
+          
+          const txn = result.checkoutRequestId!;
+          setTransactionId(txn);
+          setPaymentStatus('pending');
+          setCountdown(120);
+          checkPaymentStatusLocal(txn);
+          return;
+        }
       }
 
       if (selectedMethod === 'card') {
@@ -200,29 +260,33 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, email, onP
     setTimeout(async () => {
       try {
         // Check payment status via Supabase Edge Function
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-        const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-        if (!supabaseUrl || !supabaseAnon) {
-          throw new Error('Missing Supabase configuration');
+        const functionsUrl = import.meta.env.VITE_FUNCTIONS_URL || 'https://ctyoktgzxqmeqzhmwpro.functions.supabase.co';
+        const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        
+        if (!supabaseAnonKey) {
+          console.log('No Supabase key, using local status check');
+          return checkPaymentStatusLocal(txnId);
         }
-
-        const res = await fetch(`${supabaseUrl}/functions/v1/check-payment-status/${encodeURIComponent(txnId)}`, {
+        
+        console.log('Checking payment status via Supabase...');
+        const res = await fetch(`${functionsUrl}/check-payment-status/${encodeURIComponent(txnId)}`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${supabaseAnon}`
+            'Authorization': `Bearer ${supabaseAnonKey}`,
+            'apikey': supabaseAnonKey,
           }
         });
 
         if (!res.ok) {
           const errorText = await res.text();
-          console.error('Status check failed:', res.status, errorText);
-          throw new Error(`Status check failed: ${res.status}`);
+          console.error('Supabase status check failed:', res.status, errorText);
+          console.log('Falling back to local status check');
+          return checkPaymentStatusLocal(txnId);
         }
 
         const status = await res.json();
-        console.log('Payment status response:', status);
+        console.log('Supabase payment status response:', status);
 
         if (status.status === 'completed') {
           setPaymentStatus('success');
@@ -244,13 +308,44 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, email, onP
 
           setTimeout(() => { onPaymentSuccess(txnId, sendToEmail); onClose(); }, 1500);
         } else if (status.status === 'failed') {
-          setPaymentStatus('failed'); 
+          setPaymentStatus('failed');
           setErrorMessage('Payment failed. Please try again.');
         } else {
           if (countdown > 0) setTimeout(() => checkPaymentStatus(txnId), 4000);
           else { setPaymentStatus('failed'); setErrorMessage('Payment timeout. Please try again.'); }
         }
       } catch (e) {
+        console.error('Supabase status check error, falling back to local:', e);
+        checkPaymentStatusLocal(txnId);
+      }
+    }, 2500);
+  };
+
+  const checkPaymentStatusLocal = async (txnId: string) => {
+    setTimeout(async () => {
+      try {
+        console.log('Checking payment status locally...');
+        const status = await mpesaService.checkPaymentStatus(txnId);
+        console.log('Local payment status response:', status);
+
+        if (status.status === 'completed') {
+          setPaymentStatus('success');
+
+          // Send local notification
+          try {
+            await mpesaService.sendPaymentNotification(status, email);
+          } catch {}
+
+          setTimeout(() => { onPaymentSuccess(txnId, sendToEmail); onClose(); }, 1500);
+        } else if (status.status === 'failed') {
+          setPaymentStatus('failed');
+          setErrorMessage('Payment failed. Please try again.');
+        } else {
+          if (countdown > 0) setTimeout(() => checkPaymentStatusLocal(txnId), 4000);
+          else { setPaymentStatus('failed'); setErrorMessage('Payment timeout. Please try again.'); }
+        }
+      } catch (e) {
+        console.error('Local status check error:', e);
         setPaymentStatus('failed');
         setErrorMessage('Network error while checking payment status. Please try again.');
       }

@@ -2,6 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import vibrad from '@/assets/favicon_logo/vibrad.jpeg'
 import rusep from '@/assets/favicon_logo/rusep.png';
 import match from '@/assets/favicon_logo/match.jpeg';
+import onechurch from '@/assets/favicon_logo/onechurch-logo.png';
 
 const clients = [
   {
@@ -18,6 +19,11 @@ const clients = [
     name: "Match Electricals Ltd",
     logo: match,
     industry: "Electro‑Mechanical Contractors and Suppliers"
+  },
+  {
+    name: "OneChurch",
+    logo: onechurch,
+    industry: "Church Management Platform"
   }
 //   {
 //     name: "East African Breweries",

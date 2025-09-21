@@ -22,6 +22,8 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [breachMenuOpen, setBreachMenuOpen] = useState(false);
+  const [desktopBreachOpen, setDesktopBreachOpen] = useState(false);
   const { t } = useTranslation();
 
   const navItems = [
@@ -29,7 +31,6 @@ const Navigation = () => {
     { name: t('nav.services'), href: '/services' },
     { name: t('nav.about'), href: '/about' },
     { name: t('nav.blog'), href: '/blog' },
-    { name: t('nav.checkBreach'), href: '/check-breach' },
     { name: t('nav.contact'), href: '/contact' },
   ];
 
@@ -41,7 +42,7 @@ const Navigation = () => {
     <div className="flex items-center gap-x-4 flex-wrap">
       <div className="flex items-center gap-1">
         <Phone className="w-4 h-4" />
-        <span>+254 714 796 254</span>
+        <span>+254708759251</span>
       </div>
       <div className="flex items-center gap-1">
         <Mail className="w-4 h-4" />
@@ -105,6 +106,41 @@ const Navigation = () => {
                     {item.name}
                   </Link>
                 ))}
+                {/* Check Breach Dropdown (Desktop) */}
+                <div
+                  className="relative"
+                  onMouseEnter={() => setDesktopBreachOpen(true)}
+                  onMouseLeave={() => setDesktopBreachOpen(false)}
+                >
+                  <button
+                    className="text-muted-foreground hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                    aria-haspopup="menu"
+                    aria-expanded={desktopBreachOpen}
+                  >
+                    {t('nav.checkBreach')}
+                  </button>
+                  <div
+                    className={`${desktopBreachOpen ? 'block opacity-100' : 'hidden opacity-0'} transition-opacity duration-150 absolute left-0 top-full w-56 z-20 rounded-md shadow-lg bg-background border border-border`}
+                    role="menu"
+                  >
+                    <div className="py-1">
+                      <Link
+                        to="/check-breach"
+                        className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground"
+                        role="menuitem"
+                      >
+                        Email Breach Checker
+                      </Link>
+                      <Link
+                        to="/check-breach/malware-scanner"
+                        className="block px-4 py-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground"
+                        role="menuitem"
+                      >
+                        Malware & Phishing Scanner
+                      </Link>
+                    </div>
+                  </div>
+                </div>
                 <LanguageSelector />
                 <Link to="/contact">
                   <Button variant="default" className="ml-4">
@@ -142,6 +178,35 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Check Breach Dropdown (Mobile) */}
+              <div className="px-3">
+                <button
+                  onClick={() => setBreachMenuOpen((v) => !v)}
+                  className="w-full text-left text-muted-foreground hover:text-primary block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  {t('nav.checkBreach')}
+                </button>
+                {breachMenuOpen && (
+                  <div className="ml-4 mt-1">
+                    <Link
+                      to="/check-breach"
+                      className="text-muted-foreground hover:text-primary block px-3 py-2 rounded-md text-sm"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Email Breach Check
+                    </Link>
+                    <Link
+                      to="/check-breach/website"
+                      className="text-muted-foreground hover:text-primary block px-3 py-2 rounded-md text-sm"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Website Breach Check
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               <div className="px-3 py-2 space-y-2">
                 <LanguageSelector />
                 <Link to="/contact">

@@ -2,6 +2,7 @@
 // Edge Function to check M-Pesa payment status
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const CORS_HEADERS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -10,44 +11,87 @@ const CORS_HEADERS: Record<string, string> = {
   "Content-Type": "application/json",
 };
 
-// Simple in-memory storage for demo (in production, use Supabase database)
-const paymentStore = new Map<string, any>();
+// Initialize Supabase client
+const supabaseUrl = Deno.env.get("SUPABASE_URL");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabase = supabaseUrl && supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null;
 
-// Helper function to simulate payment completion
-function simulatePaymentCompletion(checkoutRequestId: string, timestamp: number): any {
-  const currentTime = Date.now();
-  const elapsedTime = currentTime - timestamp;
+// Helper function to check payment status from database
+async function checkPaymentFromDatabase(checkoutRequestId: string): Promise<any> {
+  if (!supabase) {
+    console.warn('⚠️ Supabase not configured, using fallback simulation');
+    return simulatePaymentCompletion(checkoutRequestId);
+  }
 
-  // Simulate payment processing time
-  if (elapsedTime < 10000) {
-    // Still processing (first 10 seconds)
-    return { status: 'pending' };
-  } else if (elapsedTime < 120000) {
-    // Simulate 90% success rate (10 seconds to 2 minutes)
-    const isSuccessful = Math.random() > 0.1;
-    
-    if (isSuccessful) {
-      const mpesaReceiptNumber = `NLJ7RT61SV${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
-      
-      // Store completion data
-      const completionData = {
-        status: 'completed',
-        transactionId: checkoutRequestId,
-        mpesaReceiptNumber,
-        amount: 10,
-        phoneNumber: '254712345678', // This would come from the original request
-        timestamp: new Date().toISOString(),
-        completedAt: currentTime
-      };
-      
-      paymentStore.set(checkoutRequestId, completionData);
-      
-      return completionData;
-    } else {
-      return { status: 'failed' };
+  try {
+    const { data, error } = await supabase
+      .from('payments')
+      .select('*')
+      .eq('checkout_request_id', checkoutRequestId)
+      .single();
+
+    if (error) {
+      console.error('❌ Database query error:', error);
+      return { status: 'failed', error: 'Database query failed' };
     }
+
+    if (!data) {
+      console.log('❌ Payment not found in database');
+      return { status: 'failed', error: 'Payment not found' };
+    }
+
+    console.log('✅ Payment found in database:', data);
+
+    // Map database status to frontend expected format
+    const status = data.status.toLowerCase();
+    
+    if (status === 'success') {
+      return {
+        status: 'completed',
+        transactionId: data.checkout_request_id,
+        mpesaReceiptNumber: data.mpesa_receipt_number,
+        amount: data.amount,
+        phoneNumber: data.phone_number,
+        timestamp: data.updated_at || data.created_at,
+      };
+    } else if (status === 'failed') {
+      return {
+        status: 'failed',
+        transactionId: data.checkout_request_id,
+        resultDesc: data.result_desc,
+      };
+    } else {
+      // Still pending
+      return {
+        status: 'pending',
+        transactionId: data.checkout_request_id,
+      };
+    }
+  } catch (err) {
+    console.error('❌ Database error:', err);
+    return { status: 'failed', error: 'Database error' };
+  }
+}
+
+// Fallback simulation function for when database is not available
+function simulatePaymentCompletion(checkoutRequestId: string): any {
+  // Simple simulation - in real scenario this would not be needed
+  const random = Math.random();
+  
+  if (random > 0.7) {
+    return {
+      status: 'completed',
+      transactionId: checkoutRequestId,
+      mpesaReceiptNumber: `NLJ7RT61SV${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
+      amount: 10,
+      phoneNumber: '254712345678',
+      timestamp: new Date().toISOString(),
+    };
+  } else if (random > 0.3) {
+    return { status: 'pending' };
   } else {
-    // Timeout after 2 minutes
     return { status: 'failed' };
   }
 }
@@ -79,29 +123,8 @@ serve(async (req: Request): Promise<Response> => {
 
     console.log(`Checking payment status for: ${checkoutRequestId}`);
 
-    // Check if we have stored data for this payment
-    let storedPayment = paymentStore.get(checkoutRequestId);
-    
-    if (!storedPayment) {
-      // If no stored data, create initial entry with current timestamp
-      // In a real implementation, this would come from when the STK push was initiated
-      storedPayment = {
-        checkoutRequestId,
-        timestamp: Date.now() - 5000, // Assume payment was initiated 5 seconds ago
-        status: 'pending'
-      };
-      paymentStore.set(checkoutRequestId, storedPayment);
-    }
-
-    // If payment is already completed, return the stored result
-    if (storedPayment.status === 'completed') {
-      return new Response(JSON.stringify(storedPayment), {
-        headers: CORS_HEADERS,
-      });
-    }
-
-    // Simulate payment processing
-    const result = simulatePaymentCompletion(checkoutRequestId, storedPayment.timestamp);
+    // Check payment status from database
+    const result = await checkPaymentFromDatabase(checkoutRequestId);
     
     console.log(`Payment status result:`, result);
 

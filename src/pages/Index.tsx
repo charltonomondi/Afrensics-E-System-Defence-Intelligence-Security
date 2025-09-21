@@ -12,6 +12,8 @@ import { CheckCircle, Users, Award, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import aediLogo from '@/assets/favicon_logo/aedi.jpeg';
+import matchLogo from '@/assets/favicon_logo/match.jpeg';
+import oneChurchLogo from '@/assets/favicon_logo/onechurch-logo.png';
 
 const Index = () => {
   const { t } = useTranslation();
@@ -192,6 +194,46 @@ const Index = () => {
       <ServicesPreview />
 
       <ClientsSection />
+
+      {/* Testimonials Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">What our clients say</h2>
+            <p className="text-muted-foreground mt-2">Trusted by organizations across industries</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="shadow-card h-full">
+              <CardHeader className="flex flex-row items-center gap-4">
+                <img src={matchLogo} alt="Match Electricals Ltd" className="w-14 h-14 rounded-md object-cover" />
+                <div>
+                  <CardTitle>Match Electricals Ltd</CardTitle>
+                  <CardDescription>Client Testimonial</CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p><strong>Afrensics Security Ltd</strong>, led by <strong>C.E.O. Charlton Omondi</strong>, has been an exceptional technology partner for Match Electricals Ltd. They crafted a <strong>dynamic website</strong> that elevates our online presence and delivered a <strong>fleet management system</strong> that streamlines our vehicle operations with remarkable efficiency.</p>
+                <p>Their blend of innovation, professionalism, and on-time delivery makes them a trusted choice for any organization seeking impactful digital solutions. We proudly recommend <strong>Afrensics Security Ltd</strong> for their outstanding work.</p>
+              </CardContent>
++
+            </Card>
+
+            <Card className="shadow-card h-full">
+              <CardHeader className="flex flex-row items-center gap-4">
+                <img src={oneChurchLogo} alt="OneChurch" className="w-14 h-14 rounded-md object-contain bg-white p-1" />
+                <div>
+                  <CardTitle>OneChurch</CardTitle>
+                  <CardDescription>Client Testimonial</CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>Working with <strong>Afrensics Security Ltd</strong> on the <strong>OneChurch church management system landing page</strong> was such a great experience. The team truly understood our requirements, delivered on time, and created a page that is not only beautiful and responsive but also easy to use.</p>
+                <p>Their work has significantly boosted our online presence and perfectly represents the vision of OneChurch. We would definitely recommend <strong>Afrensics Security Ltd</strong> to anyone looking for a talented and reliable development partner.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-16 hero-gradient">

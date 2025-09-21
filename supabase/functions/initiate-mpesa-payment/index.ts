@@ -3,6 +3,7 @@
 // Accepts { phone, amount, email?, description? } and returns the raw API response or structured success.
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // Environment variables (configure via Supabase secrets)
 // Try multiple possible environment variable names for flexibility
@@ -12,6 +13,13 @@ const PASSKEY = Deno.env.get("MPESA_PASSKEY");
 const SHORTCODE = Deno.env.get("MPESA_SHORTCODE") || "174379"; // BusinessShortCode (default demo)
 const ENV = Deno.env.get("MPESA_ENV") || "sandbox"; // "sandbox" | "production"
 const CALLBACK_URL = Deno.env.get("MPESA_CALLBACK_URL") || "https://ctyoktgzxqmeqzhmwpro.functions.supabase.co/mpesa-callback";
+
+// Initialize Supabase client
+const supabaseUrl = Deno.env.get("SUPABASE_URL");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabase = supabaseUrl && supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null;
 
 const BASE_URL = ENV === "production"
   ? "https://api.safaricom.co.ke"
@@ -158,22 +166,36 @@ serve(async (req: Request): Promise<Response> => {
       });
     }
 
-    // Store payment initiation data for status checking
-    const paymentData = {
-      checkoutRequestId: data.CheckoutRequestID,
-      merchantRequestId: data.MerchantRequestID,
-      phoneNumber: msisdn,
-      amount: Number(amount),
-      email: email || "unknown",
-      description: description || "Payment",
-      timestamp: Date.now(),
-      status: 'pending',
-      initiatedAt: new Date().toISOString()
-    };
-
-    // In a real implementation, store this in Supabase database
-    // For now, we'll rely on the status checking function to simulate
-    console.log('Payment initiated:', paymentData);
+    // Store payment initiation data in Supabase database
+    if (supabase) {
+      try {
+        const { error: dbError } = await supabase
+          .from('payments')
+          .insert([
+            {
+              checkout_request_id: data.CheckoutRequestID,
+              merchant_request_id: data.MerchantRequestID,
+              phone_number: msisdn,
+              amount: Number(amount),
+              email: email || null,
+              account_reference: email || "Afrensics",
+              description: description || "AEDI Security - Detailed Breach Analysis",
+              status: 'Pending',
+              env: ENV === "production" ? "production" : "sandbox",
+            }
+          ]);
+        
+        if (dbError) {
+          console.error('❌ Failed to store payment in database:', dbError);
+        } else {
+          console.log('✅ Payment stored in database successfully');
+        }
+      } catch (dbErr) {
+        console.error('❌ Database error:', dbErr);
+      }
+    } else {
+      console.warn('⚠️ Supabase not configured, payment not stored in database');
+    }
 
     return new Response(JSON.stringify({
       success: true,

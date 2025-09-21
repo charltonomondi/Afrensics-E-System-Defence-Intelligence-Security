@@ -371,7 +371,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold mb-1">Phone Numbers</h3>
                     <p className="text-muted-foreground">
-                      Main: 254 714 796 254<br />
+                      Main: +254708759251<br />
                       Emergency: +254 743 141 928<br />
                       <span className="text-primary font-medium">Available 24/7</span>
                     </p>

@@ -16,6 +16,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import CheckBreach from "./pages/CheckBreach";
 import CheckBreachWithPayment from "./pages/CheckBreachWithPayment";
+import MalwareScanner from "./pages/MalwareScanner";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/check-breach" element={<CheckBreach />} />
+            <Route path="/check-breach/malware-scanner" element={<MalwareScanner />} />
             <Route path="/check-breach-payment" element={<CheckBreachWithPayment />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />

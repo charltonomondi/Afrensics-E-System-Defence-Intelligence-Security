@@ -19,7 +19,8 @@ import wblog1 from "@/assets/blogs/wblog1.png";
 import wblog2 from "@/assets/blogs/wblog2.png";
 import cyberincident from '@/assets/blogs/cyberincident.jpg';
 import SA from '@/assets/blogs/SA.png';
-
+import recap from '@/assets/blogs/recap.webp';
+import recap2 from '@/assets/blogs/recap2.jpg';
 
 
 // Example blog data
@@ -755,19 +756,203 @@ const blogPosts = [
 	},
 	{
 		id: "6",
-		title: "The Rise of AI in Cybersecurity: Opportunities and Challenges",
-		author: "",
-		date: "Coming Soon",
-		image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
+		title: "Afrensics Weekly Cybersecurity Highlights — Week 1: 1–7 September 2025",
+		author: "Afrensics Security",
+		date: "September 7, 2025",
+		image: recap,
 		content: (
 			<>
-				<div className="text-center py-16">
-					<h2 className="text-3xl font-bold mb-4">Coming Soon</h2>
-					<p className="mb-6 text-lg">
-						Want to be the first to receive the latest updates? Subscribe below!
-					</p>
-					<SubscribeSection />
+				<div className="mb-6 text-lg font-semibold text-primary">
+					Afrensics Weekly Cybersecurity Highlights
 				</div>
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-2">Week 1: 1–7 September 2025</h2>
+					<p className="mb-4">
+						Ghana lost GH■15 million to cybercrime in the first half of 2025, Minister Samuel Nartey George has said, citing the Interpol 2025 Africa Cyber Threat Assessment Report. Cyber incidents across Africa caused $3 billion in losses, with finance, healthcare, energy, and government sectors most vulnerable. In Ghana, online fraud, blackmail, and unauthorized system access are the most common cybercrimes.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Benin: Public and Financial Services Under Fire</h3>
+					<p className="mb-4">
+						Public and financial services are the primary targets of cyberattacks in Benin, according to the country’s Information Systems and Digital Agency (ASIN). Between 2021 and 2024, over 75% of password leaks and data breaches affected these sectors, with 406 finance and 226 public service incidents.
+					</p>
+					<p className="mb-4">
+						Common attack types included malware infections and website hacking, often caused by poor configuration, missing security patches, and lack of staff awareness. Most serious incidents stemmed from preventable technical and organizational failures.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">StealC v2: Phishing Wave on Facebook Across Africa</h3>
+					<p className="mb-4">
+						Kaspersky identifies over 400 incidents involving the “StealC v2” infostealer malware, spreading rapidly via phishing messages on Facebook across Africa. This malware targets users in Kenya, Angola, Ethiopia, Niger, Uganda, Zambia, and several other countries, using fake account suspension alerts to lure victims.
+					</p>
+					<p className="mb-4">
+						Clicking the “Appeal” button in the fraudulent message leads to a download of StealC v2, which steals passwords, cookies, screenshots, and cryptocurrency wallet data. Distributed as Malware-as-a-Service, it exploits urgency and fear, making it especially effective. Kaspersky urges vigilance: verify suspicious messages and avoid clicking unknown links.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">WhatsApp at Work: Security Risks in African Workplaces</h3>
+					<p className="mb-4">
+						WhatsApp presents a major threat to African workplaces, with 93% of respondents in a 2025 KnowBe4 Africa survey using it for work communications, despite significant cybersecurity risks. Dangers include accidental or intentional sharing of confidential information and susceptibility to phishing, identity theft, and account takeovers via SIM swap scams.
+					</p>
+					<p className="mb-4">
+						Experts recommend organizations implement clear communication strategies, endorse secure platforms like Teams or Slack, and educate employees on digital mindfulness to mitigate these risks.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Nigeria: New Telecom Cybersecurity Framework</h3>
+					<p className="mb-4">
+						Nigeria is implementing a new cybersecurity framework for the telecom sector in 2026, supported by the World Bank and CyberNover consultancy. The framework sets standards for incident management, risk assessment, information sharing, and cooperation with authorities.
+					</p>
+					<p className="mb-4">
+						It builds on the 2015 Cybercrime Prevention Act and 2023 Data Protection Act to address rising cyberattacks threatening critical infrastructure and operational technology. The initiative aims to improve network resilience, boost consumer confidence, and unify sector-wide practices. Telecom operators will face mandatory audits, monitoring, and penalties for non-compliance.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Zimbabwe: Rising Cybercrime Targeting the Vulnerable</h3>
+					<p className="mb-4">
+						Zimbabwe is experiencing a surge in sophisticated cybercrime, targeting especially vulnerable groups like the elderly. Common tactics include phishing, fake identities, social engineering, and fraudulent websites, leading to financial loss and emotional distress.
+					</p>
+					<p className="mb-4">
+						The Zimbabwe Republic Police (ZRP) has established specialized cybercrime units working with Interpol's Africa Cyber Surge initiative for cross-border cooperation. Despite legal frameworks like the Cyber and Data Protection Act, cybercrime—including mobile money fraud and identity theft—remains widespread. Authorities urge public vigilance, prompt reporting, and family education on online safety.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Follow Afrensics</h3>
+					<ul className="list-disc pl-6 space-y-2">
+						<li><strong>Email:</strong> <a href="mailto:info@aedisecurity.com" className="text-blue-600 hover:underline">info@aedisecurity.com</a></li>
+						<li><strong>Website:</strong> <a href="https://aedisecurity.com" target="_blank" className="text-blue-600 hover:underline">https://aedisecurity.com</a></li>
+						<li><strong>LinkedIn:</strong> <a href="https://ke.linkedin.com/company/aedisecurity" target="_blank" className="text-blue-600 hover:underline">https://ke.linkedin.com/company/aedisecurity</a></li>
+						<li><strong>Facebook:</strong> <a href="https://web.facebook.com/Afrensics" target="_blank" className="text-blue-600 hover:underline">https://web.facebook.com/Afrensics</a></li>
+						<li><strong>X (Twitter):</strong> <a href="https://x.com/afrensics" target="_blank" className="text-blue-600 hover:underline">https://x.com/afrensics</a></li>
+						<li><strong>Instagram:</strong> <a href="https://www.instagram.com/afrensics/" target="_blank" className="text-blue-600 hover:underline">https://www.instagram.com/afrensics/</a></li>
+					</ul>
+				</section>
+
+				<AppointmentBooking />
+			</>
+		),
+	},
+	{
+		id: "7",
+		title: "Afrensics Weekly Cybersecurity Highlights — Week 2: 8–14 September 2025",
+		author: "Afrensics Security",
+		date: "September 14, 2025",
+		image: recap2,
+		content: (
+			<>
+				<div className="mb-6 text-lg font-semibold text-primary">
+					Afrensics Weekly Cybersecurity Highlights
+				</div>
+				<section className="mb-8">
+					<h2 className="text-xl font-bold mb-2">Week 2: 8–14 September 2025</h2>
+					<p className="mb-4">
+						In-depth analysis reveals three key trends: weaponized AI enabling sophisticated cyberattacks, increased regulatory compliance requirements globally, and the evolution of ransomware into precision-targeted operations. Supply chain vulnerabilities and attacks against critical infrastructure by nation-state actors continue to rise. Groups like <strong>Qilin</strong>, <strong>Medusa</strong>, and <strong>Rhysida</strong> conduct highly strategic ransomware campaigns targeting high-value industries such as freight forwarding, healthcare, and entertainment.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Yurei Ransomware Expands in Asia and Africa</h3>
+					<p className="mb-4">
+						<strong>Yurei</strong>, active since September 5, 2025, uses double-extortion methods targeting organizations in Asia and Africa with open-source ransomware tools—raising ransomware risks across the continent.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Google Cloud Global Cybersecurity Forecast 2025</h3>
+					<p className="mb-4">
+						Released on 11 September, the report highlights <strong>AI-powered attacks</strong>, the role of <strong>infostealer malware</strong>, persistent <strong>ransomware</strong> campaigns, the maturing of <strong>cloud security operations</strong>, and <strong>post-quantum cryptography</strong> as essential global trends shaping cyber risk, including in Europe, Middle East, and Africa.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Uganda: Rising Cybercrime Requires Capacity Building</h3>
+					<p className="mb-4">
+						Uganda faces growing cybercrime challenges, with increasing losses from online scams and digital fraud. Government and private sector leaders emphasize the need for improved cybersecurity education and capacity building to keep pace with rapid digital transformation.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Nigeria: Shipping MITM Scams and Financial Sector Threats</h3>
+					<p className="mb-4">
+						Organized Nigerian criminal syndicates increasingly target global shipping with <strong>man-in-the-middle</strong> scams demanding multimillion-dollar ransoms, substantially raising costs for the shipping industry. Financial institutions face similar risks from ransomware and fraud.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Digital Banking Fraud: Money Mules Surge 168%</h3>
+					<p className="mb-4">
+						Globally—including Africa—organized crime groups have industrialized digital banking fraud, with a breakout <strong>168% increase</strong> in money mule networks, escalating risk for banks and consumers and driving new fraud prevention efforts.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Leadership and Early Detection are Critical</h3>
+					<p className="mb-4">
+						As threats become more internal and sophisticated, businesses must invest in advanced cybersecurity leadership to combat rapidly evolving digital risks. The <strong>PwC 2025 East Africa Digital Trust Insights Survey</strong> points to more sophisticated insider and external cyber threats. Experts cite incidents like the 2024 South African National Health Laboratory ransomware breach, emphasizing the need for <strong>early threat detection and response</strong> to prevent disasters.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Kenya: Sh1.59 Billion Lost to Mobile Cyber Fraud</h3>
+					<p className="mb-4">
+						Hackers have exploited mobile banking vulnerabilities in Kenya, siphoning over <strong>Sh1.59 billion</strong> through cyber heists on depositors' phones—underscoring rising mobile fraud risks and the need for enhanced measures in financial services.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Angola: Among Worst-Hit by Cyberattacks</h3>
+					<p className="mb-4">
+						Angola is among Africa’s worst-hit countries after suffering the highest number of cyberattacks on the continent in the past month, underscoring the region’s growing cybersecurity challenges.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Mobile Threats: Android Attacks Up 29%</h3>
+					<p className="mb-4">
+						Mobile devices remain a critical attack vector. Kaspersky’s data shows a <strong>29%</strong> increase in Android smartphone attacks in the first half of 2025 compared to the previous year, with a <strong>48%</strong> increase from the second half of 2024.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Proofpoint: Agentic AI for Communications Intelligence</h3>
+					<p className="mb-4">
+						Proofpoint unveiled the industry’s first <strong>agentic AI</strong> for human communications intelligence—detecting risky communications in real time and enhancing SOC threat detection and response.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Education: AI-Enhanced Phishing on the Rise</h3>
+					<p className="mb-4">
+						Cybercriminals increasingly use AI to create highly convincing phishing scams targeting educational institutions, making attacks more sophisticated and harder to detect. Education sectors across Africa are particularly vulnerable due to rapid digital adoption without commensurate cybersecurity measures.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Africa: Digital Literacy and Investment Gaps</h3>
+					<p className="mb-4">
+						Cybersecurity gaps in Africa necessitate increased digital literacy as the continent adopts mobile banking. There is a growing gap between awareness and secure digital behaviors, with spikes in ransomware, online scams, and phishing exacerbated by underinvestment and skills shortages.
+					</p>
+				</section>
+
+				<section className="mb-8">
+					<h3 className="text-lg font-semibold mb-2">Follow Afrensics</h3>
+					<ul className="list-disc pl-6 space-y-2">
+						<li><strong>Email:</strong> <a href="mailto:info@aedisecurity.com" className="text-blue-600 hover:underline">info@aedisecurity.com</a></li>
+						<li><strong>Website:</strong> <a href="https://aedisecurity.com" target="_blank" className="text-blue-600 hover:underline">https://aedisecurity.com</a></li>
+						<li><strong>LinkedIn:</strong> <a href="https://ke.linkedin.com/company/aedisecurity" target="_blank" className="text-blue-600 hover:underline">https://ke.linkedin.com/company/aedisecurity</a></li>
+						<li><strong>Facebook:</strong> <a href="https://web.facebook.com/Afrensics" target="_blank" className="text-blue-600 hover:underline">https://web.facebook.com/Afrensics</a></li>
+						<li><strong>X (Twitter):</strong> <a href="https://x.com/afrensics" target="_blank" className="text-blue-600 hover:underline">https://x.com/afrensics</a></li>
+						<li><strong>Instagram:</strong> <a href="https://www.instagram.com/afrensics/" target="_blank" className="text-blue-600 hover:underline">https://www.instagram.com/afrensics/</a></li>
+					</ul>
+				</section>
+
+				<AppointmentBooking />
 			</>
 		),
 	},

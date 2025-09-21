@@ -17,6 +17,8 @@ import cyber from '@/assets/cyber.png';
 import blogBanner from '@/assets/banner/blog.webp';
 import cyberincident from '@/assets/blogs/cyberincident.jpg';
 import SA from '@/assets/blogs/SA.png'; 
+import recap from '@/assets/blogs/recap.webp';
+import recap2 from '@/assets/blogs/recap2.jpg';
 
 const blogPosts = [
   {
@@ -231,12 +233,21 @@ A new report by global internet researchers, [Datareportal and Meltwater](https:
   },
   {
     id: 6,
-    title: "The Rise of AI in Cybersecurity: Opportunities and Challenges",
-    excerpt: "Artificial Intelligence is transforming cybersecurity. Explore how AI is being used to enhance security and the new challenges it brings.",
-    author: "",
-    date: "Coming Soon",
-    category: "Trends",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop"
+    title: "Afrensics Weekly Cybersecurity Highlights — Week 1: 1–7 September 2025",
+    excerpt: "Week 1 highlights: Ghana reports GH■15 million in cybercrime losses; Benin’s public and finance sectors hit hardest; StealC v2 malware via Facebook; WhatsApp workplace risks; Nigeria’s 2026 telecom cybersecurity framework; Zimbabwe faces rising cybercrime.",
+    author: "Afrensics Security",
+    date: "September 7, 2025",
+    category: "Updates",
+    image: recap,
+  },
+  {
+    id: 7,
+    title: "Afrensics Weekly Cybersecurity Highlights — Week 2: 8–14 September 2025",
+    excerpt: "Week 2 highlights: weaponized AI, stricter compliance, precision ransomware (Qilin, Medusa, Rhysida), Yurei in Africa/Asia, Google Cloud 2025 forecast, Uganda’s rising cybercrime, Nigeria shipping MITM scams, 168% surge in money mules, Kenya Sh1.59B mobile fraud, Angola worst-hit, mobile attacks up 29%, Proofpoint agentic AI, EdTech phishing, Africa’s literacy/investment gaps.",
+    author: "Afrensics Security",
+    date: "September 14, 2025",
+    category: "Updates",
+    image: recap2,
   }
 ];
 
