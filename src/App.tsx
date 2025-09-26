@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import Analytics from "@/components/Analytics";
 import TawkChat from "@/components/TawkChat";
 import PenetrationTestingPopup from "@/components/PenetrationTestingPopup";
+import CookieConsent from "@/components/CookieConsent";
 import { usePenetrationTestingPopup } from "@/hooks/usePenetrationTestingPopup";
 
 import './i18n';
@@ -18,6 +19,8 @@ import CheckBreach from "./pages/CheckBreach";
 import CheckBreachWithPayment from "./pages/CheckBreachWithPayment";
 import MalwareScanner from "./pages/MalwareScanner";
 import Contact from "./pages/Contact";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,8 +46,13 @@ const App = () => {
             <Route path="/check-breach/malware-scanner" element={<MalwareScanner />} />
             <Route path="/check-breach-payment" element={<CheckBreachWithPayment />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+
+          {/* Cookie Consent Banner */}
+          <CookieConsent />
 
           {/* Penetration Testing Popup */}
           <PenetrationTestingPopup

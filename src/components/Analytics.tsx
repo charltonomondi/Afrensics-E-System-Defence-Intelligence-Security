@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Google Analytics tracking ID - replace with your actual GA4 tracking ID
-const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Replace with your actual Google Analytics 4 tracking ID
+const GA_TRACKING_ID = 'G-MRNP1SKCBF'; // AEDI Security Google Analytics 4 tracking ID
 
 // Google Tag Manager ID - replace with your actual GTM ID
 const GTM_ID = 'GTM-XXXXXXX'; // Replace with your actual Google Tag Manager ID
@@ -18,9 +18,11 @@ const Analytics = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Initialize Google Analytics
-    if (typeof window !== 'undefined' && GA_TRACKING_ID) {
-      // Load Google Analytics script
+    // Check if user has consented to cookies
+    const hasConsented = localStorage.getItem('cookieConsent');
+
+    if (hasConsented === 'accepted' && typeof window !== 'undefined' && GA_TRACKING_ID) {
+      // Load Google Analytics script only after consent
       const script = document.createElement('script');
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
@@ -35,11 +37,12 @@ const Analytics = () => {
       window.gtag('config', GA_TRACKING_ID, {
         page_title: document.title,
         page_location: window.location.href,
+        anonymize_ip: true, // IP anonymization for GDPR compliance
       });
     }
 
-    // Initialize Google Tag Manager
-    if (typeof window !== 'undefined' && GTM_ID) {
+    // Initialize Google Tag Manager only after consent
+    if (hasConsented === 'accepted' && typeof window !== 'undefined' && GTM_ID) {
       // GTM script
       const gtmScript = document.createElement('script');
       gtmScript.innerHTML = `

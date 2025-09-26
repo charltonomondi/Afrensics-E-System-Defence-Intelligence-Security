@@ -22,6 +22,52 @@ import recap2 from '@/assets/blogs/recap2.jpg';
 
 const blogPosts = [
   {
+    id: 8,
+    title: "Afrensics Weekly Cybersecurity Highlights — 15–21 September 2025",
+    excerpt: "Comprehensive analysis of Africa's cybersecurity landscape including rising threats to industrial automation systems, AI-powered phishing trends, Kenya's 4.6 billion-shilling cyber threats, and innovative responses from MTN and Central Bank of Kenya.",
+    author: "Afrensics Security",
+    date: "September 21, 2025",
+    category: "Updates",
+    image: cyber,
+    featured: true,
+    content: `
+# AFRENSICS WEEKLY CYBERSECURITY HIGHLIGHTS
+## 15–21 SEPTEMBER 2025
+
+### CYBER THREATS AND ATTACKS
+
+**Threat landscape for industrial automation systems in Africa:** High threat detection rates indicate low cybersecurity maturity in industrial sectors. Africa leads globally in threats including worms, ransomware, spyware, and web miners, with poor network segmentation and endpoint protection cited as challenges. South Africa, Namibia, Rwanda, Mauritania, and Gabon are top countries affected by various malware types.
+
+**State of African cybersecurity:** A KnowB4 survey across seven African countries found increased awareness of cybersecurity threats but also revealed overconfidence — 83% believed they would recognize a security incident, yet 53% did not understand ransomware. African users are increasingly concerned about cybercrime, with 58% expressing high concern compared to 29% in 2023. Mobile banking and payments usage jumped to 85%, enlarging the digital attack surface. Phishing victims rose from 26% to 32%, while financial losses slightly increased, underscoring the sophistication of attacks and a gap between awareness and behaviour.
+
+**Kaspersky cybersecurity expert warns of growing threats to African businesses:** Emphasis on increasing sophistication of cyberattacks necessitates layered and proactive cybersecurity strategies for African enterprises.
+
+**Infostealer and ransomware trends increase in South Africa:** A Kaspersky report shows a rise in sophisticated cyber threats such as infostealers and ransomware targeting South African users and enterprises. Recommended multilayer defense strategies focusing on continuous threat intelligence and proactive incident response.
+
+**Kenya detects 4.6 billion-shilling cyber threats in Q2 2025:** An 80.8% increase in detected cyber threats was recorded in Kenya driven by improved monitoring and expanding digital footprint. Increasingly sophisticated AI-powered attacks, social engineering, and phishing scams pose major risks to both private and public sectors.
+
+**Namibia Cyber threats surge:** The Namibia Cyber Security Incident Response Team reported 843,000 cyber-attacks and 549,556 vulnerabilities detected in the second quarter of 2025, a significant rise in threat volume. This report emphasized both large-scale threat detection and the urgent need for proactive defences in public and private sectors.
+
+**AI-Powered phishing fuels ransomware losses:** AI-generated phishing is a growing trend contributing to ransomware attacks, as noted in CrowdStrike's 2025 Threat Hunting Report, with 78% of enterprises experiencing at least one AI-specific breach.
+
+### CYBERSECURITY RESPONSE & INNOVATION
+
+**MTN in $240 Million AI data centre push:** MTN Group confirmed commercial negotiations with US and European partners to build AI-enabled data centres across Africa. The first centre in Nigeria aims to provide computing power for governments and enterprises, enhancing digital sovereignty and reducing reliance on overseas cloud providers. The move targets the continent's low data centre capacity and growing demand for secure, AI-powered infrastructure.
+
+**Kenya's Central Bank launches banking sector cybersecurity centre:** The Central Bank of Kenya launched a state-of-the-art Banking Sector Cybersecurity Operations Centre to combat rising cyber threats in the financial sector. The BS-SOC will provide real-time threat intelligence, incident response, digital forensics, and cyber investigations. Banks and other regulated financial institutions must report cyber incidents within specified timelines and comply with harmonized cybersecurity regulations. The initiative follows a sharp rise in cybercrime in Kenya with 2.54 billion cyber threat incidents reported in Q1 2025 and a record $12 million stolen from bank customers in 2024.
+
+**AI and Cybersecurity Innovations:** Collaborations among cybersecurity firms such as CrowdStrike with tech giants are enhancing AI security infrastructure to better protect against emerging vulnerabilities including model theft and data poisoning.
+
+**What SMEs can do to avert cyberattacks:** Many SMEs lack basic cybersecurity measures, making them vulnerable to data theft, operational disruptions, and financial losses. The problem is worsened by employees falling for scams and outdated systems that hackers exploit. Strategies to solve this problem include implementing multi-layered defences such as regular staff training, timely software patching, automatic data backups, securing all devices, using stronger authentication methods like two-factor authentication, and limiting access rights within the organisation. By proactively addressing these vulnerabilities, SMEs can protect themselves from costly cyberattacks and build a safer digital future in an increasingly connected world.
+
+**Bring Your Own Device (BYOD) policies:** Organizations face serious cybersecurity risks, especially with the escalating BYOD risks - 41% to 80% of employees using personal devices for work and growing shadow AI that lacks governance in organizations. These devices often lack proper security controls, making sensitive data vulnerable to leaks, malware infections, and breaches via unsecured apps, cloud storage, public Wi-Fi, or malicious downloads. To mitigate these issues, organisations must establish clear BYOD rules, implement technical safeguards such as strong passwords, multifactor authentication, encryption, and endpoint security, and prioritise thorough employee training.
+
+---
+
+*This comprehensive report highlights the evolving cybersecurity landscape across Africa, showcasing both emerging threats and innovative responses from governments, organizations, and industry leaders.*
+    `
+  },
+  {
     id: 1,
     title: "Vulnerability haunts over a million Kenyan Businesses, more could be at risk!",
     excerpt: "Kenya’s Business Registration Service (BRS) experienced a significant cyberattack on the night of 31 January 2025, resulting in a data breach that exposed sensitive information.",
@@ -29,7 +75,7 @@ const blogPosts = [
     date: "February 25, 2025",
     category: "Threats",
     image: hacker,
-    featured: true
+    featured: false
   },
   {
     id: 2,
@@ -257,6 +303,8 @@ const Blog = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 6;
 
   // Filter and search blog posts
   const filteredPosts = useMemo(() => {
@@ -278,8 +326,30 @@ const Blog = () => {
       );
     }
 
+    // Sort by date (newest first)
+    filtered = filtered.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
+
     return filtered;
   }, [searchQuery, selectedCategory]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -330,7 +400,7 @@ const Blog = () => {
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Featured Post */}
-              {filteredPosts.filter(post => post.featured).map(post => (
+              {paginatedPosts.filter(post => post.featured).map(post => (
                 <Card key={post.id} className="mb-12 card-gradient shadow-hero overflow-hidden">
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative">
@@ -371,7 +441,7 @@ const Blog = () => {
 
               {/* Regular Posts */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {filteredPosts.filter(post => !post.featured).length === 0 && searchQuery ? (
+                {paginatedPosts.filter(post => !post.featured).length === 0 && searchQuery ? (
                   <div className="col-span-2 text-center py-12">
                     <Search className="h-16 w-16 mx-auto text-gray-300 mb-4" />
                     <h3 className="text-xl font-semibold text-gray-600 mb-2">No articles found</h3>
@@ -384,7 +454,7 @@ const Blog = () => {
                     </Button>
                   </div>
                 ) : (
-                  filteredPosts.filter(post => !post.featured).map(post => (
+                  paginatedPosts.filter(post => !post.featured).map(post => (
                   <Card key={post.id} className="card-gradient shadow-card hover:shadow-hero transition-all duration-300 overflow-hidden">
                     <div className="relative">
                       <img 
@@ -427,15 +497,43 @@ const Blog = () => {
               </div>
 
               {/* Pagination */}
-              <div className="flex justify-center mt-12">
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">Previous</Button>
-                  <Button variant="default" size="sm">1</Button>
-                  <Button variant="outline" size="sm">2</Button>
-                  <Button variant="outline" size="sm">3</Button>
-                  <Button variant="outline" size="sm">Next</Button>
+              {totalPages > 1 && (
+                <div className="flex flex-col items-center mt-12 space-y-4">
+                  <div className="text-sm text-muted-foreground">
+                    Page {currentPage} of {totalPages} ({filteredPosts.length} posts total)
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </Button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </Button>
+                    ))}
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -520,10 +618,10 @@ const Blog = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {filteredPosts.slice(0, 3).map(post => (
+                    {filteredPosts.filter(post => !post.featured).slice(0, 3).map(post => (
                       <div key={post.id} className="flex space-x-3">
-                        <img 
-                          src={post.image} 
+                        <img
+                          src={post.image}
                           alt={post.title}
                           className="w-16 h-16 object-cover rounded-md flex-shrink-0"
                         />

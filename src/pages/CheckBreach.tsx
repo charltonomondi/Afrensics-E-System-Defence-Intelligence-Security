@@ -8,8 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertTriangle, CheckCircle, Search, Shield, Info, Calendar, Users } from 'lucide-react';
 import { freeBreachAPI } from '@/services/freeBreachAPI';
-import PaymentModal from '@/components/PaymentModal';
-import { mpesaService } from '@/services/mpesaService';
 import pwnedBanner from '@/assets/banner/pwned.jpg';
 
 // Detailed result used AFTER payment
@@ -50,9 +48,7 @@ const CheckBreach = () => {
   // Detailed result (post-payment)
   const [detailedResult, setDetailedResult] = useState<BreachCheckResult | null>(null);
 
-  // Payment state
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [transactionId, setTransactionId] = useState('');
+  // UI state
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
   // Anonymous usage counter
@@ -78,7 +74,7 @@ const CheckBreach = () => {
     }
   };
 
-  // Submit basic check (no payment). This updates anonymous counter and shows only breached/not-breached.
+  // Submit check (free detailed results). This updates anonymous counter and shows detailed results immediately.
   const handleBasicSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
@@ -96,51 +92,10 @@ const CheckBreach = () => {
     try {
       const apiResult = await freeBreachAPI.checkEmail(email);
 
-      // Update anonymous counter on every basic check
+      // Update anonymous counter on every check
       incrementAnonymousCounter();
 
-      setBasicChecked(true);
-      setBasicBreached(!!apiResult.isBreached);
-      setShowCompletedModal(true);
-
-      // Light UX improvements
-      setPlaceholder('✓ Check complete - Enter another email');
-      setTimeout(() => setPlaceholder('Enter your email address'), 3000);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to check email breach status';
-      setError('Breach checking APIs are temporarily unavailable. Please try again later.');
-      console.error('Basic check failed:', errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // After successful payment, fetch detailed results and optionally notify business
-  const handlePaymentSuccess = async (txnId: string, sendToEmail: boolean) => {
-    setTransactionId(txnId);
-    setShowPaymentModal(false);
-
-    // Notify business line (no PII)
-    try {
-      await mpesaService.sendPaymentNotification(
-        {
-          status: 'completed',
-          transactionId: txnId,
-          amount: 10,
-          phoneNumber: 'customer-phone',
-          timestamp: new Date().toISOString(),
-        },
-        email
-      );
-    } catch (err) {
-      console.error('Failed to send payment notification:', err);
-    }
-
-    // Fetch detailed data now
-    setLoading(true);
-    try {
-      const apiResult = await freeBreachAPI.checkEmail(email);
-
+      // Create detailed result immediately (no payment required)
       const breaches = apiResult.breaches.map((breach: any) => ({
         name: breach.Name || breach.name || 'Unknown',
         title: breach.Title || breach.title || breach.Name || breach.name || 'Unknown Breach',
@@ -210,43 +165,28 @@ const CheckBreach = () => {
       };
 
       setDetailedResult(result);
+      setBasicChecked(true);
+      setBasicBreached(!!apiResult.isBreached);
 
-      // If user opted-in for email, send via backend/email provider without storing locally
-      if (sendToEmail) {
-        try {
-          // Example placeholder: call a secure server endpoint (no client storage)
-          await fetch('/api/send-breach-results', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              to: email,
-              transactionId: txnId,
-              summary: {
-                isBreached: result.isBreached,
-                breachCount: result.breachCount,
-                riskScore: result.riskScore,
-              },
-            }),
-          });
-        } catch (e) {
-          console.warn('Sending results via email failed (non-blocking).');
-        }
-      }
+      // Light UX improvements
+      setPlaceholder('✓ Check complete - Enter another email');
+      setTimeout(() => setPlaceholder('Enter your email address'), 3000);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch detailed results';
-      setError('Unable to fetch detailed results. Please contact support with your Transaction ID: ' + txnId);
-      console.error('Detailed fetch failed:', errorMessage);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to check email breach status';
+      setError('Breach checking APIs are temporarily unavailable. Please try again later.');
+      console.error('Check failed:', errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <div className="min-h-screen">
       <SEO
-        title="Check Data Breach | Have I Been Pwned | AEDI Security Kenya"
-        description="Check if your email has been compromised in a data breach. Free breach checking tool by AEDI Security. Protect yourself from cyber threats and data breaches."
-        keywords="Data Breach Check, Have I Been Pwned, Email Breach Check, Cybersecurity Tool, Data Breach Detection, Email Security, AEDI Security Tools, Breach Monitoring, Cyber Threats"
+        title="Check Data Breach | FREE Email Breach Checker | AEDI Security Kenya"
+        description="Check if your email has been compromised in a data breach. COMPLETELY FREE breach checking tool by AEDI Security. Get detailed results instantly - no payment required!"
+        keywords="Data Breach Check, Have I Been Pwned, Email Breach Check, Free Breach Checker, Cybersecurity Tool, Data Breach Detection, Email Security, AEDI Security Tools, Breach Monitoring, Cyber Threats"
         url="https://aedisecurity.com/check-breach"
       />
       <Navigation />
@@ -258,9 +198,9 @@ const CheckBreach = () => {
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Check Data Breach</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">FREE Data Breach Check</h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Find out if your email has been compromised in a data breach
+            Find out if your email has been compromised in a data breach - <span className="text-green-400 font-semibold">COMPLETELY FREE!</span> Get detailed results instantly with no payment required.
           </p>
         </div>
       </section>
@@ -271,9 +211,9 @@ const CheckBreach = () => {
           <Card className="card-gradient shadow-hero">
             <CardHeader className="text-center">
               <Shield className="h-16 w-16 text-primary mx-auto mb-4" />
-              <CardTitle className="text-3xl font-bold">Check Your Email</CardTitle>
+              <CardTitle className="text-3xl font-bold">Check Your Email <span className="text-green-600">FREE</span></CardTitle>
               <CardDescription className="text-lg">
-                Enter your email address to see if it has appeared in any known data breaches
+                Enter your email address to see if it has appeared in any known data breaches. Get <strong>detailed results instantly</strong> - no payment required!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -353,12 +293,12 @@ const CheckBreach = () => {
                     <DialogTitle>Email Check Completed</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-4">
-                    <p className="text-sm text-blue-700">
-                      Your email has been checked for breach. For more details and results, pay KES 10 and see results.
+                    <p className="text-sm text-green-700">
+                      ✅ Your email has been checked for breaches. Detailed results are now loading below for FREE!
                     </p>
                     <div className="flex gap-3">
-                      <Button className="bg-green-600 hover:bg-green-700 flex-1" onClick={() => { setShowCompletedModal(false); setShowPaymentModal(true); }}>
-                        View details (Pay KES 10)
+                      <Button className="bg-green-600 hover:bg-green-700 flex-1" onClick={() => setShowCompletedModal(false)}>
+                        View Free Results Below
                       </Button>
                       <Button variant="outline" className="flex-1" onClick={() => setShowCompletedModal(false)}>
                         Close
@@ -681,14 +621,6 @@ const CheckBreach = () => {
       </section>
 
       <Footer />
-
-      {/* Payment modal for detailed analysis */}
-      <PaymentModal
-        isOpen={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
-        email={email}
-        onPaymentSuccess={handlePaymentSuccess}
-      />
     </div>
   );
 };

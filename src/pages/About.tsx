@@ -4,14 +4,16 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Target, Shield, Award, Globe, Heart } from 'lucide-react';
+import { Users, Target, Shield, Award, Globe, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
 // import { useTranslation } from 'react-i18next';
 import Charlton from '@/assets/team/charlton.png';
 import deo from '@/assets/team/deo-gumba.png';
 import Tj from '@/assets/team/Tj.png';
 import winstone from '@/assets/team/winstone.png';
 import aboutBanner from '@/assets/banner/about.jpg';
+import odundo from '@/assets/team/odundo.jpeg';
 
 const teamMembers = [
   {
@@ -37,6 +39,12 @@ const teamMembers = [
     role: "Technical Lead",
     description: "Software developer specializing in cross-platform app development using React Native.",
     image: winstone,
+  },
+  {
+    name: "Johnson Odundo",
+    role: "Marketing Consultant",
+    description: "Specialist in driving brand visibility through strategic social media campaigns and impactful on-ground marketing, effectively engaging and expanding the target audience.",
+    image: odundo,
   }
 ];
 
@@ -65,6 +73,49 @@ const values = [
 
 const About = () => {
   // const { t } = useTranslation();
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const scrollAmount = 312; // Amount to scroll on each step (1 card: 280px + 32px gap)
+
+  useEffect(() => {
+    // Check scroll buttons on mount
+    checkScrollButtons();
+  }, []);
+
+  const checkScrollButtons = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    setCanScrollLeft(container.scrollLeft > 0);
+    setCanScrollRight(container.scrollLeft < maxScrollLeft - 1);
+  };
+
+  const scrollLeft = () => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      const newScrollLeft = container.scrollLeft + scrollAmount;
+
+      if (newScrollLeft >= maxScrollLeft) {
+        // Stop at the end - don't reset to beginning
+        container.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+      } else {
+        // Scroll by exactly one card width
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -174,8 +225,8 @@ const About = () => {
                 <div className="text-muted-foreground">Clients Protected</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-primary mb-2">9</div>
-                <div className="text-muted-foreground">Years Experience</div>
+                <div className="text-4xl font-bold text-primary mb-2">100%</div>
+                <div className="text-muted-foreground">Data Protection</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary mb-2">24/7</div>
@@ -230,25 +281,62 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card key={index} className="card-gradient shadow-card hover:shadow-hero transition-all duration-300">
-                <CardHeader className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
-                    <img 
-                      src={member.image} 
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <CardTitle className="text-lg font-semibold">{member.name}</CardTitle>
-                  <CardDescription className="text-primary font-medium">{member.role}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm text-center">{member.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="relative px-20">
+            {/* Scrollable Container */}
+            <div
+              ref={scrollContainerRef}
+              className="overflow-x-auto overflow-y-hidden scrollbar-hide"
+              style={{
+                width: '1216px',
+                margin: '0 auto'
+              }}
+              onScroll={checkScrollButtons}
+            >
+              <div className="flex gap-8 pb-4" style={{ width: 'max-content' }}>
+                {teamMembers.map((member, index) => (
+                  <Card key={index} className="card-gradient shadow-card hover:shadow-hero transition-all duration-300 flex-none" style={{ width: '280px' }}>
+                    <CardHeader className="text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <CardTitle className="text-lg font-semibold">{member.name}</CardTitle>
+                      <CardDescription className="text-primary font-medium">{member.role}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground text-sm text-center">{member.description}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Left Navigation Button */}
+            <button
+              onClick={scrollLeft}
+              disabled={!canScrollLeft}
+              className={`absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-primary/90 hover:bg-primary text-white p-3 rounded-full shadow-xl transition-all duration-300 ${
+                !canScrollLeft ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
+              }`}
+              style={{ transform: 'translateY(-50%)' }}
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            {/* Right Navigation Button */}
+            <button
+              onClick={scrollRight}
+              disabled={!canScrollRight}
+              className={`absolute -right-36 top-1/2 -translate-y-1/2 z-20 bg-primary/90 hover:bg-primary text-white p-3 rounded-full shadow-xl transition-all duration-300 ${
+                !canScrollRight ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
+              }`}
+              style={{ transform: 'translateY(-50%)' }}
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </section>

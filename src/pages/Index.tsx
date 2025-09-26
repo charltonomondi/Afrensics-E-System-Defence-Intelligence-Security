@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
-import HeroSlider from '@/components/HeroSlider';
+import { HeroSection } from '@/components/HeroSection';
 import ServicesPreview from '@/components/ServicesPreview';
 import ClientsSection from '@/components/ClientsSection';
 import Footer from '@/components/Footer';
@@ -32,6 +32,7 @@ const Index = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
 
   const skipSplash = () => {
     setFadeOut(true);
@@ -120,7 +121,8 @@ const Index = () => {
         url="https://aedisecurity.com/"
       />
       <Navigation />
-      <HeroSlider />
+      {/* New Hero Section */}
+      <HeroSection />
       
       {/* About Section */}
       <section className="py-16 bg-background">
@@ -182,7 +184,7 @@ const Index = () => {
               <Card className="shadow-card">
                 <CardHeader className="text-center">
                   <CheckCircle className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <CardTitle className="text-2xl font-bold text-primary">ISO 27001</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-primary">Data Protection</CardTitle>
                   <CardDescription>{t('about.stats.certified')}</CardDescription>
                 </CardHeader>
               </Card>
@@ -215,7 +217,6 @@ const Index = () => {
                 <p><strong>Afrensics Security Ltd</strong>, led by <strong>C.E.O. Charlton Omondi</strong>, has been an exceptional technology partner for Match Electricals Ltd. They crafted a <strong>dynamic website</strong> that elevates our online presence and delivered a <strong>fleet management system</strong> that streamlines our vehicle operations with remarkable efficiency.</p>
                 <p>Their blend of innovation, professionalism, and on-time delivery makes them a trusted choice for any organization seeking impactful digital solutions. We proudly recommend <strong>Afrensics Security Ltd</strong> for their outstanding work.</p>
               </CardContent>
-+
             </Card>
 
             <Card className="shadow-card h-full">
@@ -251,7 +252,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-cyber-dark px-8 py-3">
+              <Button size="lg" variant="outline" className="border-white text-cyber-dark bg-white hover:bg-gray-100 hover:text-cyber-dark px-8 py-3 transition-all duration-300">
                 {t('cta.contactExperts')}
               </Button>
             </Link>
