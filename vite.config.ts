@@ -14,6 +14,10 @@ export default defineConfig(({ mode }) => ({
         target: "http://127.0.0.1:8081",
         changeOrigin: true,
       },
+      "/be": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
     },
   },
   plugins: [

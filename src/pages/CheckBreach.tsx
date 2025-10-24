@@ -6,9 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { AlertTriangle, CheckCircle, Search, Shield, Info, Calendar, Users } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Search, Shield, Info, Calendar, Users, Mail, Send } from 'lucide-react';
 import { freeBreachAPI } from '@/services/freeBreachAPI';
+import securityLogsService from '@/services/securityLogsService';
 import pwnedBanner from '@/assets/banner/pwned.jpg';
+import emailjs from 'emailjs-com';
+import { emailjsConfig } from '@/config/emailjs';
 
 // Detailed result used AFTER payment
 interface BreachCheckResult {
@@ -51,6 +54,11 @@ const CheckBreach = () => {
   // UI state
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
+  // Email sending state
+  const [emailSending, setEmailSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+
   // Anonymous usage counter
   const [totalChecks, setTotalChecks] = useState(0);
   const [placeholder, setPlaceholder] = useState('Enter your email address');
@@ -58,6 +66,33 @@ const CheckBreach = () => {
   useEffect(() => {
     const savedCount = localStorage.getItem('aedi_breach_checks_count');
     if (savedCount) setTotalChecks(parseInt(savedCount));
+  }, []);
+
+  // Live stats from backend
+  const [liveEmailChecks, setLiveEmailChecks] = useState<number | null>(null);
+  const [liveLoading, setLiveLoading] = useState(false);
+  const [liveError, setLiveError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      setLiveLoading(true);
+      setLiveError(null);
+      try {
+        const base = (import.meta as any).env?.VITE_API_BASE?.toString() || '/api';
+        const res = await fetch(`${base}/be/stats`);
+        if (!res.ok) throw new Error(`Failed to fetch stats: ${res.status}`);
+        const data = await res.json();
+        setLiveEmailChecks(Number(data.email_breach_checks || 0));
+      } catch (e: any) {
+        setLiveError('Statistics temporarily unavailable');
+        console.warn('Failed to load live stats', e);
+      } finally {
+        setLiveLoading(false);
+      }
+    };
+    fetchStats();
+    const id = setInterval(fetchStats, 60_000); // refresh every 60s
+    return () => clearInterval(id);
   }, []);
 
   const incrementAnonymousCounter = () => {
@@ -91,6 +126,13 @@ const CheckBreach = () => {
 
     try {
       const apiResult = await freeBreachAPI.checkEmail(email);
+
+      // Persist raw email to Supabase table per request
+      try {
+        await securityLogsService.logEmailBreach(email);
+      } catch (persistErr) {
+        console.warn('Failed to persist email breach log:', persistErr);
+      }
 
       // Update anonymous counter on every check
       incrementAnonymousCounter();
@@ -180,6 +222,142 @@ const CheckBreach = () => {
     }
   };
 
+  // Send breach report via email
+  const sendBreachReportEmail = async () => {
+    if (!detailedResult || !email) return;
+
+    setEmailSending(true);
+    setEmailError(null);
+
+    try {
+      // Create HTML email template with company branding
+      const emailTemplate = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>AEDI Security - Breach Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
+            .logo { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+            .tagline { font-size: 14px; opacity: 0.9; }
+            .content { background: #f8fafc; padding: 30px; border-radius: 0 0 10px 10px; }
+            .breach-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 15px 0; }
+            .breach-header { color: #dc2626; font-weight: bold; font-size: 18px; margin-bottom: 10px; }
+            .breach-detail { margin: 8px 0; font-size: 14px; }
+            .recommendations { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin: 15px 0; }
+            .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 12px; }
+            .button { display: inline-block; background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">🛡️ AEDI Security Ltd</div>
+            <div class="tagline">Professional Cybersecurity Services</div>
+          </div>
+
+          <div class="content">
+            <h2 style="color: #1e40af; text-align: center; margin-bottom: 30px;">Thank You for Using AEDI Security Breach Checker!</h2>
+
+            <p>Dear Valued User,</p>
+
+            <p>Thank you for trusting <strong>AEDI Security Ltd</strong> with your cybersecurity needs. We're committed to helping you stay safe in the digital world.</p>
+
+            <p>Below is your comprehensive breach analysis report for: <strong>${email}</strong></p>
+
+            ${detailedResult.isBreached ?
+              `<div class="breach-card">
+                <div class="breach-header">⚠️ SECURITY ALERT: Breaches Detected</div>
+                <p><strong>Risk Level:</strong> ${detailedResult.riskScore >= 70 ? 'HIGH' : detailedResult.riskScore >= 40 ? 'MEDIUM' : 'LOW'}</p>
+                <p><strong>Breaches Found:</strong> ${detailedResult.breachCount}</p>
+
+                ${detailedResult.breaches.map(breach => `
+                  <div style="margin: 15px 0; padding: 15px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;">
+                    <h4 style="color: #dc2626; margin: 0 0 10px 0;">${breach.title || breach.name}</h4>
+                    <p style="margin: 5px 0;"><strong>Breach Date:</strong> ${new Date(breach.breachDate).toLocaleDateString()}</p>
+                    <p style="margin: 5px 0;"><strong>Accounts Affected:</strong> ${breach.pwnCount.toLocaleString()}</p>
+                    <p style="margin: 5px 0;"><strong>Description:</strong> ${breach.description}</p>
+                    ${breach.dataClasses.length > 0 ? `<p style="margin: 5px 0;"><strong>Data Exposed:</strong> ${breach.dataClasses.join(', ')}</p>` : ''}
+                  </div>
+                `).join('')}
+
+                ${detailedResult.darkWeb?.found ?
+                  `<div style="margin: 15px 0; padding: 15px; background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 6px;">
+                    <h4 style="color: #0c4a6e;">🌐 Dark Web Exposure Detected</h4>
+                    ${detailedResult.darkWeb.sources?.length ? `<p><strong>Sources:</strong> ${detailedResult.darkWeb.sources.join(', ')}</p>` : ''}
+                    ${detailedResult.darkWeb.vectors?.length ? `<p><strong>Exposure Methods:</strong> ${detailedResult.darkWeb.vectors.join(', ')}</p>` : ''}
+                    <p><strong>Recommendation:</strong> ${detailedResult.darkWeb.notes?.join(' ')}</p>
+                  </div>` : ''
+                }
+              </div>` :
+
+              `<div class="breach-card" style="background: #f0fdf4; border: 1px solid #bbf7d0;">
+                <div style="color: #16a34a; font-weight: bold; font-size: 18px;">✅ Great News!</div>
+                <p>No breaches found for this email address. Your account appears to be secure.</p>
+              </div>`
+            }
+
+            <div class="recommendations">
+              <h4 style="color: #92400e; margin: 0 0 15px 0;">🛡️ Security Recommendations</h4>
+              <ul style="margin: 0; padding-left: 20px;">
+                ${detailedResult.recommendations.map(rec => `<li style="margin: 8px 0;">${rec}</li>`).join('')}
+              </ul>
+            </div>
+
+            <p><strong>Check Date:</strong> ${new Date(detailedResult.lastChecked).toLocaleString()}</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://aedisecurity.com" class="button">Visit AEDI Security</a>
+            </div>
+
+            <p>If you have any questions or need professional cybersecurity assistance, please don't hesitate to contact us:</p>
+            <ul>
+              <li><strong>Phone:</strong> +254 743 141 928</li>
+              <li><strong>Email:</strong> info@aedisecurity.com</li>
+              <li><strong>Website:</strong> https://aedisecurity.com</li>
+            </ul>
+
+            <p>Stay safe online!</p>
+            <p><strong>The AEDI Security Team</strong></p>
+          </div>
+
+          <div class="footer">
+            <p>© 2025 AEDI Security Ltd. All rights reserved.</p>
+            <p>This report was generated by AEDI Security's free breach checking tool.</p>
+            <p>Professional cybersecurity services available at <a href="https://aedisecurity.com">aedisecurity.com</a></p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      // Send email using EmailJS with HTML content
+      await emailjs.send(
+        emailjsConfig.serviceId,
+        'template_jeznh6e', // Using the configured template
+        {
+          to_email: email,
+          from_name: 'AEDI Security Breach Report',
+          message: emailTemplate,
+          subject: `AEDI Security Breach Report - ${detailedResult.isBreached ? 'Breaches Detected' : 'No Breaches Found'}`,
+          reply_to: emailjsConfig.recipientEmail,
+        },
+        emailjsConfig.publicKey
+      );
+
+      setEmailSent(true);
+      setTimeout(() => {
+        setEmailSent(false);
+        setShowCompletedModal(false);
+      }, 3000);
+
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setEmailError('Failed to send email. Please try again or contact us directly.');
+    } finally {
+      setEmailSending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -263,11 +441,9 @@ const CheckBreach = () => {
                         <span>✓ Anonymous searches</span>
                         <span>✓ GDPR compliant</span>
                       </div>
-                      {totalChecks > 0 && (
-                        <div className="text-xs text-blue-600 font-medium">
-                          📊 {totalChecks.toLocaleString()} anonymous checks performed
-                        </div>
-                      )}
+                      <div className="text-xs text-blue-600 font-medium">
+                        {liveLoading ? '📊 Loading live stats…' : liveError ? '📊 Stats unavailable' : `📊 ${(liveEmailChecks ?? 0).toLocaleString()} anonymous checks recorded`}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -423,6 +599,44 @@ const CheckBreach = () => {
                           <p className="text-xs text-yellow-600">Last checked: {new Date(detailedResult.lastChecked).toLocaleString()}</p>
                         </div>
                       </div>
+
+                      {/* Email Report Button */}
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <Mail className="h-6 w-6 text-blue-600" />
+                            <div>
+                              <h4 className="font-semibold text-blue-800">Send Report to Email</h4>
+                              <p className="text-sm text-blue-600">Get this report delivered to your inbox</p>
+                            </div>
+                          </div>
+                          <Button
+                            onClick={sendBreachReportEmail}
+                            disabled={emailSending || emailSent}
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                          >
+                            {emailSending ? (
+                              <div className="flex items-center space-x-2">
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                <span>Sending...</span>
+                              </div>
+                            ) : emailSent ? (
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle className="h-4 w-4" />
+                                <span>Sent!</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center space-x-2">
+                                <Send className="h-4 w-4" />
+                                <span>Send Report</span>
+                              </div>
+                            )}
+                          </Button>
+                        </div>
+                        {emailError && (
+                          <p className="text-sm text-red-600 mt-2">{emailError}</p>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <div className="bg-green-50 border border-green-200 rounded-lg p-6">
@@ -487,6 +701,44 @@ const CheckBreach = () => {
                           <p className="text-xs text-blue-600">Last checked: {new Date(detailedResult.lastChecked).toLocaleString()}</p>
                         </div>
                       </div>
+
+                      {/* Email Report Button */}
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <Mail className="h-6 w-6 text-blue-600" />
+                            <div>
+                              <h4 className="font-semibold text-blue-800">Send Report to Email</h4>
+                              <p className="text-sm text-blue-600">Get this report delivered to your inbox</p>
+                            </div>
+                          </div>
+                          <Button
+                            onClick={sendBreachReportEmail}
+                            disabled={emailSending || emailSent}
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                          >
+                            {emailSending ? (
+                              <div className="flex items-center space-x-2">
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                <span>Sending...</span>
+                              </div>
+                            ) : emailSent ? (
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle className="h-4 w-4" />
+                                <span>Sent!</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center space-x-2">
+                                <Send className="h-4 w-4" />
+                                <span>Send Report</span>
+                              </div>
+                            )}
+                          </Button>
+                        </div>
+                        {emailError && (
+                          <p className="text-sm text-red-600 mt-2">{emailError}</p>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -496,34 +748,32 @@ const CheckBreach = () => {
         </div>
       </section>
 
-      {/* Usage Statistics */}
-      {totalChecks > 0 && (
-        <section className="py-8 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Anonymous Usage Statistics</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">{totalChecks.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Total Anonymous Checks</div>
-                  <div className="text-xs text-gray-500 mt-1">No emails stored</div>
-                </div>
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-3xl font-bold text-green-600 mb-2">100%</div>
-                  <div className="text-sm text-gray-600">Privacy Protected</div>
-                  <div className="text-xs text-gray-500 mt-1">Zero data collection</div>
-                </div>
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-3xl font-bold text-purple-600 mb-2">0</div>
-                  <div className="text-sm text-gray-600">Emails Stored</div>
-                  <div className="text-xs text-gray-500 mt-1">Complete anonymity</div>
-                </div>
+      {/* Usage Statistics (Live) */}
+      <section className="py-8 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Anonymous Usage Statistics</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="text-3xl font-bold text-blue-600 mb-2">{(liveEmailChecks ?? 0).toLocaleString()}</div>
+                <div className="text-sm text-gray-600">Total Anonymous Checks</div>
+                <div className="text-xs text-gray-500 mt-1">No emails stored</div>
               </div>
-              <p className="text-xs text-gray-500 mt-4">These statistics show usage volume only. No personal data is collected or stored.</p>
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="text-3xl font-bold text-green-600 mb-2">100%</div>
+                <div className="text-sm text-gray-600">Privacy Protected</div>
+                <div className="text-xs text-gray-500 mt-1">Zero data collection</div>
+              </div>
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="text-3xl font-bold text-purple-600 mb-2">0</div>
+                <div className="text-sm text-gray-600">Emails Stored</div>
+                <div className="text-xs text-gray-500 mt-1">Complete anonymity</div>
+              </div>
             </div>
+            <p className="text-xs text-gray-500 mt-4">These statistics show usage volume only. No personal data is collected or stored.</p>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Information Section */}
       <section className="py-16 bg-cyber-light">

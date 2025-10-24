@@ -36,10 +36,9 @@ export const emailjsConfig = {
 export interface EmailTemplateParams extends Record<string, unknown> {
   from_name: string;
   from_email: string;
-  phone?: string;
-  company?: string;
-  message: string;
   to_email: string;
+  subject: string;
+  message: string;
 }
 
 // Form validation rules
