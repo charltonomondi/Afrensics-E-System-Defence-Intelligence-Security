@@ -276,6 +276,13 @@ const CheckBreach = () => {
 
     try {
       const base = (import.meta as any).env?.VITE_API_BASE?.toString() || '/api';
+      console.log('sendBreachReportEmail: API base:', base);
+      console.log('sendBreachReportEmail: Full URL:', `${base}/be/send-breach-report`);
+      console.log('sendBreachReportEmail: Request body:', JSON.stringify({
+        email,
+        detailedResult,
+      }));
+
       const response = await fetch(`${base}/be/send-breach-report`, {
         method: 'POST',
         headers: {
@@ -287,11 +294,18 @@ const CheckBreach = () => {
         }),
       });
 
+      console.log('sendBreachReportEmail: Response status:', response.status);
+      console.log('sendBreachReportEmail: Response ok:', response.ok);
+
       if (!response.ok) {
+        console.error('sendBreachReportEmail: Response not ok, status:', response.status);
+        const errorText = await response.text();
+        console.error('sendBreachReportEmail: Error response text:', errorText);
         throw new Error('Failed to send email');
       }
 
       const result = await response.json();
+      console.log('sendBreachReportEmail: Response JSON:', result);
       if (result.success) {
         console.log('sendBreachReportEmail: Email sent successfully');
         setEmailSent(true);
@@ -300,11 +314,14 @@ const CheckBreach = () => {
           setEmailSent(false);
         }, 5000);
       } else {
+        console.error('sendBreachReportEmail: Response success false, error:', result.error);
         throw new Error(result.error || 'Failed to send email');
       }
 
     } catch (error) {
       console.error('Email sending failed:', error);
+      console.error('Email sending failed error type:', typeof error);
+      console.error('Email sending failed error message:', error.message);
       setEmailError('Failed to send email. Please try again or contact us directly.');
     } finally {
       setEmailSending(false);

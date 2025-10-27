@@ -339,19 +339,29 @@ app.post('/be/send-breach-report', async (req, res) => {
 
 // Get stats
 app.get('/be/stats', async (req, res) => {
+  console.log('Received request to /be/stats');
   try {
+    console.log('Fetching email breach count...');
     const { count: emailCount, error: emailError } = await supabase
       .from('Email_breach_checker')
       .select('*', { count: 'exact', head: true });
 
+    console.log('Email count:', emailCount, 'Error:', emailError);
+
+    console.log('Fetching malware scan count...');
     const { count: malwareTotal, error: malwareError } = await supabase
       .from('Malware_scanner')
       .select('*', { count: 'exact', head: true });
 
+    console.log('Malware total:', malwareTotal, 'Error:', malwareError);
+
     // Count URLs and files by length: >=20 characters as URL, else file
-    const { data: allScans } = await supabase
+    console.log('Fetching all scans for URL/file count...');
+    const { data: allScans, error: allScansError } = await supabase
       .from('Malware_scanner')
       .select('url_or_file_name');
+
+    console.log('All scans:', allScans, 'Error:', allScansError);
 
     let malwareUrlCount = 0;
     let malwareFileCount = 0;
@@ -361,18 +371,25 @@ app.get('/be/stats', async (req, res) => {
       malwareFileCount = allScans.length - malwareUrlCount;
     }
 
-    if (emailError || malwareError) {
-      const err = emailError?.message || malwareError?.message;
+    console.log('Malware URL count:', malwareUrlCount, 'File count:', malwareFileCount);
+
+    if (emailError || malwareError || allScansError) {
+      const err = emailError?.message || malwareError?.message || allScansError?.message;
+      console.error('Error in stats:', err);
       return res.status(500).json({ error: err });
     }
 
-    res.json({
+    const response = {
       email_breach_checks: emailCount || 0,
       malware_scans: malwareTotal || 0,
       malware_url_scans: malwareUrlCount || 0,
       malware_file_scans: malwareFileCount || 0,
-    });
+    };
+
+    console.log('Sending stats response:', response);
+    res.json(response);
   } catch (error) {
+    console.error('Stats error:', error);
     res.status(500).json({ error: error.message });
   }
 });
