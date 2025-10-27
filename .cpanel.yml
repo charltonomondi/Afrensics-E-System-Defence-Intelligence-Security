@@ -3,27 +3,33 @@ deployment:
   tasks:
     # Set the deployment path to your public_html directory
     - export DEPLOYPATH=/home/aedivgmb/public_html
-    
+
     # Create backup of existing files (optional)
     - mkdir -p /home/aedivgmb/backups/$(date +%Y%m%d_%H%M%S)
     - /bin/cp -r $DEPLOYPATH/* /home/aedivgmb/backups/$(date +%Y%m%d_%H%M%S)/ 2>/dev/null || true
-    
+
     # Clear the public_html directory
     - /bin/rm -rf $DEPLOYPATH/*
-    
-    # Copy all files from the repository to public_html
-    - /bin/cp -r * $DEPLOYPATH
-    
+
+    # Copy only necessary files for production
+    - /bin/cp -r dist/* $DEPLOYPATH/
+    - /bin/cp -r aedi_be $DEPLOYPATH/
+    - /bin/cp .htaccess $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp index.html $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp favicon.ico $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp robots.txt $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp sitemap.xml $DEPLOYPATH/ 2>/dev/null || true
+
     # Set correct file permissions
     - find $DEPLOYPATH -type f -exec chmod 644 {} \;
     - find $DEPLOYPATH -type d -exec chmod 755 {} \;
-    
+
     # Ensure .htaccess has correct permissions
-    - chmod 644 $DEPLOYPATH/.htaccess
-    
+    - chmod 644 $DEPLOYPATH/.htaccess 2>/dev/null || true
+
     # Create logs directory if it doesn't exist
     - mkdir -p /home/aedivgmb/logs
-    
+
     # Log the deployment
     - echo "Deployment completed at $(date)" >> /home/aedivgmb/logs/deployment.log
     - echo "Files deployed to $DEPLOYPATH" >> /home/aedivgmb/logs/deployment.log
