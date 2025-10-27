@@ -2,5 +2,9 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/aedivgmb/public_html
+    # If you want to build on server, include these — remove if build locally
+    - command: "npm ci --no-audit --no-fund || true"
+    - command: "npm run build || true"
     - /bin/rm -rf $DEPLOYPATH/*
     - /bin/cp -R dist/* $DEPLOYPATH/
+    - /bin/chown -R aedivgmb:​aedivgmb $DEPLOYPATH
