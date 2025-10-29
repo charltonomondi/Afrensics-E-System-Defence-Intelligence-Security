@@ -2,9 +2,51 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/aedivgmb/public_html
-    # If you want to build on server, include these — remove if build locally
+
+    # Clear the public_html directory completely
+    - /bin/rm -rf $DEPLOYPATH/*
+
+    # Build the application on server (if needed)
     - command: "npm ci --no-audit --no-fund || true"
     - command: "npm run build || true"
-    - /bin/rm -rf $DEPLOYPATH/*
-    - /bin/cp -R dist/* $DEPLOYPATH/
-    - /bin/chown -R aedivgmb:​aedivgmb $DEPLOYPATH
+
+    # Copy only production-ready files
+    # 1. Built frontend assets (React app)
+    - /bin/cp -r dist/* $DEPLOYPATH/
+
+    # 2. Backend API server
+    - /bin/cp -r aedi_be $DEPLOYPATH/
+
+    # 3. Essential static files
+    - /bin/cp .htaccess $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp public/favicon.ico $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp public/robots.txt $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp public/sitemap.xml $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp public/error.html $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp public/placeholder.svg $DEPLOYPATH/ 2>/dev/null || true
+
+    # 4. Copy public assets directory (if it exists and has additional assets)
+    - /bin/cp -r public/assets $DEPLOYPATH/ 2>/dev/null || true
+
+    # Set correct file permissions
+    - find $DEPLOYPATH -type f -exec chmod 644 {} \;
+    - find $DEPLOYPATH -type d -exec chmod 755 {} \;
+
+    # Ensure .htaccess has correct permissions
+    - chmod 644 $DEPLOYPATH/.htaccess 2>/dev/null || true
+
+    # Make backend scripts executable
+    - chmod +x $DEPLOYPATH/aedi_be/server.js 2>/dev/null || true
+    - chmod +x $DEPLOYPATH/aedi_be/package.json 2>/dev/null || true
+
+    # Set ownership
+    - /bin/chown -R aedivgmb:aedivgmb $DEPLOYPATH
+
+    # Create logs directory if it doesn't exist
+    - mkdir -p /home/aedivgmb/logs
+
+    # Log the deployment
+    - echo "Deployment completed at $(date)" >> /home/aedivgmb/logs/deployment.log
+    - echo "Files deployed to $DEPLOYPATH" >> /home/aedivgmb/logs/deployment.log
+    - echo "Frontend: dist/ -> $DEPLOYPATH/" >> /home/aedivgmb/logs/deployment.log
+    - echo "Backend: aedi_be/ -> $DEPLOYPATH/aedi_be/" >> /home/aedivgmb/logs/deployment.log
