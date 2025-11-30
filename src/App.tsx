@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import Analytics from "@/components/Analytics";
 import TawkChat from "@/components/TawkChat";
 import PenetrationTestingPopup from "@/components/PenetrationTestingPopup";
+import SnowOverlay from "@/components/SnowOverlay";
 import CookieConsent from "@/components/CookieConsent";
 import { usePenetrationTestingPopup } from "@/hooks/usePenetrationTestingPopup";
 
@@ -59,7 +60,11 @@ const App = () => {
             isOpen={isPopupOpen}
             onClose={closePopup}
           />
-        </BrowserRouter>
+
+          {/* Christmas Snow Animation */}
+          <SnowOverlay />
+
+          </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );

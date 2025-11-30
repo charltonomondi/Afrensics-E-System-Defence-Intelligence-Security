@@ -1,6 +1,6 @@
 
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,6 +19,13 @@ import {
 import aediLogo from '@/assets/favicon_logo/aedi.png';
 import LanguageSelector from '@/components/LanguageSelector';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import christmasImg from '@/assets/christmas.jpg';
+import hh1 from '@/assets/hh1.jpeg';
+import hh2 from '@/assets/hh2.webp';
+import hh3 from '@/assets/hh3.webp';
+import hh4 from '@/assets/hh4.webp';
+import hh5 from '@/assets/hh5.jpg';
+import hh6 from '@/assets/hh6.jpeg';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +41,29 @@ const Navigation = () => {
     { name: t('nav.contact'), href: '/contact' },
   ];
 
+  const [showSeasonal] = useState(true);
+  const [imgIndex, setImgIndex] = useState(0);
+  const [fade, setFade] = useState(false);
+
+  // Rotate festive images with crossfade effect
+  const festiveImages = [christmasImg, hh1, hh2, hh3, hh4, hh5, hh6];
+  const nextIndex = (i: number) => (i + 1) % festiveImages.length;
+
+  // Cycle every 5s with crossfade
+  // Using requestAnimationFrame-safe setInterval cadence
+  // Keep animation lightweight to not affect navbar interactions
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setFade(true);
+      setTimeout(() => {
+        setImgIndex((i) => nextIndex(i));
+        setFade(false);
+      }, 800);
+    }, 5000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  
   return (
     <>
       {/* Top Info Bar */}
@@ -83,16 +113,108 @@ const Navigation = () => {
 </div>
 
 {/* Main Navigation Bar */}
-<nav className="mt-2 bg-background/95 backdrop-blur-sm border-y border-border sticky top-0 z-50 shadow-sm">
+<nav className="mt-2 bg-background/95 backdrop-blur-sm border-y border-border sticky top-0 z-50 shadow-sm relative overflow-visible">
 
+        <style>
+          {`
+            .seasonal-trapezium {
+              width: 260px;
+              height: calc(4rem + 30px);
+              clip-path: polygon(0 0, 100% 0, 78% 100%, 0% 100%);
+            }
+            .seasonal-trapezium-mobile {
+              width: 280px;
+              height: calc(6rem + 50px);
+              clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+              position: absolute;
+              top: 35px;
+              left: 50%;
+              transform: translateX(-45%);
+              z-index: 10;
+            }
+            @media (max-width: 640px) {
+              .seasonal-trapezium-mobile {
+                width: 240px;
+                height: calc(4rem + 30px);
+                clip-path: polygon(0 0, 100% 0, 88% 100%, 0% 100%);
+              }
+            }
+            @media (max-width: 480px) {
+              .seasonal-trapezium-mobile {
+                width: 200px;
+                height: calc(3rem + 20px);
+                clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+              }
+            }
+            @media (min-width: 768px) {
+              .seasonal-trapezium-mobile {
+                position: absolute;
+                left: 100px;
+                top: 0;
+                width: 320px;
+                height: calc(5rem + 40px);
+                clip-path: polygon(0 0, 100% 0, 78% 100%, 0% 100%);
+                margin-top: 0;
+              }
+            }
+            @media (max-width: 768px) {
+              .seasonal-trapezium {
+                width: 190px;
+                height: calc(3.75rem + 24px);
+                clip-path: polygon(0 0, 100% 0, 84% 100%, 0% 100%);
+              }
+            }
+            @media (max-width: 640px) {
+              .seasonal-trapezium {
+                width: 110px;
+                height: calc(3.25rem + 18px);
+                clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
+              }
+            }
+          `}
+        </style>
+
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center min-w-0 flex-shrink-0">
-              <Link to="/" className="flex items-center flex-shrink-0">
-                <img src={aediLogo} alt="Logo" className="h-16 w-16 mr-2" />
-                <span className="font-bold text-lg sm:text-xl text-foreground whitespace-nowrap">AFRENSICS SECURITY LTD</span>
-              </Link>
-            </div>
+           <div className="flex justify-between h-auto md:h-16">
+             <div className="flex items-center min-w-0 flex-shrink-0">
+               <Link to="/" className="flex items-center flex-shrink-0 relative z-[70]">
+                 <img src={aediLogo} alt="Logo" className="h-16 w-16 mr-2" />
+                 <span className="font-bold text-lg sm:text-xl text-foreground whitespace-nowrap">AFRENSICS SECURITY LTD</span>
+               </Link>
+
+               {/* Seasonal trapezium banner - positioned below logo on mobile */}
+               <div
+                 aria-hidden="true"
+                 className={`seasonal-trapezium-mobile md:seasonal-trapezium pointer-events-none transition-all duration-300 ease-out ${showSeasonal ? 'opacity-100' : 'opacity-0'}`}
+                 style={{
+                   boxShadow: '0 14px 30px rgba(0,0,0,0.28)',
+                   overflow: 'hidden'
+                 }}
+               >
+                 {/* Two layers to crossfade between current and next image */}
+                 <div
+                   className="absolute inset-0 will-change-transform will-change-opacity"
+                   style={{
+                     backgroundImage: `url(${festiveImages[imgIndex]})`,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center',
+                     transition: 'opacity 800ms ease-in-out',
+                     opacity: fade ? 0 : 1
+                   }}
+                 />
+                 <div
+                   className="absolute inset-0 will-change-transform will-change-opacity"
+                   style={{
+                     backgroundImage: `url(${festiveImages[nextIndex(imgIndex)]})`,
+                     backgroundSize: 'cover',
+                     backgroundPosition: 'center',
+                     transition: 'opacity 800ms ease-in-out',
+                     opacity: fade ? 1 : 0
+                   }}
+                 />
+               </div>
+             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:block">
@@ -194,14 +316,14 @@ const Navigation = () => {
                       className="text-muted-foreground hover:text-primary block px-3 py-2 rounded-md text-sm"
                       onClick={() => setIsOpen(false)}
                     >
-                      Email Breach Check
+                      Email Breach Checker
                     </Link>
                     <Link
-                      to="/check-breach/website"
+                      to="/check-breach/malware-scanner"
                       className="text-muted-foreground hover:text-primary block px-3 py-2 rounded-md text-sm"
                       onClick={() => setIsOpen(false)}
                     >
-                      Website Breach Check
+                      Malware & Phishing Scanner
                     </Link>
                   </div>
                 )}

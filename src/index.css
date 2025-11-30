@@ -1028,3 +1028,45 @@ All colors MUST be HSL.
     }
   }
 }
+
+/* ===== Christmas Theme Layer ===== */
+@layer base {
+  .christmas-theme {
+    /* Override key design tokens for seasonal look */
+    --primary: 0 72% 46%; /* red */
+    --primary-foreground: 0 0% 100%;
+    --accent: 142 72% 35%; /* green */
+    --accent-foreground: 0 0% 100%;
+    --ring: 0 72% 46%;
+    /* Slight textured snow background */
+    background-image:
+      radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0;
+  }
+}
+
+@layer components {
+  /* Festive hero gradient */
+  .xmas-hero-gradient {
+    background: linear-gradient(135deg, hsl(142 72% 25%), hsl(0 72% 35%));
+  }
+
+  /* Festive CTA button gradient */
+  .xmas-cta-gradient {
+    background-image: linear-gradient(to right, hsl(142 72% 35%), hsl(0 72% 46%));
+  }
+
+  /* Greeting bar at top */
+  .xmas-greeting-bar {
+    background: linear-gradient(90deg, hsl(0 72% 40%), hsl(142 72% 28%));
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  }
+
+  /* Subtle golden glow on cards in Christmas theme */
+  .christmas-theme .card-gradient:hover {
+    box-shadow: 0 10px 30px -10px hsl(48 96% 53% / 0.35);
+  }
+}

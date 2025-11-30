@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import aediLogo from '@/assets/favicon_logo/aedi.jpeg';
 import matchLogo from '@/assets/favicon_logo/match.jpeg';
 import oneChurchLogo from '@/assets/favicon_logo/onechurch-logo.png';
+import happyHolidays from '@/assets/happyholidays.jpg';
 
 const Index = () => {
   const { t } = useTranslation();
@@ -44,8 +45,41 @@ const Index = () => {
   // Splash Screen Component
   if (showSplash) {
     return (
-      <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'}`} style={{ background: 'linear-gradient(135deg, hsl(215 25% 8%), hsl(215 30% 12%), hsl(174 72% 56% / 0.1))' }}>
-        <div className="text-center">
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
+        style={{
+          background: 'linear-gradient(135deg, hsl(215 25% 8%), hsl(215 30% 12%), hsl(174 72% 56% / 0.1))'
+        }}
+      >
+        {/* Festive blended background image layer */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${happyHolidays})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.15,
+            filter: 'saturate(1.05)'
+          }}
+          aria-hidden="true"
+        />
+        {/* Dark-to-brand gradient overlay for readability */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 35%, rgba(46,196,182,0.25) 100%)'
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="relative text-center px-4">
+          {/* Top seasonal banner inside splash */}
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full mb-6"
+               style={{ background: 'linear-gradient(90deg, rgba(185,28,28,0.85), rgba(6,95,70,0.85))', border: '1px solid rgba(255,255,255,0.2)' }}>
+            <span className="text-white text-sm font-semibold tracking-wide">Happy Holidays</span>
+            <span className="hidden sm:inline text-white/80 text-sm">from AEDI Security</span>
+          </div>
+
           {/* Logo with animation */}
           <div className="mb-8 animate-pulse">
             <img
@@ -56,21 +90,48 @@ const Index = () => {
             />
           </div>
 
-          {/* Welcome text with typing animation */}
-          <div className="space-y-4">
+          {/* Welcome + seasonal image row */}
+          <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-white animate-fade-in-up">
               Welcome to
             </h1>
-            <h2 className="text-3xl md:text-4xl font-bold animate-fade-in-up-delay" style={{ background: 'linear-gradient(135deg, hsl(174 72% 56%), hsl(174 82% 70%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <h2
+              className="text-3xl md:text-4xl font-bold animate-fade-in-up-delay"
+              style={{
+                background: 'linear-gradient(135deg, hsl(174 72% 56%), hsl(174 82% 70%))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
               AEDI Security Ltd
             </h2>
             <p className="text-lg md:text-xl animate-fade-in-up-delay-2" style={{ color: 'hsl(174 72% 80%)' }}>
               Kenya's Premier Cybersecurity Firm
             </p>
+
+            {/* Seasonal visual blended with current theme */}
+            <div className="mx-auto max-w-2xl">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border border-white/10">
+                <img
+                  src={happyHolidays}
+                  alt="Happy Holidays"
+                  className="w-full h-48 md:h-64 object-cover"
+                  loading="lazy"
+                />
+                {/* gradient overlay to blend */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.5) 100%)' }} />
+                {/* subtle corner ribbon */}
+                <div className="absolute top-3 left-3 text-xs font-semibold text-white px-2 py-1 rounded"
+                     style={{ background: 'linear-gradient(90deg, rgba(185,28,28,0.9), rgba(6,95,70,0.9))', border: '1px solid rgba(255,255,255,0.25)' }}>
+                  Happy Holidays
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Loading indicator */}
-          <div className="mt-12">
+          <div className="mt-10">
             <div className="flex justify-center space-x-2">
               <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'hsl(174 72% 56%)', animationDelay: '0ms' }}></div>
               <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'hsl(174 82% 70%)', animationDelay: '150ms' }}></div>

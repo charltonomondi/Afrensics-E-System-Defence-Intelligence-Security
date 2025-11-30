@@ -1,13 +1,11 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-// import WhatsAppFloat from '@/components/WhatsAppFloat';
 import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Target, Shield, Award, Globe, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-// import { useTranslation } from 'react-i18next';
 import Charlton from '@/assets/team/charlton.png';
 import deo from '@/assets/team/deo-gumba.png';
 import Tj from '@/assets/team/Tj.png';
@@ -25,7 +23,7 @@ const teamMembers = [
   {
     name: "Duncan E. O. Gumba",
     role: "Cybersecurity Researcher",
-    description: "Well-published researcher and writer, political and security analyst, journalist and policy researcher on Africa, especially human security and criminality..",
+    description: "Well-published researcher and writer, political and security analyst, journalist and policy researcher on Africa, especially human security and criminality.",
     image: deo,
   },
   {
@@ -72,32 +70,44 @@ const values = [
 ];
 
 const About = () => {
-  // const { t } = useTranslation();
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [scrollAmount, setScrollAmount] = useState(0);
 
-  const scrollAmount = 312; // Amount to scroll on each step (1 card: 280px + 32px gap)
-
-  useEffect(() => {
-    // Check scroll buttons on mount
-    checkScrollButtons();
-  }, []);
-
-  const checkScrollButtons = () => {
+  const computeScrollMetrics = () => {
     const container = scrollContainerRef.current;
-    if (!container) return;
+    const track = trackRef.current;
+    if (!container || !track) return;
+
+    // Determine card width + gap for one-step scroll
+    const firstCard = track.querySelector<HTMLDivElement>('[data-team-card="true"]');
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || '0');
+    if (firstCard) {
+      setScrollAmount(firstCard.offsetWidth + gap);
+    }
 
     const maxScrollLeft = container.scrollWidth - container.clientWidth;
     setCanScrollLeft(container.scrollLeft > 0);
-    setCanScrollRight(container.scrollLeft < maxScrollLeft - 1);
+    setCanScrollRight(container.scrollLeft < Math.ceil(maxScrollLeft - 1));
   };
+
+  useEffect(() => {
+    // On mount and when layout changes
+    computeScrollMetrics();
+    const onResize = () => computeScrollMetrics();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const scrollLeft = () => {
     const container = scrollContainerRef.current;
     if (container) {
-      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      container.scrollBy({ left: -(scrollAmount || 320), behavior: 'smooth' });
+      // update state after scroll ends
+      setTimeout(computeScrollMetrics, 350);
     }
   };
 
@@ -105,15 +115,14 @@ const About = () => {
     const container = scrollContainerRef.current;
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth;
-      const newScrollLeft = container.scrollLeft + scrollAmount;
+      const newScrollLeft = container.scrollLeft + (scrollAmount || 320);
 
       if (newScrollLeft >= maxScrollLeft) {
-        // Stop at the end - don't reset to beginning
         container.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
       } else {
-        // Scroll by exactly one card width
-        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        container.scrollBy({ left: (scrollAmount || 320), behavior: 'smooth' });
       }
+      setTimeout(computeScrollMetrics, 350);
     }
   };
 
@@ -122,14 +131,13 @@ const About = () => {
       <SEO
         title="About AEDI Security | Afrensics E-System Defence & Intelligence Security Ltd"
         description="Learn about AEDI Security Ltd, Kenya's premier cybersecurity firm. Our expert team provides penetration testing, vulnerability assessment, incident response, and cybersecurity research services across East Africa."
-        keywords="About AEDI Security, Afrensics E-System Defence and Intelligence Security, Cybersecurity Company Kenya, Security Team, Penetration Testing Experts, Cybersecurity Professionals, Kenya Security Firm, East Africa Cybersecurity"
         url="https://aedisecurity.com/about"
       />
       <Navigation />
       
       {/* Hero Section */}
       <section
-        className="py-20 bg-cover bg-center relative"
+        className="py-20 bg-cover bg-center relative min-h-[320px]"
         style={{
           backgroundImage: `url(${aboutBanner})`,
         }}
@@ -140,7 +148,7 @@ const About = () => {
             About AEDI Security
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Proficient Software Engineers & cybersecurity experts protecting Kenya's digital landscape since 2024.
+            Proficient Software Engineers & Cybersecurity experts protecting Kenya's digital landscape since 2024.
             We combine local expertise with global security standards.
           </p>
         </div>
@@ -281,25 +289,28 @@ const About = () => {
             </p>
           </div>
 
-          <div className="relative px-20">
+          <div className="relative px-4 sm:px-8 md:px-12 lg:px-20">
             {/* Scrollable Container */}
             <div
               ref={scrollContainerRef}
-              className="overflow-x-auto overflow-y-hidden scrollbar-hide"
-              style={{
-                width: '1216px',
-                margin: '0 auto'
-              }}
-              onScroll={checkScrollButtons}
+              className="overflow-x-auto overflow-y-hidden scrollbar-hide w-full mx-auto"
+              onScroll={computeScrollMetrics}
             >
-              <div className="flex gap-8 pb-4" style={{ width: 'max-content' }}>
+              <div ref={trackRef} className="flex gap-8 pb-4 w-max">
                 {teamMembers.map((member, index) => (
-                  <Card key={index} className="card-gradient shadow-card hover:shadow-hero transition-all duration-300 flex-none" style={{ width: '280px' }}>
+                  <Card
+                    key={index}
+                    data-team-card="true"
+                    className="card-gradient shadow-card hover:shadow-hero transition-all duration-300 flex-none w-72"
+                  >
                     <CardHeader className="text-center">
                       <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
                         <img
                           src={member.image}
                           alt={member.name}
+                          width={96}
+                          height={96}
+                          loading="lazy"
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -318,24 +329,28 @@ const About = () => {
             <button
               onClick={scrollLeft}
               disabled={!canScrollLeft}
-              className={`absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-primary/90 hover:bg-primary text-white p-3 rounded-full shadow-xl transition-all duration-300 ${
+              aria-label="Scroll left"
+              aria-disabled={!canScrollLeft}
+              className={`absolute left-2 md:-left-4 top-1/2 -translate-y-1/2 z-20 bg-primary/90 hover:bg-primary text-white p-3 rounded-full shadow-xl transition-all duration-300 ${
                 !canScrollLeft ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
               }`}
-              style={{ transform: 'translateY(-50%)' }}
             >
               <ChevronLeft className="w-6 h-6" />
+              <span className="sr-only">Scroll left</span>
             </button>
 
             {/* Right Navigation Button */}
             <button
               onClick={scrollRight}
               disabled={!canScrollRight}
-              className={`absolute -right-36 top-1/2 -translate-y-1/2 z-20 bg-primary/90 hover:bg-primary text-white p-3 rounded-full shadow-xl transition-all duration-300 ${
+              aria-label="Scroll right"
+              aria-disabled={!canScrollRight}
+              className={`absolute right-2 md:-right-4 top-1/2 -translate-y-1/2 z-20 bg-primary/90 hover:bg-primary text-white p-3 rounded-full shadow-xl transition-all duration-300 ${
                 !canScrollRight ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
               }`}
-              style={{ transform: 'translateY(-50%)' }}
             >
               <ChevronRight className="w-6 h-6" />
+              <span className="sr-only">Scroll right</span>
             </button>
           </div>
         </div>
@@ -356,7 +371,7 @@ const About = () => {
                 Get Started Today
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link to="/services">
               <Button
                 size="lg"
                 className="px-8 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white border-2 border-white/30 hover:from-cyan-600 hover:via-blue-700 hover:to-indigo-700 hover:border-white/50 hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold shadow-xl backdrop-blur-sm relative overflow-hidden group"
@@ -366,7 +381,7 @@ const About = () => {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
-                  <span className="text-lg">Contact Our Team</span>
+                  <span className="text-lg">Explore Our Services</span>
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
@@ -378,8 +393,7 @@ const About = () => {
       </section>
 
       <Footer />
-      {/* <WhatsAppFloat /> */}
-    </div>
+          </div>
   );
 };
 

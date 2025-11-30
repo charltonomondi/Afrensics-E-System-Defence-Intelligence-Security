@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, Shield, Lock, Search, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
+import { X, Shield, Lock, Search, AlertTriangle, CheckCircle, ArrowRight, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import happyHolidaysImg from '@/assets/happyholidays.jpg';
 
 interface PenetrationTestingPopupProps {
   isOpen: boolean;
@@ -63,6 +64,14 @@ const PenetrationTestingPopup: React.FC<PenetrationTestingPopupProps> = ({ isOpe
       description: "Identify OWASP Top 10 vulnerabilities and other security flaws in your web applications before attackers exploit them.",
       icon: <Search className="w-8 h-8 text-purple-500" />,
       gradient: "from-purple-600 to-indigo-600"
+    },
+    {
+      image: happyHolidaysImg,
+      title: "Happy Holidays",
+      subtitle: "Season's Greetings from AEDI Security",
+      description: "Wishing you a joyful holiday season and a secure new year. Stay safe and protected with our cybersecurity services!",
+      icon: <Heart className="w-8 h-8 text-red-500" />,
+      gradient: "from-red-600 to-green-600"
     }
   ];
 
@@ -175,7 +184,7 @@ const PenetrationTestingPopup: React.FC<PenetrationTestingPopupProps> = ({ isOpe
               alt="Penetration Testing"
               className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 filter brightness-75"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 via-teal-500 to-blue-700 opacity-85"></div>
+            <div className={`absolute inset-0 bg-gradient-to-br ${currentVariant.title === "Happy Holidays" ? currentVariant.gradient : "from-cyan-500 via-teal-500 to-blue-700"} opacity-85`}></div>
 
             {/* Close Button */}
             <button
