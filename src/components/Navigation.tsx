@@ -14,6 +14,7 @@ import {
   Linkedin,
   Instagram,
   Youtube,
+  TreePine,
 } from 'lucide-react';
 
 import aediLogo from '@/assets/favicon_logo/aedi.png';
@@ -26,6 +27,7 @@ import hh3 from '@/assets/hh3.webp';
 import hh4 from '@/assets/hh4.webp';
 import hh5 from '@/assets/hh5.jpg';
 import hh6 from '@/assets/hh6.jpeg';
+import xmassImg from '@/assets/xmass.jpg';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -171,6 +173,16 @@ const Navigation = () => {
                 clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
               }
             }
+            .tree-blow {
+              animation: tree-blow 3s infinite;
+            }
+            @keyframes tree-blow {
+              0% { filter: brightness(1) drop-shadow(0 0 10px rgba(255,215,0,0.5)); transform: rotate(0deg) scale(1); }
+              25% { filter: brightness(1.2) drop-shadow(0 0 15px rgba(255,0,0,0.7)); transform: rotate(-5deg) scale(1.05); }
+              50% { filter: brightness(1.2) drop-shadow(0 0 15px rgba(0,255,0,0.7)); transform: rotate(5deg) scale(1.05); }
+              75% { filter: brightness(1.2) drop-shadow(0 0 15px rgba(0,0,255,0.7)); transform: rotate(-3deg) scale(1.05); }
+              100% { filter: brightness(1) drop-shadow(0 0 10px rgba(255,215,0,0.5)); transform: rotate(0deg) scale(1); }
+            }
           `}
         </style>
 
@@ -181,6 +193,7 @@ const Navigation = () => {
                <Link to="/" className="flex items-center flex-shrink-0 relative z-[70]">
                  <img src={aediLogo} alt="Logo" className="h-16 w-16 mr-2" />
                  <span className="font-bold text-lg sm:text-xl text-foreground whitespace-nowrap">AFRENSICS SECURITY LTD</span>
+                 <img src={xmassImg} alt="Christmas Tree" className="ml-2 w-12 h-12 tree-blow" />
                </Link>
 
                {/* Seasonal trapezium banner - positioned below logo on mobile */}

@@ -1,4 +1,3 @@
-import supabase from "@/supabaseClient";
 
 /**
  * Security Logs Service
@@ -94,18 +93,8 @@ export const securityLogsService = {
       return await withRetry(doFetch);
     } catch (error: any) {
       console.error('Error logging email breach:', error);
-      // Fallback to direct Supabase if backend fails
-      const { data, error: supabaseError } = await supabase
-        .from('Email_breach_checker')
-        .insert([{ email_address: buildEmailPayload(email).email_address }])
-        .select()
-        .single();
-
-      if (supabaseError) {
-        securityLogger.logSuspiciousActivity('email_breach_log_failure', { reason: supabaseError.message });
-        throw supabaseError;
-      }
-      return data;
+      securityLogger.logSuspiciousActivity('email_breach_log_failure', { reason: error.message });
+      throw error;
     }
   },
 
@@ -137,21 +126,8 @@ export const securityLogsService = {
       return await withRetry(doFetch);
     } catch (error: any) {
       console.error('Error logging malware scan:', error);
-      // Fallback to direct Supabase if backend fails
-      const payload = buildMalwarePayload(input, scanType);
-      const looksLikeUrl = /^https?:\/\//i.test(payload.url_or_file_name);
-      const type = scanType || (looksLikeUrl ? 'url' : 'file');
-      const { data, error: supabaseError } = await supabase
-        .from('Malware_scanner')
-        .insert([{ url_or_file_name: payload.url_or_file_name }])
-        .select()
-        .single();
-
-      if (supabaseError) {
-        securityLogger.logSuspiciousActivity('malware_scan_log_failure', { reason: supabaseError.message });
-        throw supabaseError;
-      }
-      return data;
+      securityLogger.logSuspiciousActivity('malware_scan_log_failure', { reason: error.message });
+      throw error;
     }
   },
 };

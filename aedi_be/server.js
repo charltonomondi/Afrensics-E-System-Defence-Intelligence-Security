@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { z } = require('zod');
-const { createClient } = require('@supabase/supabase-js');
+const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
@@ -61,10 +61,11 @@ const BreachReportSchema = z.object({
   }),
 });
 
-// Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// PostgreSQL client
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // Or individual: host, user, password, database, port
+});
 
 // Gmail SMTP transporter using port 587 with TLS
 const transporter = nodemailer.createTransport({
@@ -122,19 +123,15 @@ app.post('/be/email-breach/check', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email_address' });
     }
 
-    const now = new Date().toISOString();
-    const { error } = await supabase
-      .from('Email_breach_checker')
-      .insert({
-        email_address: sanitize(parsed.data.email_address),
-        date_time: now,
-      });
-
-    if (error) {
-      return res.status(500).json({ error: error.message });
+    const client = await pool.connect();
+    try {
+      const query = 'INSERT INTO Email_breach_checker (email_address, date_time) VALUES ($1, $2)';
+      const values = [sanitize(parsed.data.email_address), new Date()];
+      await client.query(query, values);
+      res.json({ ok: true });
+    } finally {
+      client.release();
     }
-
-    res.json({ ok: true });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -172,17 +169,15 @@ app.post('/be/malware-scan/check', async (req, res) => {
       }
     }
 
-    const { error } = await supabase
-      .from('Malware_scanner')
-      .insert({
-        url_or_file_name: value,
-      });
-
-    if (error) {
-      return res.status(500).json({ error: error.message });
+    const client = await pool.connect();
+    try {
+      const query = 'INSERT INTO Malware_scanner (url_or_file_name) VALUES ($1)';
+      const values = [value];
+      await client.query(query, values);
+      res.json({ ok: true });
+    } finally {
+      client.release();
     }
-
-    res.json({ ok: true });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -340,28 +335,26 @@ app.post('/be/send-breach-report', async (req, res) => {
 // Get stats
 app.get('/be/stats', async (req, res) => {
   console.log('Received request to /be/stats');
+  const client = await pool.connect();
   try {
     console.log('Fetching email breach count...');
-    const { count: emailCount, error: emailError } = await supabase
-      .from('Email_breach_checker')
-      .select('*', { count: 'exact', head: true });
+    const emailResult = await client.query('SELECT COUNT(*) as count FROM Email_breach_checker');
+    const emailCount = parseInt(emailResult.rows[0].count);
 
-    console.log('Email count:', emailCount, 'Error:', emailError);
+    console.log('Email count:', emailCount);
 
     console.log('Fetching malware scan count...');
-    const { count: malwareTotal, error: malwareError } = await supabase
-      .from('Malware_scanner')
-      .select('*', { count: 'exact', head: true });
+    const malwareResult = await client.query('SELECT COUNT(*) as count FROM Malware_scanner');
+    const malwareTotal = parseInt(malwareResult.rows[0].count);
 
-    console.log('Malware total:', malwareTotal, 'Error:', malwareError);
+    console.log('Malware total:', malwareTotal);
 
     // Count URLs and files by length: >=20 characters as URL, else file
     console.log('Fetching all scans for URL/file count...');
-    const { data: allScans, error: allScansError } = await supabase
-      .from('Malware_scanner')
-      .select('url_or_file_name');
+    const allScansResult = await client.query('SELECT url_or_file_name FROM Malware_scanner');
+    const allScans = allScansResult.rows;
 
-    console.log('All scans:', allScans, 'Error:', allScansError);
+    console.log('All scans:', allScans);
 
     let malwareUrlCount = 0;
     let malwareFileCount = 0;
@@ -372,12 +365,6 @@ app.get('/be/stats', async (req, res) => {
     }
 
     console.log('Malware URL count:', malwareUrlCount, 'File count:', malwareFileCount);
-
-    if (emailError || malwareError || allScansError) {
-      const err = emailError?.message || malwareError?.message || allScansError?.message;
-      console.error('Error in stats:', err);
-      return res.status(500).json({ error: err });
-    }
 
     const response = {
       email_breach_checks: emailCount || 0,
@@ -391,6 +378,8 @@ app.get('/be/stats', async (req, res) => {
   } catch (error) {
     console.error('Stats error:', error);
     res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
   }
 });
 
