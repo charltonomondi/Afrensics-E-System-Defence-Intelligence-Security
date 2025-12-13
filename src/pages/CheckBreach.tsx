@@ -301,7 +301,15 @@ const CheckBreach = () => {
         console.error('sendBreachReportEmail: Response not ok, status:', response.status);
         const errorText = await response.text();
         console.error('sendBreachReportEmail: Error response text:', errorText);
-        throw new Error('Failed to send email');
+        let errorMessage = 'Failed to send email';
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          // If not JSON, use the text as is
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();

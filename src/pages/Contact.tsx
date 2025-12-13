@@ -166,15 +166,49 @@ const Contact = () => {
         resetForm();
         setIsResetting(false);
       }, 5500);
-    } catch (error) {
+    } catch (error: any) {
       console.error('EmailJS error:', error);
+
+      // Determine specific error message based on error type
+      let errorTitle = emailjsConfig.messages.error.title;
+      let errorDescription = emailjsConfig.messages.error.description;
+
+      if (error?.text) {
+        // EmailJS specific errors
+        if (error.text.includes('Invalid service ID')) {
+          errorTitle = "Email Service Configuration Error";
+          errorDescription = "The email service is not properly configured. Please contact support.";
+        } else if (error.text.includes('Invalid template ID')) {
+          errorTitle = "Email Template Error";
+          errorDescription = "The email template is not properly configured. Please contact support.";
+        } else if (error.text.includes('Invalid public key')) {
+          errorTitle = "Authentication Error";
+          errorDescription = "Email service authentication failed. Please contact support.";
+        } else if (error.text.includes('rate limit')) {
+          errorTitle = "Too Many Requests";
+          errorDescription = "You've sent too many emails recently. Please wait a few minutes and try again.";
+        } else if (error.text.includes('network') || error.text.includes('fetch')) {
+          errorTitle = "Network Error";
+          errorDescription = "Unable to connect to email service. Please check your internet connection and try again.";
+        } else {
+          errorDescription = `Email service error: ${error.text}`;
+        }
+      } else if (error?.message) {
+        // Generic error messages
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          errorTitle = "Network Error";
+          errorDescription = "Unable to connect to email service. Please check your internet connection and try again.";
+        } else {
+          errorDescription = `Error: ${error.message}`;
+        }
+      }
 
       // Error notification (don't reset form so user can try again)
       toast({
-        title: emailjsConfig.messages.error.title,
-        description: emailjsConfig.messages.error.description,
+        title: errorTitle,
+        description: errorDescription,
         variant: "destructive",
-        duration: 7000, // Show error toast for 7 seconds (longer for error messages)
+        duration: 10000, // Show error toast for 10 seconds for more detailed messages
       });
     } finally {
       setIsSubmitting(false);

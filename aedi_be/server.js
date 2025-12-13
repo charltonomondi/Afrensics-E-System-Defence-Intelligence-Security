@@ -67,26 +67,27 @@ const pool = new Pool({
   // Or individual: host, user, password, database, port
 });
 
-// Gmail SMTP transporter using port 587 with TLS
+// Gmail SMTP transporter using port 465 with secure connection
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // For STARTTLS
+  port: 465,
+  secure: true, // Use SSL/TLS
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
   tls: {
-    ciphers: 'SSLv3',
-    rejectUnauthorized: false,
+    // Modern TLS settings
+    minVersion: 'TLSv1.2',
+    ciphers: 'HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA',
   },
 });
 
 // Log transporter configuration for debugging (without password)
 console.log('Transporter configuration:', {
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
+  port: 465,
+  secure: true,
   user: process.env.SMTP_USER,
   // Do not log password for security
 });
@@ -317,18 +318,35 @@ app.post('/be/send-breach-report', async (req, res) => {
     });
 
     // Send the email
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
 
     console.log('Email sent successfully to:', email);
-  
-    res.json({ success: true, message: 'Email sent successfully' });
+    console.log('Message ID:', info.messageId);
+
+    res.json({ success: true, message: 'Email sent successfully', messageId: info.messageId });
   } catch (error) {
     console.error('Email sending failed:', error.message);
     console.error('Error stack:', error.stack);
     console.error('Error code:', error.code);
+    console.error('Error command:', error.command);
     console.error('Error response:', error.response);
-    console.error('Error response code:', error.responseCode);
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error('Error responseCode:', error.responseCode);
+
+    // Provide more specific error messages
+    let errorMessage = 'Failed to send email';
+    if (error.code === 'EAUTH') {
+      errorMessage = 'Email authentication failed. Please check SMTP credentials.';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Unable to connect to email server. Please check network connection.';
+    } else if (error.code === 'ETIMEDOUT') {
+      errorMessage = 'Email server connection timed out. Please try again later.';
+    } else if (error.responseCode === 535) {
+      errorMessage = 'Email authentication failed. Invalid username or password.';
+    } else if (error.responseCode === 550) {
+      errorMessage = 'Email rejected by server. Please check recipient address.';
+    }
+
+    res.status(500).json({ error: errorMessage, code: error.code, responseCode: error.responseCode });
   }
 });
 
