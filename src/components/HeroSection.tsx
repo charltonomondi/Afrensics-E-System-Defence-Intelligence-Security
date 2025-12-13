@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { YouTubeModal } from "./YouTubeModal";
+import heroRansomware from "@/assets/hero-ransomware.jpg";
+import heroAppSecurity from "@/assets/hero-app-security.jpg";
+import heroCyberReady from "@/assets/hero-cyber-ready.png";
 
 interface HeroSlide {
   title: string;
@@ -20,7 +23,7 @@ const heroSlides: HeroSlide[] = [
     description: "Start with yours. Protect your business with comprehensive cybersecurity solutions tailored for modern enterprises.",
     ctaText: "Get Started Today",
     ctaSecondary: "Learn More",
-    backgroundImage: "/src/assets/hero-ransomware.jpg"
+    backgroundImage: heroRansomware
   },
   {
     title: "Advanced",
@@ -28,7 +31,7 @@ const heroSlides: HeroSlide[] = [
     description: "Stay ahead of evolving cyber threats with our advanced detection and prevention systems powered by AI.",
     ctaText: "Explore Solutions",
     ctaSecondary: "View Services",
-    backgroundImage: "/src/assets/hero-app-security.jpg"
+    backgroundImage: heroAppSecurity
   },
   {
     title: "Expert",
@@ -36,7 +39,7 @@ const heroSlides: HeroSlide[] = [
     description: "Professional cybersecurity experts providing 24/7 monitoring, incident response, and strategic guidance.",
     ctaText: "Contact Us",
     ctaSecondary: "Get Quote",
-    backgroundImage: "/src/assets/hero-cyber-ready.png"
+    backgroundImage: heroCyberReady
   }
 ];
 
