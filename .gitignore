@@ -1,3 +1,49 @@
+# =====================
+# Environment & Secrets
+# =====================
+.env
+.env.*
+!.env.example
+
+# =====================
+# Dependencies
+# =====================
+node_modules/
+vendor/
+
+# =====================
+# Logs
+# =====================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =====================
+# Cache & Build Artifacts
+# =====================
+.cache/
+.tmp/
+dist/
+build/
+coverage/
+
+# =====================
+# OS & Editor Files
+# =====================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+
+# =====================
+# Git & CI
+# =====================
+.git/
+.github/
 # Logs
 logs
 *.log
