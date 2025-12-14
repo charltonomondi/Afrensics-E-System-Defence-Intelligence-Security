@@ -14,8 +14,20 @@ const PORT = process.env.PORT || 8000;
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors({
   origin: (origin, cb) => {
-    const allowed = [undefined, 'http://localhost:8080', 'http://localhost:5173', 'http://localhost:8081'];
-    if (!origin || allowed.includes(origin)) return cb(null, true);
+    const allowed = [
+      undefined,
+      'http://localhost:8080',
+      'http://localhost:5173',
+      'http://localhost:8081',
+      'https://aedisecurity.com',
+      'https://www.aedisecurity.com',
+      /^https:\/\/.*\.aedisecurity\.com$/
+    ];
+    if (!origin || allowed.some(pattern => {
+      if (typeof pattern === 'string') return pattern === origin;
+      return pattern.test(origin);
+    })) return cb(null, true);
+    console.log('CORS blocked origin:', origin);
     return cb(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST'],
@@ -64,7 +76,13 @@ const BreachReportSchema = z.object({
 // PostgreSQL client
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // Or individual: host, user, password, database, port
+  // Fallback to individual config for production
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  user: process.env.DB_USER || 'aediweb',
+  password: process.env.DB_PASSWORD || 'Itsaediagain123',
+  database: process.env.DB_NAME || 'aediweb',
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 // Gmail SMTP transporter using port 465 with secure connection
