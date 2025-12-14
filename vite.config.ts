@@ -11,11 +11,11 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: process.env.VITE_API_BASE || "http://localhost:8000",
         changeOrigin: true,
       },
       "/be": {
-        target: "http://localhost:8000",
+        target: process.env.VITE_API_BASE || "http://localhost:8000",
         changeOrigin: true,
       },
     },
