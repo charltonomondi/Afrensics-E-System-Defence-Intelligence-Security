@@ -142,6 +142,7 @@ const Contact = () => {
         company: sanitizedData.company || 'Not provided',
         message: sanitizedData.message,
         to_email: emailjsConfig.recipientEmail,
+        subject: `Contact Form Submission from ${sanitizedData.name}`,
       };
 
       // Send email using EmailJS
