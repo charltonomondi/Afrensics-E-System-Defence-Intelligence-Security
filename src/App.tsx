@@ -9,6 +9,7 @@ import PenetrationTestingPopup from "@/components/PenetrationTestingPopup";
 import SnowOverlay from "@/components/SnowOverlay";
 import CookieConsent from "@/components/CookieConsent";
 import { usePenetrationTestingPopup } from "@/hooks/usePenetrationTestingPopup";
+import { Component, ReactNode } from "react";
 
 import './i18n';
 import Index from "./pages/Index";
@@ -24,20 +25,84 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
+// Error Boundary Component
+class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean, error?: Error}> {
+  constructor(props: {children: ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error('React Error Boundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          padding: '20px',
+          fontFamily: 'Arial, sans-serif',
+          textAlign: 'center',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <h1 style={{ color: '#dc2626', marginBottom: '20px' }}>Application Error</h1>
+          <p style={{ marginBottom: '20px' }}>Sorry, something went wrong while loading the application.</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#1e40af',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Reload Page
+          </button>
+          <details style={{ marginTop: '20px', textAlign: 'left' }}>
+            <summary style={{ cursor: 'pointer', marginBottom: '10px' }}>Error Details</summary>
+            <pre style={{
+              background: '#f5f5f5',
+              padding: '10px',
+              borderRadius: '5px',
+              overflow: 'auto',
+              maxWidth: '600px'
+            }}>
+              {this.state.error?.message || 'Unknown error'}
+            </pre>
+          </details>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 const queryClient = new QueryClient();
 
 const App = () => {
   const { isPopupOpen, closePopup } = usePenetrationTestingPopup();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Analytics />
-          <TawkChat />
-          <Routes>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Analytics />
+            <TawkChat />
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/services" element={<Services />} />
             <Route path="/about" element={<About />} />
@@ -64,9 +129,10 @@ const App = () => {
           {/* Christmas Snow Animation */}
           <SnowOverlay />
 
-          </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
   );
 };
 
