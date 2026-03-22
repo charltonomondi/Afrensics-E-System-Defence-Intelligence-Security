@@ -32,7 +32,7 @@ interface BreachCheckResult {
 
 class BreachCheckService {
   private readonly HIBP_API_BASE = 'https://haveibeenpwned.com/api/v3';
-  private readonly API_KEY = process.env.REACT_APP_HIBP_API_KEY || '';
+  private readonly API_KEY = import.meta.env.VITE_HIBP_API_KEY || '';
   
   // Rate limiting
   private lastRequest = 0;

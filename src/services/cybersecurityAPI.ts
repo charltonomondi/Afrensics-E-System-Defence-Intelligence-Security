@@ -28,7 +28,7 @@ interface CybersecurityAPIResponse {
 
 class CybersecurityAPI {
   private baseURL = 'https://api.cybersecurity-africa.com'; // Example API endpoint
-  private apiKey = process.env.REACT_APP_CYBERSECURITY_API_KEY;
+  private apiKey = import.meta.env.VITE_CYBERSECURITY_API_KEY;
 
   // AI-powered data sources
   private dataSources = [

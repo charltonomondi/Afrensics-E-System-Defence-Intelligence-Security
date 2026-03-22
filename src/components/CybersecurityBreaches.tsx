@@ -3,24 +3,6 @@ import { AlertTriangle, Calendar, MapPin, Users, DollarSign, Shield, ExternalLin
 import { Button } from '@/components/ui/button';
 import { cybersecurityAPI, type BreachData } from '@/services/cybersecurityAPI';
 
-interface BreachData {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  country: string;
-  organization: string;
-  sector: string;
-  affectedUsers: string;
-  estimatedLoss: string;
-  breachType: string;
-  severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  description: string;
-  source: string;
-  sourceUrl?: string;
-  isRecent: boolean;
-}
-
 const CybersecurityBreaches: React.FC = () => {
   const [breaches, setBreaches] = useState<BreachData[]>([]);
   const [isLoading, setIsLoading] = useState(false);

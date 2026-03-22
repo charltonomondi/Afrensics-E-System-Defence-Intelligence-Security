@@ -138,6 +138,7 @@ const Contact = () => {
       const templateParams: EmailTemplateParams = {
         from_name: sanitizedData.name,
         from_email: sanitizedData.email,
+        subject: 'New Contact Form Submission',
         phone: sanitizedData.phone || 'Not provided',
         company: sanitizedData.company || 'Not provided',
         message: sanitizedData.message,
