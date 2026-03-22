@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Pesa Function Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #00a86b;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #008f5a;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .loading {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 M-Pesa Function Tester</h1>
+        <p>Test your Supabase M-Pesa function to diagnose issues.</p>
+
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" value="254712345678" placeholder="254712345678">
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Amount (KES):</label>
+            <input type="number" id="amount" value="1" min="1">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="test@example.com" placeholder="test@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" value="Test payment" placeholder="Test payment">
+        </div>
+
+        <button onclick="testFunction()" id="testBtn">🚀 Test M-Pesa Function</button>
+        <button onclick="checkEnvironment()" id="envBtn">🔧 Check Environment</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ctyoktgzxqmeqzhmwpro.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0eW9rdGd6eHFtZXF6aG13cHJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTI1ODEsImV4cCI6MjA3MjMyODU4MX0.Zf7Ka8g5-vVTQnmRZSUWb0nK747dm2GaXJR5UJrpH1E';
+
+        function showResult(message, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+        }
+
+        function clearResults() {
+            document.getElementById('result').innerHTML = '';
+        }
+
+        async function testFunction() {
+            const testBtn = document.getElementById('testBtn');
+            testBtn.disabled = true;
+            testBtn.textContent = '⏳ Testing...';
+
+            try {
+                showResult('🔄 Testing M-Pesa function...', 'loading');
+
+                const phone = document.getElementById('phone').value;
+                const amount = parseInt(document.getElementById('amount').value);
+                const email = document.getElementById('email').value;
+                const description = document.getElementById('description').value;
+
+                const payload = {
+                    phone: phone,
+                    amount: amount,
+                    email: email,
+                    description: description
+                };
+
+                console.log('Sending request:', payload);
+
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/initiate-mpesa-payment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    throw new Error(`Invalid JSON response: ${responseText}`);
+                }
+
+                if (response.ok) {
+                    showResult(`✅ SUCCESS!\n\nResponse:\n${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    showResult(`❌ ERROR (${response.status})\n\nResponse:\n${JSON.stringify(data, null, 2)}`, 'error');
+                }
+
+            } catch (error) {
+                console.error('Test error:', error);
+                showResult(`💥 NETWORK ERROR\n\n${error.message}`, 'error');
+            } finally {
+                testBtn.disabled = false;
+                testBtn.textContent = '🚀 Test M-Pesa Function';
+            }
+        }
+
+        async function checkEnvironment() {
+            const envBtn = document.getElementById('envBtn');
+            envBtn.disabled = true;
+            envBtn.textContent = '⏳ Checking...';
+
+            try {
+                showResult('🔍 Checking environment configuration...', 'loading');
+
+                // Test with minimal payload to check environment
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/initiate-mpesa-payment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    },
+                    body: JSON.stringify({
+                        phone: "254700000000",
+                        amount: 1
+                    })
+                });
+
+                const responseText = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    throw new Error(`Invalid JSON response: ${responseText}`);
+                }
+
+                let message = `🔧 ENVIRONMENT CHECK\n\n`;
+                message += `Status: ${response.status}\n`;
+                message += `Response: ${JSON.stringify(data, null, 2)}\n\n`;
+
+                if (data.error && data.error.includes('Missing environment variables')) {
+                    message += `❌ ISSUE FOUND: Missing environment variables\n`;
+                    message += `📋 Required variables:\n`;
+                    message += `- MPESA_CONSUMER_KEY\n`;
+                    message += `- MPESA_CONSUMER_SECRET\n`;
+                    message += `- MPESA_PASSKEY\n`;
+                    message += `- MPESA_SHORTCODE (optional, defaults to 174379)\n\n`;
+                    message += `🔧 Fix: Set these in Supabase Dashboard → Settings → Edge Functions → Environment Variables`;
+                    showResult(message, 'error');
+                } else if (data.error && data.error.includes('OAuth token request failed')) {
+                    message += `❌ ISSUE FOUND: Invalid M-Pesa credentials\n`;
+                    message += `🔧 Fix: Check your MPESA_CONSUMER_KEY and MPESA_CONSUMER_SECRET`;
+                    showResult(message, 'error');
+                } else if (response.ok) {
+                    message += `✅ Environment looks good!`;
+                    showResult(message, 'success');
+                } else {
+                    message += `⚠️ Unexpected response - check the details above`;
+                    showResult(message, 'info');
+                }
+
+            } catch (error) {
+                console.error('Environment check error:', error);
+                showResult(`💥 NETWORK ERROR\n\n${error.message}`, 'error');
+            } finally {
+                envBtn.disabled = false;
+                envBtn.textContent = '🔧 Check Environment';
+            }
+        }
+
+        // Auto-check environment on page load
+        window.addEventListener('load', () => {
+            setTimeout(checkEnvironment, 1000);
+        });
+    </script>
+</body>
+</html>

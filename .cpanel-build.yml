@@ -1,0 +1,37 @@
+---
+deployment:
+  tasks:
+    # Set the deployment path
+    - export DEPLOYPATH=/home/aedivgmb/public_html
+    - export BUILDPATH=/home/aedivgmb/build-temp
+    
+    # Create backup of existing files
+    - mkdir -p /home/aedivgmb/backups/$(date +%Y%m%d_%H%M%S)
+    - /bin/cp -r $DEPLOYPATH/* /home/aedivgmb/backups/$(date +%Y%m%d_%H%M%S)/ 2>/dev/null || true
+    
+    # Create temporary build directory
+    - mkdir -p $BUILDPATH
+    - /bin/cp -r * $BUILDPATH/
+    
+    # Navigate to build directory and install dependencies
+    - cd $BUILDPATH
+    - npm install --production
+    
+    # Build the project
+    - npm run build
+    
+    # Clear public_html and deploy built files
+    - /bin/rm -rf $DEPLOYPATH/*
+    - /bin/cp -r $BUILDPATH/dist/* $DEPLOYPATH/
+    
+    # Set correct permissions
+    - find $DEPLOYPATH -type f -exec chmod 644 {} \;
+    - find $DEPLOYPATH -type d -exec chmod 755 {} \;
+    - chmod 644 $DEPLOYPATH/.htaccess
+    
+    # Clean up build directory
+    - /bin/rm -rf $BUILDPATH
+    
+    # Log deployment
+    - mkdir -p /home/aedivgmb/logs
+    - echo "Build and deployment completed at $(date)" >> /home/aedivgmb/logs/deployment.log

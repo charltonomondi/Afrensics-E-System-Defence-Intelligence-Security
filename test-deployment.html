@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEDI Security - Deployment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { color: #fff; margin-bottom: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; }
+        .error { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; }
+        .info { background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; }
+        ul { text-align: left; }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #22c55e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+        }
+        .btn:hover { background: #16a34a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ AEDI Security - Deployment Test</h1>
+        
+        <div class="status success">
+            ✅ <strong>Basic HTML Loading:</strong> This file is working correctly!
+        </div>
+        
+        <div class="status info">
+            📋 <strong>Deployment Checklist:</strong>
+            <ul>
+                <li>✅ Files uploaded to public_html</li>
+                <li>✅ Files extracted properly</li>
+                <li>❓ JavaScript files loading (check console)</li>
+                <li>❓ CSS files loading (check network tab)</li>
+                <li>❓ React app initializing</li>
+            </ul>
+        </div>
+        
+        <div class="status info">
+            🔧 <strong>Common Issues & Solutions:</strong>
+            <ul>
+                <li><strong>White Screen:</strong> Usually JavaScript loading issues</li>
+                <li><strong>404 Errors:</strong> Files not in correct location</li>
+                <li><strong>Permission Issues:</strong> Files need 644, folders need 755</li>
+                <li><strong>Routing Issues:</strong> .htaccess configuration problems</li>
+            </ul>
+        </div>
+        
+        <div class="status error">
+            🚨 <strong>If you see this page instead of your website:</strong>
+            <ol>
+                <li>Check browser console for JavaScript errors</li>
+                <li>Verify all files were extracted to public_html</li>
+                <li>Check file permissions</li>
+                <li>Test if index.html exists and loads</li>
+            </ol>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" class="btn">🏠 Try Main Website</a>
+            <a href="error.html" class="btn">🔧 Test Error Page</a>
+        </div>
+        
+        <div class="status info">
+            📞 <strong>Need Help?</strong><br>
+            1. Check browser console (F12)<br>
+            2. Look for red errors in Network tab<br>
+            3. Verify file structure in cPanel File Manager<br>
+            4. Contact hosting support if server issues
+        </div>
+    </div>
+    
+    <script>
+        console.log('✅ AEDI Security Test Page Loaded Successfully');
+        console.log('🔍 Now checking for main website files...');
+        
+        // Test if main CSS file exists
+        fetch('./assets/index-jbsyp3y6.css')
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ CSS file found');
+                } else {
+                    console.error('❌ CSS file not found - check file extraction');
+                }
+            })
+            .catch(error => console.error('❌ Error loading CSS:', error));
+            
+        // Test if main JS file exists
+        fetch('./assets/index-BzSwn7yc.js')
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ JavaScript file found');
+                } else {
+                    console.error('❌ JavaScript file not found - check file extraction');
+                }
+            })
+            .catch(error => console.error('❌ Error loading JavaScript:', error));
+    </script>
+</body>
+</html>
