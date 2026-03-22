@@ -14,8 +14,20 @@ const PORT = process.env.PORT || 8000;
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors({
   origin: (origin, cb) => {
-    const allowed = [undefined, 'http://localhost:8080', 'http://localhost:5173', 'http://localhost:8081'];
-    if (!origin || allowed.includes(origin)) return cb(null, true);
+    const allowed = [
+      undefined,
+      'http://localhost:8080',
+      'http://localhost:5173',
+      'http://localhost:8081',
+      'https://aedisecurity.com',
+      'https://www.aedisecurity.com',
+      /^https:\/\/.*\.aedisecurity\.com$/
+    ];
+    if (!origin || allowed.some(pattern => {
+      if (typeof pattern === 'string') return pattern === origin;
+      return pattern.test(origin);
+    })) return cb(null, true);
+    console.log('CORS blocked origin:', origin);
     return cb(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST'],
@@ -64,29 +76,36 @@ const BreachReportSchema = z.object({
 // PostgreSQL client
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // Or individual: host, user, password, database, port
+  // Fallback to individual config for production
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  user: process.env.DB_USER || 'aediweb',
+  password: process.env.DB_PASSWORD || 'Itsaediagain123',
+  database: process.env.DB_NAME || 'aediweb',
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
-// Gmail SMTP transporter using port 587 with TLS
+// Gmail SMTP transporter using port 465 with secure connection
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // For STARTTLS
+  port: 465,
+  secure: true, // Use SSL/TLS
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
   tls: {
-    ciphers: 'SSLv3',
-    rejectUnauthorized: false,
+    // Modern TLS settings
+    minVersion: 'TLSv1.2',
+    ciphers: 'HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA',
   },
 });
 
 // Log transporter configuration for debugging (without password)
 console.log('Transporter configuration:', {
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
+  port: 465,
+  secure: true,
   user: process.env.SMTP_USER,
   // Do not log password for security
 });
@@ -317,18 +336,35 @@ app.post('/be/send-breach-report', async (req, res) => {
     });
 
     // Send the email
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
 
     console.log('Email sent successfully to:', email);
-  
-    res.json({ success: true, message: 'Email sent successfully' });
+    console.log('Message ID:', info.messageId);
+
+    res.json({ success: true, message: 'Email sent successfully', messageId: info.messageId });
   } catch (error) {
     console.error('Email sending failed:', error.message);
     console.error('Error stack:', error.stack);
     console.error('Error code:', error.code);
+    console.error('Error command:', error.command);
     console.error('Error response:', error.response);
-    console.error('Error response code:', error.responseCode);
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error('Error responseCode:', error.responseCode);
+
+    // Provide more specific error messages
+    let errorMessage = 'Failed to send email';
+    if (error.code === 'EAUTH') {
+      errorMessage = 'Email authentication failed. Please check SMTP credentials.';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Unable to connect to email server. Please check network connection.';
+    } else if (error.code === 'ETIMEDOUT') {
+      errorMessage = 'Email server connection timed out. Please try again later.';
+    } else if (error.responseCode === 535) {
+      errorMessage = 'Email authentication failed. Invalid username or password.';
+    } else if (error.responseCode === 550) {
+      errorMessage = 'Email rejected by server. Please check recipient address.';
+    }
+
+    res.status(500).json({ error: errorMessage, code: error.code, responseCode: error.responseCode });
   }
 });
 

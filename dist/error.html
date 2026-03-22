@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - AEDI Security</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .shield-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: rgba(239, 68, 68, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .error-code {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            font-family: monospace;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #1e40af;
+        }
+        
+        .btn-primary:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .security-info {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="shield-icon">
+            🛡️
+        </div>
+        
+        <h1>Access Denied</h1>
+        
+        <p>
+            Your request has been blocked by our security system. This could be due to suspicious activity, 
+            malicious requests, or violation of our security policies.
+        </p>
+        
+        <div class="error-code">
+            Error Code: SEC_403_BLOCKED
+        </div>
+        
+        <div class="actions">
+            <a href="https://aedisecurity.com" class="btn btn-primary">
+                Return to Homepage
+            </a>
+            <a href="https://aedisecurity.com/contact" class="btn btn-secondary">
+                Contact Support
+            </a>
+        </div>
+        
+        <div class="security-info">
+            <strong>🔒 AEDI Security Protection</strong><br>
+            This website is protected by advanced security measures to ensure the safety and integrity of our services. 
+            If you believe this is an error, please contact our support team with the error code above.
+            <br><br>
+            <strong>Common reasons for blocking:</strong>
+            <ul style="text-align: left; margin-top: 10px; padding-left: 20px;">
+                <li>Suspicious or malicious requests</li>
+                <li>Automated bot activity</li>
+                <li>Rate limit exceeded</li>
+                <li>Invalid or dangerous input</li>
+                <li>Blocked IP address or region</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Log the security event (basic client-side logging)
+        console.warn('AEDI Security: Access denied at', new Date().toISOString());
+        
+        // Prevent common bypass attempts
+        document.addEventListener('keydown', function(e) {
+            // Disable F12, Ctrl+Shift+I, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Redirect after 30 seconds if no action taken
+        setTimeout(function() {
+            if (confirm('Would you like to return to the homepage?')) {
+                window.location.href = 'https://aedisecurity.com';
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
